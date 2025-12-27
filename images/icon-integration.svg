@@ -1,0 +1,30 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="teal-gradient-3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00BCD4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4DD0E1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Puzzle pieces connecting -->
+  <g>
+    <!-- Left puzzle piece -->
+    <path d="M 80 150 L 80 250 L 160 250 Q 160 230 180 230 Q 200 230 200 250 L 200 150 Q 180 150 180 130 Q 180 110 160 110 L 160 150 Z"
+          fill="url(#teal-gradient-3)" opacity="0.85"/>
+
+    <!-- Right puzzle piece -->
+    <path d="M 200 150 Q 220 150 220 130 Q 220 110 240 110 L 240 150 L 320 150 L 320 250 L 240 250 L 240 210 Q 220 210 220 230 Q 220 250 200 250 Z"
+          fill="url(#teal-gradient-3)" opacity="0.85"/>
+
+    <!-- Connection highlights -->
+    <circle cx="200" cy="190" r="15" fill="#4DD0E1" opacity="0.9"/>
+
+    <!-- Additional geometric elements -->
+    <rect x="100" y="170" width="40" height="40" fill="none" stroke="#00ACC1" stroke-width="3" opacity="0.6"/>
+    <rect x="260" y="170" width="40" height="40" fill="none" stroke="#00ACC1" stroke-width="3" opacity="0.6"/>
+
+    <!-- Small decorative circles -->
+    <circle cx="120" cy="190" r="8" fill="#B2EBF2"/>
+    <circle cx="280" cy="190" r="8" fill="#B2EBF2"/>
+  </g>
+</svg>

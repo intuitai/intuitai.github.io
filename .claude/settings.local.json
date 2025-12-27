@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "WebFetch(domain:www.wix.com)",
+      "Bash(pip3 list:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }
