@@ -22,6 +22,13 @@ The website follows a simple static HTML structure:
 - `styles.css` - Complete styling with CSS custom properties, responsive design, animations, and accessibility features
 - `intuitailogo.jpg` - Company logo (JPEG format) used in header with subtle scale transform on hover
 - `CNAME` - Custom domain configuration pointing to intuitai.org
+- `README.md` - Comprehensive project documentation with badges, features, setup instructions
+- `LICENSE` - MIT License file
+- `CLAUDE.md` - This file - AI assistant project instructions
+- `.github/workflows/` - GitHub Actions automation:
+  - `validate.yml` - Main validation workflow (HTML, CSS, links, Lighthouse, SEO, accessibility)
+  - `lighthouserc.json` - Lighthouse CI configuration
+  - `link-check-config.json` - Link checker configuration
 - `resource/` - Directory containing downloadable documents:
   - `unlocking-real-world-solutions-with-ai.pdf` - Main whitepaper
   - `unlocking-real-world-solutions-with-ai.docx` - Word version of whitepaper
@@ -44,6 +51,13 @@ Since this is a static GitHub Pages site:
 - **No local server needed** - Files can be opened directly in browser for testing
 - **Live deployment** - Changes pushed to main branch automatically deploy to intuitai.org
 - **No package.json or dependencies** - Pure HTML/CSS implementation
+- **GitHub Actions**: Automated validation workflows:
+  - HTML5 and CSS validation
+  - Link checking (internal and external)
+  - Lighthouse CI for performance, accessibility, SEO, and best practices
+  - SEO meta tag verification
+  - Accessibility checks (ARIA labels, alt tags, skip links)
+  - Runs on push, pull requests, weekly schedule, and manual trigger
 
 ## Key Design Elements
 
@@ -126,16 +140,31 @@ Since this is a static GitHub Pages site:
 ## SEO and Meta Tags
 
 The website includes comprehensive SEO optimization:
-- **Meta tags**: Standard meta description, keywords, and author tags
-- **Open Graph tags**: Full OG implementation for Facebook sharing with custom image, title, description
-- **Twitter Card tags**: Twitter-specific meta tags for better social media sharing
-- **Structured Data**: JSON-LD schema.org markup for Organization type, including:
-  - Organization name, URL, logo
-  - Non-profit status
-  - Founding date (2024)
-  - Contact email
-  - Social media links (GitHub)
+- **Meta tags**: Enhanced meta tags including:
+  - Description, keywords, author
+  - Robots directives (index, follow, max-image-preview, max-snippet, max-video-preview)
+  - Googlebot directives
+  - Language (English)
+  - Revisit-after (7 days)
+  - Rating (General)
+- **Open Graph tags**: Full OG implementation for Facebook sharing:
+  - Type, URL, title, description
+  - Image with dimensions (1200x630) and alt text
+  - Site name and locale (en_US)
+- **Twitter Card tags**: Twitter-specific meta tags for rich previews
+- **Structured Data**: Enhanced JSON-LD schema.org markup for Organization type:
+  - Organization @id, name, legalName, URL
+  - Logo object with dimensions
+  - Contact point with email and available languages
+  - Founding date and location
   - Area served (Worldwide)
+  - KnowsAbout array (AI topics)
+  - Social media links (GitHub)
+  - Keywords
+- **Google Analytics**: GA4 tracking code with:
+  - Anonymized IP addresses
+  - Cookie consent ready
+  - Placeholder ID (G-XXXXXXXXXX) to be replaced with actual tracking ID
 - **Canonical URL**: Proper canonical tag pointing to https://intuitai.org/
 - **Theme Color**: Meta theme color set to primary teal (#00BCD4)
 - **Favicon**: Logo used as favicon and apple-touch-icon

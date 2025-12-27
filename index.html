@@ -3,12 +3,19 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- SEO Meta Tags -->
         <meta
             name="description"
             content="IntuitAI is a non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions for real-world applications across industries."
         />
-        <meta name="keywords" content="AI, artificial intelligence, machine learning, non-profit, research, automation, AI solutions, democratizing AI" />
+        <meta name="keywords" content="AI, artificial intelligence, machine learning, non-profit, research, automation, AI solutions, democratizing AI, LLM, semantic cache, model gateway" />
         <meta name="author" content="IntuitAI" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+        <meta name="rating" content="General" />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
@@ -19,7 +26,11 @@
             content="Non-profit research organization making advanced AI accessible for real-world applications. Bridging the gap between cutting-edge research and practical implementation."
         />
         <meta property="og:image" content="https://intuitai.org/intuitailogo.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="IntuitAI Logo" />
         <meta property="og:site_name" content="IntuitAI" />
+        <meta property="og:locale" content="en_US" />
 
         <!-- Twitter Card -->
         <meta name="twitter:card" content="summary_large_image" />
@@ -47,17 +58,60 @@
             {
                 "@context": "https://schema.org",
                 "@type": "Organization",
+                "@id": "https://intuitai.org/#organization",
                 "name": "IntuitAI",
+                "legalName": "IntuitAI",
                 "url": "https://intuitai.org",
-                "logo": "https://intuitai.org/intuitailogo.jpg",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://intuitai.org/intuitailogo.jpg",
+                    "width": "512",
+                    "height": "512"
+                },
                 "description": "A non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions for real-world applications.",
                 "email": "nobel@intuitai.org",
-                "sameAs": ["https://github.com/intuitai"],
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "email": "nobel@intuitai.org",
+                    "contactType": "General Inquiry",
+                    "availableLanguage": ["English"]
+                },
+                "sameAs": [
+                    "https://github.com/intuitai",
+                    "https://github.com/nobelk"
+                ],
                 "foundingDate": "2024",
+                "foundingLocation": {
+                    "@type": "Place",
+                    "name": "Worldwide"
+                },
                 "nonprofitStatus": "NonprofitType",
-                "areaServed": "Worldwide",
-                "keywords": "artificial intelligence, AI research, machine learning, automation, AI solutions"
+                "areaServed": {
+                    "@type": "Place",
+                    "name": "Worldwide"
+                },
+                "knowsAbout": [
+                    "Artificial Intelligence",
+                    "Machine Learning",
+                    "Natural Language Processing",
+                    "Large Language Models",
+                    "AI Research",
+                    "AI Implementation"
+                ],
+                "keywords": "artificial intelligence, AI research, machine learning, automation, AI solutions, LLM, semantic cache, model gateway"
             }
+        </script>
+
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX', {
+                'anonymize_ip': true,
+                'cookie_flags': 'SameSite=None;Secure'
+            });
         </script>
     </head>
     <body>
