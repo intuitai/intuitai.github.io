@@ -4,222 +4,138 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a GitHub Pages repository for intuitai.org - a static website for IntuitAI, a non-profit research organization dedicated to democratizing artificial intelligence. The site is a single-page application with a modern, vibrant teal/cyan design featuring comprehensive sections: hero, mission, research, team, projects, testimonials, and contact form. The design emphasizes accessibility, SEO optimization, and a professional, engaging user experience.
+This is a GitHub Pages repository for intuitai.org - a minimalist static website for IntuitAI, a non-profit research organization dedicated to democratizing artificial intelligence. The site uses the Pico.css framework for a clean, simple design with minimal dependencies.
 
 ## Architecture
 
 The website follows a simple static HTML structure:
-- **Single-page layout**: All content sections are in `index.html` with smooth scrolling navigation
-- **CSS-only styling**: No JavaScript framework dependencies, pure CSS with modern features (CSS Grid, Flexbox, CSS custom properties/variables)
-- **Responsive design**: Mobile-first approach with breakpoints at 768px and 480px
-- **Fixed navigation**: Header with logo and navigation that stays visible while scrolling with backdrop blur effect
-- **Modern system fonts**: Uses native font stack for optimal performance and native feel
-- **Accessibility-first**: Includes focus states, ARIA-compliant markup, and print-optimized styles
+- **Single-page layout**: Minimal content in `index.html` with mission and projects sections
+- **Pico.css framework**: Uses Pico.css v2.1.1 from CDN for styling (no custom CSS)
+- **Responsive design**: Pico.css provides mobile-first responsive design out of the box
+- **JavaScript functionality**: Two small utility scripts for theme switching and modal support
+- **Minimalist approach**: Focus on content over complex design elements
 
 ## Repository Structure
 
-- `index.html` - Main website content with hero, mission, research, team, projects, testimonials, and contact sections
-- `styles.css` - Complete styling with CSS custom properties, responsive design, animations, and accessibility features
-- `intuitailogo.jpg` - Company logo (JPEG format) used in header with subtle scale transform on hover
+- `index.html` - Main website content with header, mission, and projects sections
+- `styles.css` - Legacy custom CSS file (not currently used, Pico.css is used instead)
+- `img/` - Directory containing website images:
+  - `intuitailogo.jpg` - Company logo used in header
+- `js/` - JavaScript utilities:
+  - `minimal-theme-switcher.js` - Pico.css theme switcher for light/dark mode
+  - `modal.js` - Pico.css modal functionality
+- `intuitailogo.jpg` - Company logo (also in img/ directory)
 - `CNAME` - Custom domain configuration pointing to intuitai.org
-- `README.md` - Comprehensive project documentation with badges, features, setup instructions
+- `README.md` - Project documentation
 - `LICENSE` - MIT License file
 - `CLAUDE.md` - This file - AI assistant project instructions
-- `.github/workflows/` - GitHub Actions automation:
-  - `validate.yml` - Main validation workflow (HTML, CSS, links, Lighthouse, SEO, accessibility)
-  - `lighthouserc.json` - Lighthouse CI configuration
-  - `link-check-config.json` - Link checker configuration
+- `.github/` - GitHub configuration (workflows removed)
 - `resource/` - Directory containing downloadable documents:
   - `unlocking-real-world-solutions-with-ai.pdf` - Main whitepaper
   - `unlocking-real-world-solutions-with-ai.docx` - Word version of whitepaper
-- `images/` - Directory containing all website images:
-  - `hero-background.png` - Gradient background for hero section
-  - `icon-democratizing.png` - Mission section feature icon
-  - `icon-solutions.png` - Mission section feature icon
-  - `icon-integration.png` - Mission section feature icon
-  - `research-illustration.png` - Research section illustration
-  - `team/team-placeholder.png` - Team member photo placeholder
-  - `testimonials/testimonial-placeholder.png` - Testimonial avatar placeholder
-  - Additional SVG sources for all icons
 - `generate_images.py` - Python script for AI-powered image generation using Hugging Face API
 - `generate_images_v2.py` - Updated version of image generation script
 
 ## Development Workflow
 
 Since this is a static GitHub Pages site:
-- **No build process required** - Direct HTML/CSS editing
+- **No build process required** - Direct HTML editing with CDN-hosted CSS
 - **No local server needed** - Files can be opened directly in browser for testing
 - **Live deployment** - Changes pushed to main branch automatically deploy to intuitai.org
-- **No package.json or dependencies** - Pure HTML/CSS implementation
-- **GitHub Actions**: Automated validation workflows:
-  - HTML5 and CSS validation
-  - Link checking (internal and external)
-  - Lighthouse CI for performance, accessibility, SEO, and best practices
-  - SEO meta tag verification
-  - Accessibility checks (ARIA labels, alt tags, skip links)
-  - Runs on push, pull requests, weekly schedule, and manual trigger
+- **Minimal dependencies** - Only Pico.css loaded from CDN, two small vanilla JavaScript files
+- **No GitHub Actions** - Validation workflows have been removed
 
-## Key Design Elements
+## Technology Stack
 
-### Color System
-- **CSS Custom Properties**: All colors defined as CSS variables in `:root` for consistency
-- **Primary Teal/Cyan Palette**:
-  - `--primary-teal: #00BCD4` - Main brand color, buttons, accents
-  - `--primary-teal-dark: #0097A7` - Darker teal for hover states
-  - `--primary-teal-light: #4DD0E1` - Lighter teal for gradients
-  - `--primary-teal-pale: #B2EBF2` - Pale teal for borders and highlights
-- **Accent Colors**:
-  - `--accent-teal: #00ACC1` - Secondary accent color
-  - `--accent-orange: #FF6B35` - Optional accent (not currently used)
-- **Neutral Colors**:
-  - `--text-dark: #1A2332` - Main headings and primary text
-  - `--text-medium: #4A5568` - Body text
-  - `--text-light: #718096` - Subdued text
-  - `--bg-white: #FFFFFF` - White backgrounds
-  - `--bg-teal-tint: #F0FDFF` - Light teal background tint
-  - `--bg-teal-light: #E0F7FA` - Alternating section backgrounds
-  - `--border-teal: #B2EBF2` - Borders and dividers
-- **Shadows and Effects**:
-  - `--shadow-sm`, `--shadow-md`, `--shadow-lg` - Layered shadows with teal tint
-  - `--overlay-teal` - Semi-transparent teal overlay
+### Frontend Framework
+- **Pico.css v2.1.1**: Minimal CSS framework loaded from jsdelivr CDN
+  - Provides semantic HTML styling
+  - Built-in responsive design
+  - Light/dark theme support
+  - No custom CSS needed
 
-### Typography
-- **System font stack**: Modern native fonts (`-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, etc.)
-- **Hierarchy**: Clear typographic scale with h1 (1.5rem), h2 (2.75rem), h3 (1.75rem)
-- **Enhancement details**: Letter spacing, line height, and weight variations for visual hierarchy
-- **Section headers**: Centered with decorative underline using `::after` pseudo-element
+### JavaScript
+- **minimal-theme-switcher.js**: Pico.css official theme switcher
+  - Manages light/dark theme preference
+  - Stores preference in localStorage
+  - Auto-detects system preference
+- **modal.js**: Pico.css official modal handler
+  - Opens/closes modal dialogs
+  - Handles click-outside and ESC key closing
+  - Manages scrollbar width during modal display
 
-### Visual Effects
-- **Hero section**: Gradient background (teal to cyan) with grid pattern overlay and optional background image
-- **Logo treatment**: Subtle scale transform on hover
-- **Navigation**: Animated underline effect on hover using CSS transitions
-- **Buttons**: Multiple button styles (btn-primary, btn-secondary) with inverted hover states, elevation effects (transform + box-shadow)
-- **Header**: Backdrop blur filter for glassmorphism effect with semi-transparent white background
-- **Card components**: Hover effects with translateY and shadow transitions on feature cards, team cards, testimonial cards, and project cards
-- **Smooth scrolling**: Native CSS `scroll-behavior: smooth`
-
-### Interactive Elements
-- **Navigation links**: Animated underline effect that expands on hover
-- **Call-to-action buttons**: Transform on hover with shadow elevation, includes icons (emoji)
-- **Logo**: Subtle scale transform on hover
-- **Focus states**: Visible outline for keyboard navigation accessibility
-- **Form inputs**: Teal border on focus with overlay shadow effect
-- **Project cards**: Hover effects with teal gradient badges and feature tags
-- **Testimonial cards**: Left border accent with decorative quotation marks
+### Styling Approach
+- **No custom CSS**: Uses Pico.css defaults exclusively
+- **Semantic HTML**: Pico.css styles semantic HTML elements directly
+- **Container class**: Pico's `.container` class for centered, responsive layout
+- **Color scheme meta tag**: Set to "light" in HTML head
 
 ## Content Structure
 
-### Sections
-1. **Hero** (id: `hero`): Full viewport height gradient hero section with tagline "Unlocking Real-World Solutions with AI", subtitle, and dual call-to-action buttons (Download Whitepaper, View Projects)
-2. **Mission** (id: `mission`): Three-column feature grid with icons showcasing:
-   - Democratizing AI
-   - Real-World Solutions
-   - Intelligent Integration
-3. **Research** (id: `research`): Two-column layout with research text and illustration, includes whitepaper download button
-4. **Team** (id: `team`): Team introduction with three-column grid of team member cards featuring:
-   - Dr. Sarah Chen - Founder & Research Director
-   - Michael Rodriguez - Lead AI Engineer
-   - Emily Watson - Operations Director
-5. **Projects** (id: `projects`): Detailed project showcase with individual cards for each project:
-   - Model Gateway (Go)
-   - Semantic Cache (Go)
-   - Random Number Server (Python)
-   - QuranLLM (AI)
-   - Footer link to view all projects on GitHub
-6. **Testimonials** (id: `testimonials`): Three-column grid of testimonial cards with quotes, avatars, and attribution
-7. **Contact** (id: `contact`): Contact form with fields for name, email, organization, and message, plus alternative email link (nobel@intuitai.org)
+### Header
+- Company logo (100px width)
+- Site title: "IntuitAI"
+- Tagline: "AI solutions for real world applications."
 
-### Navigation Labels
-- Mission (links to #mission)
-- Research (links to #research)
-- Team (links to #team)
-- Projects (links to #projects)
-- Testimonials (links to #testimonials)
-- Contact (links to #contact)
+### Sections
+1. **Mission** (id: `mission`): Brief description of IntuitAI's team and focus
+2. **Projects** (id: `projects`): Introduction and bulleted list of open-source projects:
+   - Model Gateway - LLM request routing and management
+   - Random Number MCP Server - Weather-based random number generation
+   - QuranLLM - AI-powered Quran search
+
+### Footer
+- Attribution to Pico.css
+- Link to source code example
 
 ## SEO and Meta Tags
 
-The website includes comprehensive SEO optimization:
-- **Meta tags**: Enhanced meta tags including:
+The website includes basic SEO optimization:
+- **Meta tags**:
   - Description, keywords, author
   - Robots directives (index, follow, max-image-preview, max-snippet, max-video-preview)
   - Googlebot directives
   - Language (English)
   - Revisit-after (7 days)
   - Rating (General)
-- **Open Graph tags**: Full OG implementation for Facebook sharing:
-  - Type, URL, title, description
-  - Image with dimensions (1200x630) and alt text
-  - Site name and locale (en_US)
-- **Twitter Card tags**: Twitter-specific meta tags for rich previews
-- **Structured Data**: Enhanced JSON-LD schema.org markup for Organization type:
-  - Organization @id, name, legalName, URL
-  - Logo object with dimensions
-  - Contact point with email and available languages
-  - Founding date and location
-  - Area served (Worldwide)
-  - KnowsAbout array (AI topics)
-  - Social media links (GitHub)
-  - Keywords
-- **Google Analytics**: GA4 tracking code with:
-  - Anonymized IP addresses
-  - Cookie consent ready
-  - Placeholder ID (G-XXXXXXXXXX) to be replaced with actual tracking ID
-- **Canonical URL**: Proper canonical tag pointing to https://intuitai.org/
-- **Theme Color**: Meta theme color set to primary teal (#00BCD4)
-- **Favicon**: Logo used as favicon and apple-touch-icon
-- **Accessibility**: Skip link for keyboard navigation, ARIA labels on sections and navigation
+- **No Open Graph tags**: Removed for simplicity
+- **No Twitter Card tags**: Removed for simplicity
+- **No Structured Data**: Removed for simplicity
+- **No Analytics**: Google Analytics removed
+- **Color scheme**: Set to "light" mode by default
 
-## Image Generation Tools
+## Key Files
 
-Two Python scripts are included for generating website images using AI:
-- **generate_images.py**: Uses Hugging Face Inference API with Stable Diffusion XL to generate all website images
-  - Generates hero background, feature icons, research illustration, team and testimonial placeholders
-  - Supports retry logic and rate limiting
-  - Configurable with HUGGINGFACE_TOKEN environment variable
-  - Outputs optimized PNG files with custom sizes for each image type
-- **generate_images_v2.py**: Updated version with improvements
+### index.html
+- DOCTYPE html with semantic HTML5 structure
+- Uses Pico.css container class for layout
+- Minimal sections: header, main (mission, projects), footer
+- Loads Pico.css from CDN
+- Includes two JavaScript files for theme switching and modals
 
-All generated images follow the teal/cyan color palette and modern, minimal design aesthetic.
+### JavaScript Files
+Both JavaScript files are official Pico.css utilities:
+- Licensed under MIT
+- Copyright 2019-2024 Pico.css
+- Vanilla JavaScript, no dependencies
 
-## Component Styles
+### Legacy Files
+- `styles.css` - Custom CSS from previous version (not currently used)
+- `generate_images.py` and `generate_images_v2.py` - Image generation scripts (may not be needed for current minimal design)
 
-### Feature Cards (Mission Section)
-- White background with border-radius and shadow
-- Top border accent in primary teal (4px solid)
-- Icon images (100x100px) centered at top
-- Hover effect: translateY(-8px) with enhanced shadow
-- CSS Grid layout: `repeat(auto-fit, minmax(280px, 1fr))`
-- Responsive: single column on mobile
+## Design Philosophy
 
-### Team Cards
-- White background with subtle shadow
-- Circular team photos (150px diameter) with teal border
-- Team role in uppercase with teal color
-- Hover effect: translateY(-5px) with shadow transition
-- CSS Grid: 3 columns on desktop, single column on mobile
+The current design emphasizes:
+- **Minimalism**: Focus on content, not elaborate styling
+- **Simplicity**: Use framework defaults, avoid customization
+- **Performance**: Minimal dependencies, fast loading
+- **Maintainability**: Less code to maintain
+- **Accessibility**: Pico.css provides good accessibility defaults
 
-### Testimonial Cards
-- White background with left border accent (4px teal)
-- Decorative quotation mark using CSS ::before pseudo-element
-- Avatar images (60px circular) with teal border
-- Quote in italic style
-- Author info with name and organization
-- Hover effect: translateY(-5px)
+## Development Notes
 
-### Project Cards
-- White background with left border accent (4px teal)
-- Gradient badge for project language/type
-- Feature tags with light teal background
-- Project link with arrow indicator
-- Flexbox layout for vertical spacing
-- Links to individual GitHub repositories
-
-### Contact Form
-- Full-width form fields with teal borders
-- Focus state: teal border with overlay shadow
-- Gradient submit button (teal to accent-teal)
-- Form fields: name, email, organization, message
-- Placeholder text in light gray
-- Alternative email link below form
-- Responsive: full width on all devices
+- The website previously had extensive custom CSS, multiple sections (hero, research, team, testimonials, contact), and comprehensive SEO. These have been removed in favor of a minimal approach.
+- `styles.css` still exists but is not referenced in `index.html`
+- GitHub Actions workflows have been removed (`.github/workflows/` is empty)
+- The `images/` directory has been replaced with `img/` containing only the logo
+- If expanding the site, consider whether to continue with Pico.css defaults or reintroduce custom styling

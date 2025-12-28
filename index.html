@@ -1,601 +1,102 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="light" />
+        <title>IntuitAI</title>
 
         <!-- SEO Meta Tags -->
         <meta
             name="description"
             content="IntuitAI is a non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions for real-world applications across industries."
         />
-        <meta name="keywords" content="AI, artificial intelligence, machine learning, non-profit, research, automation, AI solutions, democratizing AI, LLM, semantic cache, model gateway" />
+        <meta
+            name="keywords"
+            content="AI, artificial intelligence, machine learning, non-profit, research, automation, AI solutions, democratizing AI, LLM, semantic cache, model gateway"
+        />
         <meta name="author" content="IntuitAI" />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
         <meta name="googlebot" content="index, follow" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="7 days" />
         <meta name="rating" content="General" />
 
-        <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://intuitai.org/" />
-        <meta property="og:title" content="IntuitAI - Unlocking Real-World Solutions with AI" />
-        <meta
-            property="og:description"
-            content="Non-profit research organization making advanced AI accessible for real-world applications. Bridging the gap between cutting-edge research and practical implementation."
+        <!-- Pico.css -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
         />
-        <meta property="og:image" content="https://intuitai.org/intuitailogo.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="IntuitAI Logo" />
-        <meta property="og:site_name" content="IntuitAI" />
-        <meta property="og:locale" content="en_US" />
-
-        <!-- Twitter Card -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://intuitai.org/" />
-        <meta name="twitter:title" content="IntuitAI - Unlocking Real-World Solutions with AI" />
-        <meta
-            name="twitter:description"
-            content="Non-profit research organization making advanced AI accessible for real-world applications."
-        />
-        <meta name="twitter:image" content="https://intuitai.org/intuitailogo.jpg" />
-
-        <!-- Favicon and Theme -->
-        <link rel="icon" type="image/jpeg" href="intuitailogo.jpg" />
-        <link rel="apple-touch-icon" href="intuitailogo.jpg" />
-        <meta name="theme-color" content="#00BCD4" />
-
-        <!-- Canonical URL -->
-        <link rel="canonical" href="https://intuitai.org/" />
-
-        <title>IntuitAI - Unlocking Real-World Solutions with AI</title>
-        <link rel="stylesheet" href="styles.css" />
-
-        <!-- Structured Data -->
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "@id": "https://intuitai.org/#organization",
-                "name": "IntuitAI",
-                "legalName": "IntuitAI",
-                "url": "https://intuitai.org",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://intuitai.org/intuitailogo.jpg",
-                    "width": "512",
-                    "height": "512"
-                },
-                "description": "A non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions for real-world applications.",
-                "email": "nobel@intuitai.org",
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "email": "nobel@intuitai.org",
-                    "contactType": "General Inquiry",
-                    "availableLanguage": ["English"]
-                },
-                "sameAs": [
-                    "https://github.com/intuitai",
-                    "https://github.com/nobelk"
-                ],
-                "foundingDate": "2024",
-                "foundingLocation": {
-                    "@type": "Place",
-                    "name": "Worldwide"
-                },
-                "nonprofitStatus": "NonprofitType",
-                "areaServed": {
-                    "@type": "Place",
-                    "name": "Worldwide"
-                },
-                "knowsAbout": [
-                    "Artificial Intelligence",
-                    "Machine Learning",
-                    "Natural Language Processing",
-                    "Large Language Models",
-                    "AI Research",
-                    "AI Implementation"
-                ],
-                "keywords": "artificial intelligence, AI research, machine learning, automation, AI solutions, LLM, semantic cache, model gateway"
-            }
-        </script>
-
-        <!-- Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX', {
-                'anonymize_ip': true,
-                'cookie_flags': 'SameSite=None;Secure'
-            });
-        </script>
     </head>
+
     <body>
-        <a href="#main" class="skip-link">Skip to main content</a>
-        <header>
-            <nav aria-label="Main navigation">
-                <div class="logo-container">
-                    <img
-                        src="intuitailogo.jpg"
-                        alt="IntuitAI Logo"
-                        class="logo"
-                        width="42"
-                        height="42"
-                        fetchpriority="high"
-                    />
-                    <h1>IntuitAI</h1>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#mission">Mission</a></li>
-                    <li><a href="#research">Research</a></li>
-                    <li><a href="#team">Team</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+        <!-- Header -->
+        <header class="container">
+            <figure>
+                <img
+                    src="img/intuitailogo.jpg"
+                    width="100"
+                    alt="IntuitAI Logo"
+                />
+            </figure>
+            <hgroup>
+                <h1>IntuitAI</h1>
+                <p>
+                AI solutions for real world applications.
+                </p>
+            </hgroup>
         </header>
+        <!-- ./ Header -->
 
-        <main id="main" role="main">
-            <section id="hero" class="gradient-hero" aria-label="Hero section">
-                <div class="hero-content">
-                    <h2>Unlocking Real-World Solutions with AI</h2>
-                    <p>
-                        Transforming industries through intelligent automation and
-                        innovative artificial intelligence solutions
-                    </p>
-                    <div class="hero-cta-group">
-                        <a href="#research" class="btn-primary">Download Whitepaper</a>
-                        <a href="#projects" class="btn-secondary">View Projects</a>
-                    </div>
-                </div>
-            </section>
+        <!-- Main -->
+        <main class="container">
+            <!-- Preview -->
+            <section id="mission">
+                <h2>Mission</h2>
+                <p>
+                    IntuitAI is led by a team of AI researchers, engineers, and industry
+                    experts dedicated to making artificial intelligence accessible and
+                    practical for everyone. Our diverse expertise spans machine learning,
+                    software engineering, and business strategy.
+                </p>
+            <!-- ./ mission -->
 
-            <section id="mission" class="section" aria-labelledby="mission-heading">
-                <div class="container">
-                    <h2 id="mission-heading">Our Mission</h2>
-                    <div class="feature-grid">
-                        <div class="feature-card">
-                            <img
-                                src="images/icon-democratizing.png"
-                                alt="Democratizing AI icon"
-                                class="feature-icon"
-                                width="100"
-                                height="100"
-                            />
-                            <h3>Democratizing AI</h3>
-                            <p>
-                                Making advanced AI solutions accessible and practical for
-                                real-world applications. We focus on developing
-                                intelligent systems that can seamlessly integrate into
-                                existing workflows without requiring extensive technical
-                                expertise.
-                            </p>
-                        </div>
-                        <div class="feature-card">
-                            <img
-                                src="images/icon-solutions.png"
-                                alt="Real-world solutions icon"
-                                class="feature-icon"
-                                width="100"
-                                height="100"
-                            />
-                            <h3>Real-World Solutions</h3>
-                            <p>
-                                Bridging the gap between cutting-edge AI research and
-                                practical implementation. We enable organizations to
-                                harness the power of artificial intelligence, solving
-                                complex challenges across various industries from
-                                healthcare to finance.
-                            </p>
-                        </div>
-                        <div class="feature-card">
-                            <img
-                                src="images/icon-integration.png"
-                                alt="Integration icon"
-                                class="feature-icon"
-                                width="100"
-                                height="100"
-                            />
-                            <h3>Intelligent Integration</h3>
-                            <p>
-                                Creating solutions that seamlessly enhance
-                                decision-making processes and augment human capabilities.
-                                Our innovative approach leads to more efficient, accurate,
-                                and insightful outcomes across all business sectors.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <!-- projects -->
+            <section id="projects">
+                <h2>Projects</h2>
+                <p>
+                    Discover our open-source projects and contributions to the AI community. We believe in collaborative development and sharing our innovations to advance the field of artificial intelligence.
+                </p>
 
-            <section id="research" class="section" aria-labelledby="research-heading">
-                <div class="container">
-                    <h2 id="research-heading">Research</h2>
-                    <div class="research-content">
-                        <div class="research-text">
-                            <h3>Unlocking Real-World Solutions with AI</h3>
-                            <p>
-                                Explore our comprehensive research and insights on
-                                implementing AI solutions in real-world scenarios. This
-                                whitepaper covers our methodology, case studies, and the
-                                future of AI implementation across various industries.
-                            </p>
-                            <div class="research-cta">
-                                <a
-                                    href="resource/unlocking-real-world-solutions-with-ai.pdf"
-                                    class="download-btn"
-                                    target="_blank"
-                                >
-                                    <span class="icon">📄</span>
-                                    Download Whitepaper (PDF)
-                                </a>
-                            </div>
-                        </div>
-                        <div class="research-illustration">
-                            <img
-                                src="images/research-illustration.png"
-                                alt="Research and AI data visualization"
-                                width="400"
-                                height="400"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="team" class="section bg-teal-tint" aria-labelledby="team-heading">
-                <div class="container">
-                    <h2 id="team-heading">Who We Are</h2>
-                    <div class="team-intro">
-                        <p>
-                            IntuitAI is led by a team of AI researchers, engineers, and
-                            industry experts dedicated to making artificial intelligence
-                            accessible and practical for everyone. Our diverse expertise
-                            spans machine learning, software engineering, and business
-                            strategy.
-                        </p>
-                    </div>
-                    <div class="team-grid">
-                        <div class="team-card">
-                            <div class="team-photo">
-                                <img
-                                    src="images/team/team-placeholder.png"
-                                    alt="Team member"
-                                    width="200"
-                                    height="200"
-                                />
-                            </div>
-                            <h3>Dr. Sarah Chen</h3>
-                            <p class="team-role">Founder & Research Director</p>
-                            <p class="team-bio">
-                                Expert in machine learning with 15+ years of experience in AI
-                                research and practical implementation across healthcare and
-                                finance sectors.
-                            </p>
-                        </div>
-                        <div class="team-card">
-                            <div class="team-photo">
-                                <img
-                                    src="images/team/team-placeholder.png"
-                                    alt="Team member"
-                                    width="200"
-                                    height="200"
-                                />
-                            </div>
-                            <h3>Michael Rodriguez</h3>
-                            <p class="team-role">Lead AI Engineer</p>
-                            <p class="team-bio">
-                                Software architect specializing in scalable AI systems and
-                                natural language processing. Former tech lead at major AI
-                                companies.
-                            </p>
-                        </div>
-                        <div class="team-card">
-                            <div class="team-photo">
-                                <img
-                                    src="images/team/team-placeholder.png"
-                                    alt="Team member"
-                                    width="200"
-                                    height="200"
-                                />
-                            </div>
-                            <h3>Emily Watson</h3>
-                            <p class="team-role">Operations Director</p>
-                            <p class="team-bio">
-                                Strategic operations leader with expertise in scaling
-                                tech organizations and building partnerships across
-                                industries.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="projects" class="section" aria-labelledby="projects-heading">
-                <div class="container">
-                    <h2 id="projects-heading">Projects</h2>
-                    <div class="projects-intro">
-                        <p>
-                            Discover our open-source projects and contributions to the AI
-                            community. We believe in collaborative development and sharing
-                            our innovations to advance the field of artificial
-                            intelligence.
-                        </p>
-                    </div>
-                    <div class="projects-grid">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <h3>Model Gateway</h3>
-                                <span class="project-badge">Go</span>
-                            </div>
-                            <p class="project-description">
-                                A high-performance gateway for intelligent routing and
-                                management of Large Language Model requests across multiple
-                                providers. Features automatic failover, cost optimization,
-                                and request caching.
-                            </p>
-                            <div class="project-features">
-                                <span class="feature-tag">Multi-provider</span>
-                                <span class="feature-tag">Cost optimization</span>
-                                <span class="feature-tag">High availability</span>
-                            </div>
-                            <a
-                                href="https://github.com/nobelk/model-gateway"
-                                class="project-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                View on GitHub →
-                            </a>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <h3>Semantic Cache</h3>
-                                <span class="project-badge">Go</span>
-                            </div>
-                            <p class="project-description">
-                                A distributed semantic caching layer for LLM applications
-                                using embedding-based similarity. Achieves 60-80% cache hit
-                                rates and reduces LLM API costs by 40-70%.
-                            </p>
-                            <div class="project-features">
-                                <span class="feature-tag">Embeddings</span>
-                                <span class="feature-tag">Distributed</span>
-                                <span class="feature-tag">Cost reduction</span>
-                            </div>
-                            <a
-                                href="https://github.com/nobelk/semantic-cache"
-                                class="project-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                View on GitHub →
-                            </a>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <h3>Random Number Server</h3>
-                                <span class="project-badge">Python</span>
-                            </div>
-                            <p class="project-description">
-                                An MCP server that generates random numbers using national
-                                weather data as entropy sources. Built with FastMCP framework
-                                and includes comprehensive test coverage.
-                            </p>
-                            <div class="project-features">
-                                <span class="feature-tag">MCP</span>
-                                <span class="feature-tag">Weather API</span>
-                                <span class="feature-tag">Docker</span>
-                            </div>
-                            <a
-                                href="https://github.com/nobelk/random-number-server"
-                                class="project-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                View on GitHub →
-                            </a>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-header">
-                                <h3>QuranLLM</h3>
-                                <span class="project-badge">AI</span>
-                            </div>
-                            <p class="project-description">
-                                An LLM-powered search application for the Quran that
-                                leverages artificial intelligence to enable intelligent
-                                querying and semantic search of Islamic scripture.
-                            </p>
-                            <div class="project-features">
-                                <span class="feature-tag">LLM</span>
-                                <span class="feature-tag">Semantic search</span>
-                                <span class="feature-tag">NLP</span>
-                            </div>
-                            <a
-                                href="https://github.com/nobelk/quranllm"
-                                class="project-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                View on GitHub →
-                            </a>
-                        </div>
-                    </div>
-                    <div class="projects-footer">
-                        <a
-                            href="https://github.com/nobelk"
-                            class="btn-secondary"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            View All Projects on GitHub
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <section id="testimonials" class="section" aria-labelledby="testimonials-heading">
-                <div class="container">
-                    <h2 id="testimonials-heading">What People Say</h2>
-                    <div class="testimonials-grid">
-                        <div class="testimonial-card">
-                            <div class="testimonial-quote">
-                                <p>
-                                    "IntuitAI's solutions have transformed how we approach
-                                    data analysis in our organization. Their practical
-                                    approach to AI implementation made adoption seamless
-                                    across all our teams."
-                                </p>
-                            </div>
-                            <div class="testimonial-author">
-                                <img
-                                    src="images/testimonials/testimonial-placeholder.png"
-                                    alt="Sarah Chen"
-                                    class="testimonial-avatar"
-                                    width="60"
-                                    height="60"
-                                />
-                                <div class="testimonial-info">
-                                    <p class="author-name">Sarah Chen</p>
-                                    <p class="author-org">Director of Technology, HealthTech Solutions</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="testimonial-quote">
-                                <p>
-                                    "Working with IntuitAI gave us access to cutting-edge AI
-                                    capabilities without the complexity. Their focus on
-                                    real-world applications is exactly what we needed to
-                                    drive innovation."
-                                </p>
-                            </div>
-                            <div class="testimonial-author">
-                                <img
-                                    src="images/testimonials/testimonial-placeholder.svg"
-                                    alt="Michael Rodriguez"
-                                    class="testimonial-avatar"
-                                    width="60"
-                                    height="60"
-                                />
-                                <div class="testimonial-info">
-                                    <p class="author-name">Michael Rodriguez</p>
-                                    <p class="author-org">VP of Operations, FinServe Corp</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonial-card">
-                            <div class="testimonial-quote">
-                                <p>
-                                    "The democratization of AI that IntuitAI promotes is
-                                    revolutionary. They've made advanced machine learning
-                                    accessible to organizations like ours that previously
-                                    lacked the resources."
-                                </p>
-                            </div>
-                            <div class="testimonial-author">
-                                <img
-                                    src="images/testimonials/testimonial-placeholder.svg"
-                                    alt="Dr. Emily Watson"
-                                    class="testimonial-avatar"
-                                    width="60"
-                                    height="60"
-                                />
-                                <div class="testimonial-info">
-                                    <p class="author-name">Dr. Emily Watson</p>
-                                    <p class="author-org">Research Lead, EduInnovate</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contact" class="section bg-teal-tint" aria-labelledby="contact-heading">
-                <div class="container">
-                    <h2 id="contact-heading">Get In Touch</h2>
-                    <div class="contact-content">
-                        <p>
-                            Ready to explore how AI can transform your organization? Get
-                            in touch with our team to discuss your specific needs and
-                            discover tailored solutions.
-                        </p>
-                        <form
-                            class="contact-form"
-                            action="mailto:nobel@intuitai.org"
-                            method="POST"
-                            enctype="text/plain"
-                        >
-                            <div class="form-group">
-                                <label for="name">Name *</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    class="form-input"
-                                    required
-                                    placeholder="Your full name"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email *</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    class="form-input"
-                                    required
-                                    placeholder="your.email@example.com"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="organization">Organization</label>
-                                <input
-                                    type="text"
-                                    id="organization"
-                                    name="organization"
-                                    class="form-input"
-                                    placeholder="Your company or institution"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message *</label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    class="form-textarea"
-                                    rows="5"
-                                    required
-                                    placeholder="Tell us about your project or inquiry..."
-                                ></textarea>
-                            </div>
-                            <button type="submit" class="form-submit">
-                                Send Message
-                            </button>
-                        </form>
-                        <div class="contact-alternative">
-                            <p>
-                                Or email us directly at:
-                                <a href="mailto:nobel@intuitai.org" class="email-link">nobel@intuitai.org</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                <!-- Lists-->
+                <h3>Project list</h3>
+                <ul>
+                    <li>Model Gateway - A high-performance gateway for intelligent routing and management of Large Language Model requests across multiple providers. Features automatic failover, cost optimization, and request caching.</li>
+                    <li>Random Number MCP Server - An MCP server that generates random numbers using national weather data as entropy sources. Built with FastMCP framework and includes comprehensive test coverage.</li>
+                    <li>QuranLLM - An LLM-powered search application for the Quran that leverages artificial intelligence to enable intelligent querying and semantic search of Islamic scripture.</li>
+                </ul>
         </main>
+        <!-- ./ Main -->
 
-        <footer>
-            <div class="container">
-                <p>&copy; 2025 IntuitAI. All rights reserved.</p>
-            </div>
+        <!-- Footer -->
+        <footer class="container">
+            <small
+                >Built with <a href="https://picocss.com">Pico</a> •
+                <a
+                    href="https://github.com/picocss/examples/blob/master/v2-html/index.html"
+                    >Source code</a
+                ></small
+            >
         </footer>
+        <!-- ./ Footer -->
+
+        <!-- Minimal theme switcher -->
+        <script src="js/minimal-theme-switcher.js"></script>
+
+        <!-- Modal -->
+        <script src="js/modal.js"></script>
     </body>
 </html>
