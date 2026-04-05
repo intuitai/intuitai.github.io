@@ -13,7 +13,7 @@
         />
         <meta
             name="keywords"
-            content="AI, artificial intelligence, machine learning, non-profit, research, automation, AI solutions, democratizing AI, LLM, semantic cache, model gateway"
+            content="AI, artificial intelligence, machine learning, non-profit, research, automation, AI solutions, democratizing AI, LLM, semantic cache, model gateway, tangle, reverb, deadlock detection, livelock, agent workflow, agentic AI safety, LLM caching strategies, OCR for historical documents, multi-agent orchestration"
         />
         <meta name="author" content="IntuitAI" />
         <meta
@@ -25,11 +25,45 @@
         <meta name="revisit-after" content="7 days" />
         <meta name="rating" content="General" />
 
+        <!-- Open Graph -->
+        <meta property="og:title" content="IntuitAI - AI Solutions for Real-World Applications" />
+        <meta property="og:description" content="IntuitAI is a non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions for real-world applications across industries." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://intuitai.org/" />
+        <meta property="og:site_name" content="IntuitAI" />
+        <meta property="og:image" content="https://intuitai.org/img/neural.png" />
+        <meta property="og:locale" content="en_US" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="IntuitAI - AI Solutions for Real-World Applications" />
+        <meta name="twitter:description" content="IntuitAI is a non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions for real-world applications across industries." />
+        <meta name="twitter:image" content="https://intuitai.org/img/neural.png" />
+
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://intuitai.org/" />
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="img/neural.png" />
+
         <!-- Pico.css -->
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
         />
+
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "IntuitAI",
+          "url": "https://intuitai.org",
+          "logo": "https://intuitai.org/img/neural.png",
+          "description": "A non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions.",
+          "sameAs": ["https://github.com/intuitai"]
+        }
+        </script>
     </head>
 
     <body>
@@ -37,15 +71,15 @@
         <header class="container">
             <figure>
                 <img
-                    src="img/intuitailogo.jpg"
+                    src="img/neural.png"
                     width="100"
-                    alt="IntuitAI Logo"
+                    alt="IntuitAI Neural Network Logo"
                 />
             </figure>
             <hgroup>
                 <h1>IntuitAI</h1>
                 <p>
-                AI solutions for real world applications.
+                AI solutions for real-world applications.
                 </p>
             </hgroup>
         </header>
@@ -57,11 +91,13 @@
             <section id="mission">
                 <h2>Mission</h2>
                 <p>
-                    IntuitAI is led by a team of AI researchers, engineers, and industry
-                    experts dedicated to making artificial intelligence accessible and
-                    practical for everyone. Our diverse expertise spans machine learning,
-                    software engineering, and business strategy.
+                    Our mission is to democratize artificial intelligence by developing
+                    open-source, practical solutions that tackle real-world challenges.
+                    We believe AI should be accessible to everyone, and we advance this
+                    goal through collaborative research, innovative tools, and
+                    community-driven development.
                 </p>
+            </section>
             <!-- ./ mission -->
 
             <!-- projects -->
@@ -74,11 +110,15 @@
                 <!-- Lists-->
                 <h3>Project list</h3>
                 <ul>
-                    <li>Model Gateway - A high-performance gateway for intelligent routing and management of Large Language Model requests across multiple providers. Features automatic failover, cost optimization, and request caching.</li>
-                    <li>Random Number MCP Server - An MCP server that generates random numbers using national weather data as entropy sources. Built with FastMCP framework and includes comprehensive test coverage.</li>
-                    <li>QuranLLM - An LLM-powered search application for the Quran that leverages artificial intelligence to enable intelligent querying and semantic search of Islamic scripture.</li>
-                    <li>Recovering text from obsolete pdf -  recovering Bengali text from a legacy PDF memoir encoded with proprietary SutonnyMJ ANSI font by using Tesseract 5.x's LSTM neural networks based OCR on rasterized page images, achieving 98-99% accuracy. The machine learning approach bypassed the intractable problem of reverse-engineering ANSI-to-Unicode font mappings by treating visual glyph recognition as an image classification task, successfully converting the document to clean UTF-8 Unicode text in the <a href="https://archive.org/details/ekattore-ami">pdf book</a>. <a href="./ml-powered-text-recovery.html">Technical report</a></li>
+                    <li><a href="https://github.com/intuitai/model-gateway">Model Gateway</a> - A high-performance gateway for intelligent routing and management of Large Language Model requests across multiple providers. Features automatic failover, cost optimization, and request caching.</li>
+                    <li><a href="https://github.com/intuitai/random-number-mcp-server">Random Number MCP Server</a> - An MCP server that generates random numbers using national weather data as entropy sources. Built with FastMCP framework and includes comprehensive test coverage.</li>
+                    <li><a href="https://github.com/intuitai/quranllm">QuranLLM</a> - An LLM-powered search application for the Quran that leverages artificial intelligence to enable intelligent querying and semantic search of Islamic scripture.</li>
+                    <li>Recovering text from obsolete PDF - Recovering Bengali text from a legacy PDF memoir encoded with proprietary SutonnyMJ ANSI font by using Tesseract 5.x's LSTM neural networks based OCR on rasterized page images, achieving 98-99% accuracy. The machine learning approach bypassed the intractable problem of reverse-engineering ANSI-to-Unicode font mappings by treating visual glyph recognition as an image classification task, successfully converting the document to clean UTF-8 Unicode text in the <a href="https://archive.org/details/ekattore-ami">pdf book</a>. <a href="./ml-powered-text-recovery.html">Technical report</a></li>
+                    <li><a href="https://github.com/intuitai/tangle">Tangle</a> - Deadlock and livelock detection for multi-agent AI workflows. Monitors agent interactions in real time, detects when agents are stuck or looping without progress, and triggers configurable resolution actions. Works as an embedded Python library or standalone FastAPI sidecar with native LangGraph and OpenTelemetry support.</li>
+                    <li><a href="https://github.com/intuitai/reverb">Reverb</a> - A semantic response cache with knowledge-aware invalidation for LLM applications. Provides two-tier caching (exact match and semantic similarity) to reduce redundant LLM calls, with automatic invalidation when underlying knowledge base changes. Built in Go with pluggable backends and standalone HTTP/gRPC servers.</li>
                 </ul>
+            </section>
+            <!-- ./ projects -->
         </main>
         <!-- ./ Main -->
 
@@ -86,10 +126,8 @@
         <footer class="container">
             <small
                 >Built with <a href="https://picocss.com">Pico</a> •
-                <a
-                    href="https://github.com/picocss/examples/blob/master/v2-html/index.html"
-                    >Source code</a
-                ></small
+                <a href="https://github.com/intuitai">Source code</a> •
+                <a href="https://www.flaticon.com/free-icons/machine-learning" title="machine learning icons">Machine learning icons created by Becris - Flaticon</a></small
             >
         </footer>
         <!-- ./ Footer -->
@@ -97,7 +135,5 @@
         <!-- Minimal theme switcher -->
         <script src="js/minimal-theme-switcher.js"></script>
 
-        <!-- Modal -->
-        <script src="js/modal.js"></script>
     </body>
 </html>

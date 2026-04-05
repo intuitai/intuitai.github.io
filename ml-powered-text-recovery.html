@@ -25,11 +25,55 @@
         <meta name="revisit-after" content="7 days" />
         <meta name="rating" content="General" />
 
+        <!-- Open Graph -->
+        <meta property="og:title" content="ML-Powered Text Recovery from Legacy ANSI-Encoded PDF | IntuitAI" />
+        <meta property="og:description" content="Technical summary of ML-powered recovery of Bengali text from legacy ANSI-encoded PDF using Tesseract OCR with LSTM neural networks. Achieving 98-99% accuracy on SutonnyMJ encoded documents." />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://intuitai.org/ml-powered-text-recovery.html" />
+        <meta property="og:site_name" content="IntuitAI" />
+        <meta property="og:image" content="https://intuitai.org/img/neural.png" />
+        <meta property="og:locale" content="en_US" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="ML-Powered Text Recovery from Legacy ANSI-Encoded PDF | IntuitAI" />
+        <meta name="twitter:description" content="Technical summary of ML-powered recovery of Bengali text from legacy ANSI-encoded PDF using Tesseract OCR with LSTM neural networks. Achieving 98-99% accuracy." />
+        <meta name="twitter:image" content="https://intuitai.org/img/neural.png" />
+
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://intuitai.org/ml-powered-text-recovery.html" />
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="img/neural.png" />
+
         <!-- Pico.css -->
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
         />
+
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "TechArticle",
+          "headline": "ML-Powered Text Recovery from Legacy ANSI-Encoded PDF",
+          "description": "Technical summary of ML-powered recovery of Bengali text from legacy ANSI-encoded PDF using Tesseract OCR with LSTM neural networks.",
+          "author": {
+            "@type": "Organization",
+            "name": "IntuitAI",
+            "url": "https://intuitai.org"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "IntuitAI",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://intuitai.org/img/neural.png"
+            }
+          }
+        }
+        </script>
     </head>
 
     <body>
@@ -37,15 +81,15 @@
         <header class="container">
             <figure>
                 <img
-                    src="img/intuitailogo.jpg"
+                    src="img/neural.png"
                     width="100"
-                    alt="IntuitAI Logo"
+                    alt="IntuitAI Neural Network Logo"
                 />
             </figure>
             <hgroup>
-                <h1>IntuitAI</h1>
+                <h2>IntuitAI</h2>
                 <p>
-                AI solutions for real world applications.
+                AI solutions for real-world applications.
                 </p>
             </hgroup>
         </header>
@@ -269,15 +313,14 @@ tesseract page-001.png output -l ben --oem 1 --psm 1</code></pre>
         <footer class="container">
             <small
                 >Built with <a href="https://picocss.com">Pico</a> •
-                <a href="index.html">Back to IntuitAI Home</a></small
+                <a href="https://github.com/intuitai">Source code</a> •
+                <a href="index.html">Home</a> •
+                <a href="https://www.flaticon.com/free-icons/machine-learning" title="machine learning icons">Machine learning icons created by Becris - Flaticon</a></small
             >
         </footer>
         <!-- ./ Footer -->
 
         <!-- Minimal theme switcher -->
         <script src="js/minimal-theme-switcher.js"></script>
-
-        <!-- Modal -->
-        <script src="js/modal.js"></script>
     </body>
 </html>

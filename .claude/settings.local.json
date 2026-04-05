@@ -5,7 +5,16 @@
       "Bash(cp:*)",
       "WebFetch(domain:www.wix.com)",
       "Bash(pip3 list:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(gh repo:*)",
+      "Bash(gh api:*)",
+      "Bash(tmux -V)",
+      "Bash(tmux kill-session:*)",
+      "Bash(tmux new-session:*)",
+      "Bash(tmux send-keys:*)",
+      "Bash(tmux capture-pane:*)",
+      "Bash(gemini --help)",
+      "mcp__plugin_oh-my-claudecode_t__lsp_diagnostics"
     ],
     "deny": []
   }
