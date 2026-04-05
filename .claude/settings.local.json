@@ -14,7 +14,10 @@
       "Bash(tmux send-keys:*)",
       "Bash(tmux capture-pane:*)",
       "Bash(gemini --help)",
-      "mcp__plugin_oh-my-claudecode_t__lsp_diagnostics"
+      "mcp__plugin_oh-my-claudecode_t__lsp_diagnostics",
+      "Bash([ -f /Users/nobelk/sources/intuitai.github.io/.omc/research/seo-analysis.md ])",
+      "Bash(exit 0)",
+      "Bash([ -f /Users/nobelk/sources/intuitai.github.io/.omc/research/gemini-output.log ])"
     ],
     "deny": []
   }
