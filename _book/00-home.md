@@ -1,5 +1,10 @@
 ---
 title: Everyday Programming
+seo_title: "Everyday Programming — A Free Python Book for Absolute Beginners"
+description: >
+  A first course in Python for absolute beginners, built on nothing more than
+  tenth-grade mathematics. Twenty-one chapters in seven parts, 445 free Find the
+  Bug exercises with full worked solutions, and Chapters 1 and 2 free to download.
 layout: post
 permalink: /ep/
 order: 0
@@ -44,7 +49,7 @@ syntax error rather than documentation.
     software, for the reader who has opened three tutorials and quietly closed
     all three.</p>
     <div class="ep-actions">
-      <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/assets/pdf/everyday-programming-sample-chapters-1-2.pdf">Read chapters 1&ndash;2 free (PDF)</a>
+      <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/assets/pdf/everyday-programming-sample-chapters-1-2.pdf" download="everyday-programming-chapters-1-2.pdf">Download chapters 1&ndash;2 free (PDF)</a>
       <a class="ep-btn ep-btn--ghost" href="{{ site.baseurl }}/ep/book/exercises/">Try the 445 exercises</a>
     </div>
   </div>

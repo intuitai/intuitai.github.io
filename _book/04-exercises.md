@@ -1,5 +1,10 @@
 ---
 title: Exercises and Solutions
+seo_title: "445 Free Python Find the Bug Exercises, With Worked Solutions"
+description: >
+  Every Find the Bug exercise from Everyday Programming, free: 445 short Python
+  programs across twelve chapters, each hiding exactly one syntax, runtime or
+  logical bug, with a full worked solution and all 890 programs as .py files.
 layout: post
 permalink: /ep/book/exercises/
 order: 4
@@ -11,7 +16,7 @@ Every *Find the Bug* exercise in the book, free, with every worked solution —
 {{ total | times: 2 }} programs as `.py` files and run them.
 
 <div class="ep-actions" markdown="0">
-  <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/assets/code/everyday-programming-exercises.zip">Download all {{ site.data.downloads.program_count }} programs (.zip, {{ site.data.downloads.exercise_zip_size }})</a>
+  <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/assets/code/everyday-programming-exercises.zip" download="everyday-programming-exercises.zip">Download all {{ site.data.downloads.program_count }} programs (.zip, {{ site.data.downloads.exercise_zip_size }})</a>
   <a class="ep-btn ep-btn--ghost" href="{{ site.baseurl }}/ep/exercises/05-data-structures/">Start with Chapter 5</a>
 </div>
 

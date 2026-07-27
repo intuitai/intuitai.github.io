@@ -53,6 +53,20 @@
     margin-top: 0;
 }
 
+/* The IntuitAI logo in the landing page hero. Deliberately not __cover: that
+ * one is sized for a book jacket and carries a border and drop shadow, which
+ * around a transparent PNG would frame a box of empty space. */
+.ep-hero__logo {
+    flex: 0 0 120px;
+    max-width: 120px;
+}
+
+.ep-hero__logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 .ep-tagline {
     font-size: 1.2em;
     line-height: 1.5;

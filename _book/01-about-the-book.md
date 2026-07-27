@@ -1,5 +1,10 @@
 ---
 title: About the Book
+seo_title: "About Everyday Programming — Who the Book Is For"
+description: >
+  Who Everyday Programming is written for, what it assumes you already know
+  (tenth-grade arithmetic and nothing else), how its seven parts fit together,
+  and why it explains the parts other beginner programming books skip.
 layout: post
 permalink: /ep/book/about/
 order: 1

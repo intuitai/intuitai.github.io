@@ -1,0 +1,143 @@
+{%- comment -%}
+JSON-LD, emitted per page rather than site-wide.
+
+Three kinds of page get three different graphs, because describing the book on
+a page about LLM routing (or the organization's software on a page of Python
+exercises) is noise that search engines discount:
+
+    /            the organization, its open-source projects, and the book
+    /ep/*        the book itself, plus a breadcrumb back to the landing page
+    /ep/exercis* the exercise set as a LearningResource
+
+The organization node carries a stable @id and is referenced by @id elsewhere
+rather than repeated, which is what lets a crawler tie the graphs together
+across pages.
+{%- endcomment -%}
+
+{%- assign is_ep = false -%}
+{%- if page.url contains "/ep/" or page.url == "/ep" -%}{%- assign is_ep = true -%}{%- endif -%}
+
+{%- if page.url == "/" -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["ResearchOrganization", "NGO"],
+      "@id": "{{ site.url }}/#organization",
+      "name": "IntuitAI",
+      "url": "{{ site.url }}/",
+      "logo": "{{ site.url }}/img/neural.png",
+      "description": "A non-profit research organization building open-source, practical AI tools for real-world problems, and publishing free educational material on programming.",
+      "sameAs": ["https://github.com/intuitai"],
+      "knowsAbout": ["Agentic AI", "Large Language Models", "Multi-agent systems", "AI Safety", "Machine Learning", "Programming education"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}/#website",
+      "url": "{{ site.url }}/",
+      "name": "IntuitAI",
+      "inLanguage": "en",
+      "publisher": { "@id": "{{ site.url }}/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Model Gateway",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "All",
+      "url": "https://github.com/intuitai/model-gateway",
+      "description": "High-performance gateway for intelligent routing and management of LLM requests across multiple providers.",
+      "author": { "@id": "{{ site.url }}/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Tangle",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "All",
+      "url": "https://github.com/intuitai/tangle",
+      "description": "Deadlock and livelock detection for multi-agent AI workflows with real-time monitoring.",
+      "author": { "@id": "{{ site.url }}/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Reverb",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "All",
+      "url": "https://github.com/intuitai/reverb",
+      "description": "Semantic response cache with knowledge-aware invalidation for LLM applications.",
+      "author": { "@id": "{{ site.url }}/#organization" }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "QuranLLM",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "All",
+      "url": "https://github.com/intuitai/quranllm",
+      "description": "LLM-powered semantic search application for the Quran.",
+      "author": { "@id": "{{ site.url }}/#organization" }
+    },
+    { "@id": "{{ site.url }}/ep/#book" }
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- if is_ep -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Book",
+      "@id": "{{ site.url }}/ep/#book",
+      "name": "Everyday Programming",
+      "alternateName": "Everyday Programming, Volume I: Basics of Computer Programs",
+      "url": "{{ site.url }}/ep/",
+      "bookEdition": "First Edition",
+      "inLanguage": "en",
+      "image": "{{ site.url }}/ep/assets/img/cover.png",
+      "abstract": "A first course in Python for absolute beginners, built on tenth-grade mathematics. Twenty-one chapters in seven parts, with {{ site.data.downloads.exercise_count }} Find the Bug exercises and full worked solutions.",
+      "author": {
+        "@type": "Person",
+        "@id": "{{ site.url }}/ep/#author",
+        "name": "Dr. Nobel Khandaker",
+        "jobTitle": "Lead Software Engineer",
+        "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
+      },
+      "publisher": { "@id": "{{ site.url }}/#organization" },
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "isAccessibleForFree": true,
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Beginners learning to program, self-taught learners, career changers, students and teachers"
+      },
+      "teaches": ["Python programming", "Problem solving", "Debugging", "Software testing", "Data structures"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "IntuitAI", "item": "{{ site.url }}/" },
+        { "@type": "ListItem", "position": 2, "name": "Everyday Programming", "item": "{{ site.url }}/ep/" }
+        {%- if page.url != "/ep/" -%}
+        ,{ "@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }}, "item": "{{ page.url | absolute_url }}" }
+        {%- endif -%}
+      ]
+    }
+    {%- if page.collection == "exercises" -%}
+    ,{
+      "@type": "LearningResource",
+      "name": {{ page.title | jsonify }},
+      "url": "{{ page.url | absolute_url }}",
+      "learningResourceType": "Exercise set",
+      "educationalLevel": "Beginner",
+      "teaches": "Debugging Python programs",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "isPartOf": { "@id": "{{ site.url }}/ep/#book" },
+      "author": { "@id": "{{ site.url }}/ep/#author" }
+    }
+    {%- endif -%}
+  ]
+}
+</script>
+{%- endif -%}

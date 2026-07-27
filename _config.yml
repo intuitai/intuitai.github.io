@@ -1,17 +1,20 @@
 # Jekyll configuration for intuitai.org.
 #
-# The domain hosts two things that share nothing but a hostname:
+# The domain hosts two things that share a hostname and, since July 2026, a
+# theme as well:
 #
-#   /      the IntuitAI landing page and its project pages -- hand-written
-#          HTML on Pico.css, with its own SEO metadata, JSON-LD and analytics.
-#   /ep/   "Everyday Programming", a book site built on the jekyll-gitbook
-#          theme.
+#   /      the IntuitAI landing page and its project pages
+#   /ep/   "Everyday Programming", a book site
 #
-# They coexist because Jekyll copies any file WITHOUT front matter through
-# untouched. index.html, ml-powered-text-recovery.html, img/, js/ and resource/
-# have no front matter, so adding Jekyll here changed nothing about them: they
-# are served byte-for-byte as before. Only the book pages carry front matter and
-# so only they get a layout.
+# Both now render through the jekyll-gitbook remote theme. This is a change:
+# the landing page and ml-powered-text-recovery.html used to be hand-written
+# Pico.css files with no front matter, which made Jekyll copy them through
+# byte-for-byte, and the book was the only themed part of the domain. They now
+# carry front matter and `layout: post`, so they get the theme's chrome and the
+# book's sidebar. Pico.css is no longer used anywhere on the site.
+#
+# Files WITHOUT front matter are still copied through untouched -- img/,
+# resource/, ep/assets/ and robots.txt rely on it.
 #
 # baseurl is empty, not "/ep". Setting it to "/ep" is the obvious-looking move
 # and it breaks the theme: a remote theme's assets are copied to _site/assets,
@@ -30,6 +33,16 @@ description: >
 
 url:      "https://intuitai.org"
 baseurl:  ""
+
+# Default share image and favicon, both consumed by the _includes/head.html
+# override. A page overrides the image with `image:` in its front matter -- the
+# book's pages point at the cover instead (see `defaults` below).
+image:        /img/neural.png
+favicon_path: img/neural.png
+
+# Emitted by _includes/head.html, and only when JEKYLL_ENV=production, so a
+# local `jekyll serve` never reports traffic into the real property.
+google_analytics: G-KB7KB9JGJB
 
 remote_theme: sighingnow/jekyll-gitbook
 
@@ -89,6 +102,17 @@ ordered_collections:
   - book
   - exercises
 
+# Link previews for anything under /ep should show the book's cover rather than
+# the IntuitAI logo. Set per collection because Jekyll's `defaults` match on
+# scope, and the three book collections are the only things at that path.
+defaults:
+  - scope: { path: "", type: "book" }
+    values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
+  - scope: { path: "", type: "exercises" }
+    values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
+  - scope: { path: "", type: "solutions" }
+    values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
+
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -99,6 +123,12 @@ exclude:
   - LICENSE
   - .github
   - .claude
+  # The Markdown draft the project page was written from. It has no front
+  # matter, so it used to be copied through and served verbatim at
+  # /ml-powered-text-recovery.md -- a near-duplicate of the rendered page,
+  # unreferenced and absent from the sitemap, but reachable and indexable.
+  # Kept in the repository, no longer published.
+  - ml-powered-text-recovery.md
 
 plugins:
   - jekyll-remote-theme

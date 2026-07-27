@@ -1,0 +1,12 @@
+# No front matter on purpose. Jekyll copies a file without front matter through
+# byte-for-byte, which is what a crawler needs to see here -- a robots.txt that
+# arrived with an unrendered Liquid tag in it would be worse than none at all.
+# The sitemap URL is therefore written out rather than built from site.url.
+#
+# sitemap.xml itself is produced by the jekyll-sitemap plugin and covers the
+# landing page and every page under /ep.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://intuitai.org/sitemap.xml

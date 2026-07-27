@@ -1,5 +1,10 @@
 ---
 title: Table of Contents
+seo_title: "Everyday Programming — Full Table of Contents"
+description: >
+  The complete contents of Everyday Programming, Volume I: twenty-one chapters
+  across seven parts, from mathematical concepts and problem solving through
+  Python data structures, functions, modules, testing and common pitfalls.
 layout: post
 permalink: /ep/book/table-of-contents/
 order: 2

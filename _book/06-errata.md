@@ -1,5 +1,10 @@
 ---
 title: Errata
+seo_title: "Everyday Programming — Errata and Corrections"
+description: >
+  Confirmed corrections to the first edition of Everyday Programming, listed
+  newest first, with the printed text, the correction, and the printing that
+  carries the fix.
 layout: post
 permalink: /ep/book/errata/
 order: 6

@@ -1,225 +1,123 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="color-scheme" content="light" />
-        <title>IntuitAI | Agentic AI Research & Real-World AI Solutions</title>
+---
+title: IntuitAI
+seo_title: "IntuitAI | Open-Source Agentic AI Research & Real-World AI Solutions"
+layout: post
+permalink: /
+og_type: website
+image_alt: "IntuitAI logo"
+description: >
+  IntuitAI is a non-profit research organization building open-source, practical
+  AI tools for real-world problems: intelligent LLM routing, semantic caching,
+  and deadlock detection for multi-agent workflows. We also publish Everyday
+  Programming, a free first book on Python for absolute beginners.
+---
 
-        <!-- SEO Meta Tags -->
-        <meta
-            name="description"
-            content="IntuitAI is a non-profit research org building agentic AI projects & open-source tools for real-world problems. Discover our LLM routing, caching, and safety solutions."
-        />
-        <meta
-            name="keywords"
-            content="agentic AI projects, AI research initiatives, real-world AI solutions, open-source AI tools, non-profit AI research, multi-agent AI systems, LLM infrastructure, AI for social good, practical AI applications, intelligent LLM routing, semantic LLM cache, agentic workflow safety, AI deadlock detection, OCR for historical documents, multi-agent orchestration, model gateway, tangle, reverb, IntuitAI"
-        />
-        <meta name="author" content="IntuitAI" />
-        <meta
-            name="robots"
-            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-        />
-        <meta name="googlebot" content="index, follow" />
-        <meta name="language" content="English" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="rating" content="General" />
+{%- comment -%}
+The landing page is a themed Jekyll page, not the hand-written Pico.css file it
+used to be. Two consequences worth knowing before editing:
 
-        <!-- Open Graph -->
-        <meta property="og:title" content="IntuitAI: Open-Source Agentic AI & Real-World Research" />
-        <meta property="og:description" content="A non-profit research organization building practical, open-source AI tools like Model Gateway, Reverb, and Tangle to solve real-world challenges." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://intuitai.org/" />
-        <meta property="og:site_name" content="IntuitAI" />
-        <meta property="og:image" content="https://intuitai.org/img/neural.png" />
-        <meta property="og:locale" content="en_US" />
+1. It now has front matter, so Jekyll no longer copies it through untouched.
+   The <head>, the sidebar and the surrounding chrome all come from the
+   jekyll-gitbook layout; only the content below is this file's own.
+2. The theme's body.html already emits <h1>{{ page.title }}</h1>, so this
+   content must NOT open with its own h1 -- doing so would give the page two.
 
-        <!-- Twitter Card -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="IntuitAI: Agentic AI for Real-World Impact" />
-        <meta name="twitter:description" content="Explore our open-source AI research and tools for multi-agent systems, LLM infrastructure, and social good." />
-        <meta name="twitter:image" content="https://intuitai.org/img/neural.png" />
+Styling uses the .ep-* classes from ep/assets/css/site.css, which is loaded
+site-wide through `extra_css`, so the landing page and the book share one
+stylesheet rather than each carrying its own.
+{%- endcomment -%}
 
-        <!-- Canonical URL -->
-        <link rel="canonical" href="https://intuitai.org/" />
+<div class="ep-hero">
+  <div class="ep-hero__logo">
+    <img src="{{ site.baseurl }}/img/neural.png" alt="IntuitAI logo" width="120" height="120">
+  </div>
+  <div class="ep-hero__body">
+    <p class="ep-kicker">Non-profit AI research</p>
+    <p class="ep-tagline"><strong>Open-Source Agentic AI Research &amp; Real-World Applications</strong></p>
+    <p>We build open-source tools for problems people actually have &mdash; routing and
+    caching LLM traffic, keeping multi-agent workflows from deadlocking, recovering
+    text nobody can read any more &mdash; and we publish what we learn, free.</p>
+    <div class="ep-actions">
+      <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/">Read our book, free</a>
+      <a class="ep-btn ep-btn--ghost" href="https://github.com/intuitai">Browse the code</a>
+    </div>
+  </div>
+</div>
 
-        <!-- Favicon -->
-        <link rel="icon" type="image/png" href="img/neural.png" />
+<h2 id="mission">Mission</h2>
 
-        <!-- Pico.css -->
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
-        />
+<p>
+  Our mission is to democratize artificial intelligence by developing
+  open-source, practical solutions that tackle real-world challenges.
+  We believe AI should be accessible to everyone, and we advance this
+  goal through collaborative research, innovative tools, and
+  community-driven development.
+</p>
 
-        <!-- JSON-LD Structured Data -->
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "ResearchOrganization",
-              "@id": "https://intuitai.org/#organization",
-              "name": "IntuitAI",
-              "url": "https://intuitai.org",
-              "logo": "https://intuitai.org/img/neural.png",
-              "description": "A non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions.",
-              "sameAs": ["https://github.com/intuitai"],
-              "knowsAbout": ["Agentic AI", "Large Language Models", "Multi-agent systems", "AI Safety", "Machine Learning"]
-            },
-            {
-              "@type": "SoftwareApplication",
-              "name": "Model Gateway",
-              "applicationCategory": "DeveloperApplication",
-              "operatingSystem": "All",
-              "url": "https://github.com/intuitai/model-gateway",
-              "description": "High-performance gateway for intelligent routing and management of LLM requests across multiple providers.",
-              "author": { "@id": "https://intuitai.org/#organization" }
-            },
-            {
-              "@type": "SoftwareApplication",
-              "name": "Tangle",
-              "applicationCategory": "DeveloperApplication",
-              "operatingSystem": "All",
-              "url": "https://github.com/intuitai/tangle",
-              "description": "Deadlock and livelock detection for multi-agent AI workflows with real-time monitoring.",
-              "author": { "@id": "https://intuitai.org/#organization" }
-            },
-            {
-              "@type": "SoftwareApplication",
-              "name": "Reverb",
-              "applicationCategory": "DeveloperApplication",
-              "operatingSystem": "All",
-              "url": "https://github.com/intuitai/reverb",
-              "description": "Semantic response cache with knowledge-aware invalidation for LLM applications.",
-              "author": { "@id": "https://intuitai.org/#organization" }
-            },
-            {
-              "@type": "Book",
-              "@id": "https://intuitai.org/ep/#book",
-              "name": "Everyday Programming",
-              "alternateName": "Everyday Programming, Volume I: Basics of Computer Programs",
-              "url": "https://intuitai.org/ep/",
-              "bookEdition": "First Edition",
-              "inLanguage": "en",
-              "numberOfPages": 400,
-              "abstract": "A first course in Python for absolute beginners, built on tenth-grade mathematics. Twenty-one chapters in seven parts, with 445 Find the Bug exercises and full worked solutions.",
-              "author": {
-                "@type": "Person",
-                "name": "Dr. Nobel Khandaker",
-                "jobTitle": "Lead Software Engineer",
-                "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
-              },
-              "publisher": { "@id": "https://intuitai.org/#organization" },
-              "license": "https://www.apache.org/licenses/LICENSE-2.0",
-              "audience": {
-                "@type": "Audience",
-                "audienceType": "Beginners learning to program, self-taught learners, career changers, students and teachers"
-              },
-              "teaches": ["Python programming", "Problem solving", "Debugging", "Software testing", "Data structures"]
-            }
-          ]
-        }
-        </script>
-    </head>
+<h2 id="projects">Our AI Research &amp; Open-Source Projects</h2>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KB7KB9JGJB"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<p>
+  Discover our initiatives in agentic AI, LLM infrastructure, and practical
+  machine learning. We build open-source tools that solve real-world problems
+  through collaborative research and community-driven development.
+</p>
 
-      gtag('config', 'G-KB7KB9JGJB');
-    </script>
+<ul>
+  <li><a href="https://github.com/intuitai/model-gateway">Model Gateway</a> &mdash; A high-performance gateway for intelligent routing and management of Large Language Model requests across multiple providers. Features automatic failover, cost optimization, and request caching.</li>
 
-    <body>
-        <!-- Header -->
-        <header class="container">
-            <figure>
-                <img
-                    src="img/neural.png"
-                    width="100"
-                    alt="IntuitAI - Non-profit AI Research Organization Logo"
-                />
-            </figure>
-            <hgroup>
-                <h1>IntuitAI</h1>
-                <p>
-                <strong>Open-Source Agentic AI Research & Real-World Applications</strong>
-                </p>
-            </hgroup>
-        </header>
-        <!-- ./ Header -->
+  <li><a href="https://github.com/intuitai/reverb">Reverb</a> &mdash; A semantic response cache with knowledge-aware invalidation for LLM applications. Provides two-tier caching (exact match and semantic similarity) to reduce redundant LLM calls, with automatic invalidation when the underlying knowledge base changes. Built in Go with pluggable backends and standalone HTTP/gRPC servers.</li>
 
-        <!-- Main -->
-        <main class="container">
-            <!-- Preview -->
-            <section id="mission">
-                <h2>Mission</h2>
-                <p>
-                    Our mission is to democratize artificial intelligence by developing
-                    open-source, practical solutions that tackle real-world challenges.
-                    We believe AI should be accessible to everyone, and we advance this
-                    goal through collaborative research, innovative tools, and
-                    community-driven development.
-                </p>
-            </section>
-            <!-- ./ mission -->
+  <li><a href="https://github.com/intuitai/tangle">Tangle</a> &mdash; Deadlock and livelock detection for multi-agent AI workflows. Monitors agent interactions in real time, detects when agents are stuck or looping without progress, and triggers configurable resolution actions. Works as an embedded Python library or standalone FastAPI sidecar with native LangGraph and OpenTelemetry support.</li>
 
-            <!-- projects -->
-            <section id="projects">
-                <h2>Our AI Research & Open-Source Projects</h2>
-                <p>
-                    Discover our initiatives in agentic AI, LLM infrastructure, and practical machine learning. We build open-source tools that solve real-world problems through collaborative research and community-driven development.
-                </p>
+  <li><a href="https://github.com/intuitai/random-number-mcp-server">Random Number MCP Server</a> &mdash; An MCP server that generates random numbers using national weather data as entropy sources. Built with the FastMCP framework and includes comprehensive test coverage.</li>
 
-                <!-- Lists-->
-                <h3>Project list</h3>
-                <ul>
-                    <li><a href="https://github.com/intuitai/model-gateway">Model Gateway</a> - A high-performance gateway for intelligent routing and management of Large Language Model requests across multiple providers. Features automatic failover, cost optimization, and request caching.</li>
-                    <li><a href="https://github.com/intuitai/random-number-mcp-server">Random Number MCP Server</a> - An MCP server that generates random numbers using national weather data as entropy sources. Built with FastMCP framework and includes comprehensive test coverage.</li>
-                    <li><a href="https://github.com/intuitai/quranllm">QuranLLM</a> - An LLM-powered search application for the Quran that leverages artificial intelligence to enable intelligent querying and semantic search of Islamic scripture.</li>
-                    <li>Recovering text from obsolete PDF - Recovering Bengali text from a legacy PDF memoir encoded with proprietary SutonnyMJ ANSI font by using Tesseract 5.x's LSTM neural networks based OCR on rasterized page images, achieving 98-99% accuracy. The machine learning approach bypassed the intractable problem of reverse-engineering ANSI-to-Unicode font mappings by treating visual glyph recognition as an image classification task, successfully converting the document to clean UTF-8 Unicode text in the <a href="https://archive.org/details/ekattore-ami">pdf book</a>. <a href="./ml-powered-text-recovery.html">Technical report</a></li>
-                    <li><a href="https://github.com/intuitai/tangle">Tangle</a> - Deadlock and livelock detection for multi-agent AI workflows. Monitors agent interactions in real time, detects when agents are stuck or looping without progress, and triggers configurable resolution actions. Works as an embedded Python library or standalone FastAPI sidecar with native LangGraph and OpenTelemetry support.</li>
-                    <li><a href="https://github.com/intuitai/reverb">Reverb</a> - A semantic response cache with knowledge-aware invalidation for LLM applications. Provides two-tier caching (exact match and semantic similarity) to reduce redundant LLM calls, with automatic invalidation when underlying knowledge base changes. Built in Go with pluggable backends and standalone HTTP/gRPC servers.</li>
-                </ul>
-            </section>
-            <!-- ./ projects -->
+  <li><a href="https://github.com/intuitai/quranllm">QuranLLM</a> &mdash; An LLM-powered search application for the Quran that leverages artificial intelligence to enable intelligent querying and semantic search of Islamic scripture.</li>
 
-            <!-- books -->
-            <section id="books">
-                <h2>Books</h2>
-                <p>
-                    We publish free, open educational material alongside our software.
-                </p>
-                <ul>
-                    <li><a href="/ep/"><strong>Everyday Programming</strong></a> &mdash;
-                    Volume I: Basics of Computer Programs, by Dr. Nobel Khandaker. A first
-                    course in Python for absolute beginners, built on nothing more than
-                    tenth-grade mathematics. Twenty-one chapters, plus
-                    <a href="/ep/book/exercises/">445 <em>Find the Bug</em> exercises</a>
-                    with full worked solutions, and a
-                    <a href="/ep/book/sample/">free sample of Chapters 1&ndash;2</a>.
-                    Text and code licensed under Apache 2.0.</li>
-                </ul>
-            </section>
-            <!-- ./ books -->
-        </main>
-        <!-- ./ Main -->
+  <li>Recovering text from obsolete PDF &mdash; Recovering Bengali text from a legacy PDF memoir encoded with the proprietary SutonnyMJ ANSI font by using Tesseract 5.x's LSTM neural-network OCR on rasterized page images, achieving 98&ndash;99% accuracy. The machine learning approach bypassed the intractable problem of reverse-engineering ANSI-to-Unicode font mappings by treating visual glyph recognition as an image classification task, successfully converting the document to clean UTF-8 Unicode text in the <a href="https://archive.org/details/ekattore-ami">pdf book</a>. <a href="{{ site.baseurl }}/ml-powered-text-recovery.html">Technical report</a></li>
+</ul>
 
-        <!-- Footer -->
-        <footer class="container">
-            <small
-                >Built with <a href="https://picocss.com">Pico</a> •
-                <a href="https://github.com/intuitai">Source code</a> •
-                <a href="https://www.flaticon.com/free-icons/machine-learning" title="machine learning icons">Machine learning icons created by Becris - Flaticon</a></small
-            >
-        </footer>
-        <!-- ./ Footer -->
+<h2 id="books">Books</h2>
 
-        <!-- Minimal theme switcher -->
-        <script src="js/minimal-theme-switcher.js"></script>
+<p>We publish free, open educational material alongside our software.</p>
 
-    </body>
-</html>
+<div class="ep-hero">
+  <div class="ep-hero__cover">
+    <a href="{{ site.baseurl }}/ep/"><img src="{{ site.baseurl }}/ep/assets/img/cover-small.png" alt="Cover of Everyday Programming, Volume I: Basics of Computer Programs"></a>
+  </div>
+  <div class="ep-hero__body">
+    <p class="ep-tagline"><a href="{{ site.baseurl }}/ep/"><strong>Everyday Programming</strong></a>
+    <span class="ep-tag ep-tag--free">Free</span></p>
+    <p>Volume I: Basics of Computer Programs, by Dr. Nobel Khandaker. A first
+    course in Python for absolute beginners, built on nothing more than
+    tenth-grade mathematics. Twenty-one chapters in seven parts, plus
+    <a href="{{ site.baseurl }}/ep/book/exercises/">{{ site.data.downloads.exercise_count }} <em>Find the Bug</em> exercises</a>
+    with full worked solutions, and a
+    <a href="{{ site.baseurl }}/ep/book/sample/">free sample of Chapters 1&ndash;2</a>.
+    Text and code licensed under Apache 2.0.</p>
+    <div class="ep-actions">
+      <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/">Start reading</a>
+      <a class="ep-btn ep-btn--ghost" href="{{ site.baseurl }}/ep/book/table-of-contents/">See the contents</a>
+    </div>
+  </div>
+</div>
+
+<ul class="ep-facts">
+  <li><b>21</b><span>chapters, in seven parts</span></li>
+  <li><b>{{ site.data.downloads.exercise_count }}</b><span>Find the Bug exercises</span></li>
+  <li><b>{{ site.data.downloads.program_count }}</b><span>runnable Python programs</span></li>
+  <li><b>Free</b><span>to read, in full, online</span></li>
+</ul>
+
+{%- comment -%}
+The Flaticon credit is a licence condition on the logo, not decoration: the
+free tier requires visible attribution wherever the icon is used. It lived in
+the old Pico.css footer, and the gitbook theme's footer.html emits scripts and
+nothing visible, so it has to be carried here instead. Do not remove it while
+img/neural.png is still in use.
+{%- endcomment -%}
+<hr>
+
+<p class="ep-kicker">
+  <a href="https://github.com/intuitai">Source code</a> &middot;
+  <a href="https://www.flaticon.com/free-icons/machine-learning" title="machine learning icons">Machine learning icons created by Becris &mdash; Flaticon</a>
+</p>

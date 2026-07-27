@@ -1,5 +1,10 @@
 ---
 title: "Free Sample: Chapters 1 and 2"
+seo_title: "Free Sample PDF — Everyday Programming, Chapters 1 and 2"
+description: >
+  Download Chapters 1 and 2 of Everyday Programming free as a PDF: twenty-six
+  pages on mathematical concepts and problem solving, typeset exactly as the
+  printed book, with nothing held back and no watermark.
 layout: post
 permalink: /ep/book/sample/
 order: 3
@@ -10,7 +15,7 @@ The whole of Part I — Chapter 1, *Mathematical Concepts*, and Chapter 2,
 watermark. Twenty-six pages, typeset exactly as the printed book is.
 
 <div class="ep-actions" markdown="0">
-  <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/assets/pdf/everyday-programming-sample-chapters-1-2.pdf">Download the PDF (1.0 MB)</a>
+  <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/assets/pdf/everyday-programming-sample-chapters-1-2.pdf" download="everyday-programming-chapters-1-2.pdf">Download the PDF (1.0 MB)</a>
   <a class="ep-btn ep-btn--ghost" href="{{ site.baseurl }}/ep/book/table-of-contents/">See the full contents</a>
 </div>
 

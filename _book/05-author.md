@@ -1,5 +1,10 @@
 ---
 title: About the Author
+seo_title: "Dr. Nobel Khandaker — Author of Everyday Programming"
+description: >
+  Dr. Nobel Khandaker, author of Everyday Programming: a lead software engineer
+  with a doctorate in computer science and twelve years shipping production
+  software.
 layout: post
 permalink: /ep/book/author/
 order: 5
