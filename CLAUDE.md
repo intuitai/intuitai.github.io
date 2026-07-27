@@ -4,11 +4,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a GitHub Pages repository for intuitai.org - a minimalist static website for IntuitAI, a non-profit research organization dedicated to democratizing artificial intelligence. The site uses the Pico.css framework for a clean, simple design with minimal dependencies.
+This is a GitHub Pages repository for intuitai.org. It serves **two independent
+sites from one domain**, and most of the guidance below applies only to the first:
+
+| Path | What it is | How it is built |
+|---|---|---|
+| `/` | The IntuitAI landing page and project pages | Hand-written HTML on Pico.css. No layouts, no front matter. |
+| `/ep/` | *Everyday Programming*, a book site | Jekyll + the `jekyll-gitbook` remote theme |
+
+They coexist without interfering because **Jekyll copies any file without front
+matter through byte-for-byte**. `index.html`, `ml-powered-text-recovery.html`,
+`img/`, `js/` and `resource/` have no front matter, so introducing Jekyll changed
+nothing about them. Only the book's pages carry front matter, so only they get a
+layout. Editing the landing page is still plain HTML editing.
+
+### The book at /ep/ — read this before touching it
+
+- `_book/`, `_exercises/`, `_solutions/`, `_data/toc.yml`, `_data/downloads.yml`
+  and `ep/assets/code/` are **generated** by `tools/extract_exercises.py` and
+  `tools/generate_toc.py` from the book's LaTeX manuscript. Never hand-edit them;
+  fix the manuscript and re-run. `_data/errata.yml` is hand-maintained.
+- The `/ep` prefix is baked into permalinks at generation time
+  (`--prefix`), not resolved through Liquid, because Jekyll does not evaluate
+  Liquid inside front matter.
+- `baseurl` is deliberately empty. Setting it to `/ep` breaks the theme's asset
+  URLs — see the comment at the top of `_config.yml`.
+- `_includes/mathjax.html` overrides the theme's copy to load nothing. The
+  upstream version treats `$` as an inline maths delimiter, which mangles the
+  book's many prices ("$0.10 add up to $0.30").
 
 ## Architecture
 
-The website follows a simple static HTML structure:
+The landing page follows a simple static HTML structure:
 - **Single-page layout**: Minimal content in `index.html` with mission and projects sections
 - **Pico.css framework**: Uses Pico.css v2.1.1 from CDN for styling (no custom CSS)
 - **Responsive design**: Pico.css provides mobile-first responsive design out of the box
@@ -38,12 +65,32 @@ The website follows a simple static HTML structure:
 
 ## Development Workflow
 
-Since this is a static GitHub Pages site:
-- **No build process required** - Direct HTML editing with CDN-hosted CSS
-- **No local server needed** - Files can be opened directly in browser for testing
-- **Live deployment** - Changes pushed to main branch automatically deploy to intuitai.org
-- **Minimal dependencies** - Only Pico.css loaded from CDN, two small vanilla JavaScript files
-- **No GitHub Actions** - Validation workflows have been removed
+For the **landing page** nothing has changed: it is still direct HTML editing
+against CDN-hosted Pico.css, and the file can be opened straight in a browser.
+
+For anything under **`/ep/`**, or to reproduce what CI does:
+
+```console
+$ bundle install
+$ bundle exec jekyll serve            # http://localhost:4000/
+$ bundle exec jekyll build
+$ bundle exec htmlproofer ./_site --disable-external --allow-hash-href \
+    --no-ignore-empty-alt --ignore-files "/assets\/search\.html/"
+```
+
+To regenerate the book's pages from the manuscript:
+
+```console
+$ ./tools/extract_exercises.py --manuscript ../manuscripts/everyday-programming
+$ ./tools/generate_toc.py      --manuscript ../manuscripts/everyday-programming
+```
+
+Deployment is by **GitHub Actions** (`.github/workflows/pages.yml`), not by
+Pages' built-in Jekyll, which supports neither collection `sort_by` nor
+`jekyll-remote-theme`. The workflow builds the whole domain and runs
+html-proofer over it — including the landing page — before publishing, so a
+broken image path anywhere fails the deploy rather than reaching production. A
+red run means intuitai.org stops updating, not just the book.
 
 ## Technology Stack
 

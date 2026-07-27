@@ -1,0 +1,106 @@
+# Jekyll configuration for intuitai.org.
+#
+# The domain hosts two things that share nothing but a hostname:
+#
+#   /      the IntuitAI landing page and its project pages -- hand-written
+#          HTML on Pico.css, with its own SEO metadata, JSON-LD and analytics.
+#   /ep/   "Everyday Programming", a book site built on the jekyll-gitbook
+#          theme.
+#
+# They coexist because Jekyll copies any file WITHOUT front matter through
+# untouched. index.html, ml-powered-text-recovery.html, img/, js/ and resource/
+# have no front matter, so adding Jekyll here changed nothing about them: they
+# are served byte-for-byte as before. Only the book pages carry front matter and
+# so only they get a layout.
+#
+# baseurl is empty, not "/ep". Setting it to "/ep" is the obvious-looking move
+# and it breaks the theme: a remote theme's assets are copied to _site/assets,
+# and every stylesheet link the theme emits is prefixed with baseurl, so the CSS
+# would be requested from /ep/assets/gitbook/ and 404. The book's location lives
+# in the permalinks instead -- see tools/extract_exercises.py --prefix.
+
+title:      IntuitAI
+longtitle:  "Everyday Programming: Basics of Computer Programs"
+author:     Dr. Nobel Khandaker
+email:      nobel@intramotev.com
+description: >
+  IntuitAI is a non-profit research organization building open-source, practical
+  AI tools. It also publishes Everyday Programming, a first book on programming
+  for absolute beginners.
+
+url:      "https://intuitai.org"
+baseurl:  ""
+
+remote_theme: sighingnow/jekyll-gitbook
+
+# The theme labels the first sidebar entry with site.title and links it to the
+# site root, which here is the IntuitAI landing page rather than the book. That
+# is why site.title is "IntuitAI" and not the book's name: the entry then reads
+# as what it actually is, a way back out to the parent site. The book's own home
+# page is the first entry in the `book` collection below.
+
+# In-page contents, rendered into the sidebar under the active page. Held to
+# level 2 on purpose: exercise pages carry an h3 per exercise, and Chapter 20
+# alone has 130 of them -- listing those would bury the navigation.
+toc:
+  enabled: true
+  h_min: 2
+  h_max: 2
+
+page_width: 900px
+
+markdown: kramdown
+kramdown:
+  auto_ids:           true
+  input:              GFM
+  smart_quotes:       lsquo,rsquo,ldquo,rdquo
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    default_lang:     python
+
+syntax_highlighter_style: colorful
+
+# Relative to the site root and without a leading slash -- the theme prefixes
+# baseurl itself for any value that is not an absolute URL.
+extra_css:
+  - ep/assets/css/site.css
+
+collections:
+  # The book's own pages: the pitch, the contents, the sample, the errata.
+  book:
+    output: true
+    permalink: /ep/book/:path/
+    sort_by: order
+  # One page per chapter that carries Find the Bug exercises.
+  exercises:
+    output: true
+    permalink: /ep/exercises/:path/
+    sort_by: order
+  # Worked solutions, one page per chapter. Deliberately absent from
+  # ordered_collections below: the pages are built and linked from each
+  # exercise, but listing all twelve again in the sidebar would double the
+  # navigation and invite readers past the exercises they came for.
+  solutions:
+    output: true
+    permalink: /ep/solutions/:path/
+    sort_by: order
+
+ordered_collections:
+  - book
+  - exercises
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - tools
+  - README.md
+  - CLAUDE.md
+  - LICENSE
+  - .github
+  - .claude
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-sitemap
+  - jemoji

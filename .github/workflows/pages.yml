@@ -1,0 +1,74 @@
+name: Build and deploy to GitHub Pages
+
+# Built by Actions rather than by Pages' own Jekyll runner: the site uses
+# collection `sort_by` and the jekyll-remote-theme plugin, neither of which the
+# built-in build supports. The deploy publishes the whole domain -- the IntuitAI
+# landing page as well as the book at /ep -- so a red run here means intuitai.org
+# stops updating, not just the book.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. Queued rather than canceled, so a run that is
+# already publishing is allowed to finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - uses: actions/configure-pages@v5
+
+      # No --baseurl override. intuitai.org is an apex custom domain, so the
+      # site is served from the root and _config.yml's empty baseurl is already
+      # correct; passing configure-pages' base_path would only add a way for the
+      # two to disagree.
+      - name: Build site
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build --trace
+
+      # Checks the landing page and its project pages too, not just the book --
+      # they are hand-written HTML that Jekyll copies through untouched, so a
+      # broken image path in them would otherwise reach production unnoticed.
+      #
+      # assets/search.html is skipped: it is generated entirely by the theme and
+      # its layout renders the header title as <a href=".">, which resolves to a
+      # directory with no index. That belongs upstream in sighingnow/jekyll-gitbook.
+      - name: Check for broken links and missing assets
+        run: |
+          bundle exec htmlproofer ./_site \
+            --disable-external \
+            --allow-hash-href \
+            --no-ignore-empty-alt \
+            --ignore-files "/assets\/search\.html/"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

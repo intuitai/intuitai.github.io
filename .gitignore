@@ -140,3 +140,13 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Jekyll
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Bundler: gems are vendored locally via `bundle config set --local path vendor/bundle`.
+# Gemfile.lock IS committed -- CI's bundler-cache keys off it for reproducible builds.
+.bundle/
+vendor/

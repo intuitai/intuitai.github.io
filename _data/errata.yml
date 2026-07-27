@@ -1,0 +1,24 @@
+# Errata for Everyday Programming, First Edition.
+#
+# Add one entry per confirmed correction, newest first. The errata page renders
+# this list and shows an "everything clear" panel while it is empty.
+#
+# Fields:
+#   page      printed page number, as an integer, or "" if not page-specific
+#   location  where on the page: a section number, exercise number, figure, or line
+#   printed   what the book currently says      (Markdown; `code` is fine)
+#   corrected what it should say                (Markdown)
+#   note      optional explanation of why       (Markdown, optional)
+#   reported  who found it, if they want credit (optional)
+#   fixed_in  printing or edition carrying the fix, e.g. "Second printing" (optional)
+#
+# Example:
+#
+# - page: 42
+#   location: "Section 5.2"
+#   printed: "`students / teams` returns an `int`"
+#   corrected: "`students / teams` returns a `float`"
+#   note: "True division always produces a float, even when the result is whole."
+#   reported: "A. Reader"
+
+[]

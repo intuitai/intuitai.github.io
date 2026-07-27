@@ -1,0 +1,32 @@
+"""Exercise 6.3.1 — Relying on a shared method
+
+Chapter 6: Objects — Everyday Programming
+
+Different shapes each provide an area() method, so one function can
+total them all.
+
+This program contains exactly one bug. Solution: sol_6_3_1.py
+"""
+
+class Square:
+    def __init__(self, side):
+        self.side = side
+
+    def area(self):
+        return self.side * self.side
+
+class Triangle:
+    def __init__(self, base, height):
+        self.base = base
+        self.height = height
+
+    def area(self):
+        return self.base * self.height / 2
+
+def total_area(shapes):
+    total = 0
+    for shape in shapes:
+        total = total + shape.area
+    return total
+
+print(total_area([Square(4), Triangle(6, 3)]))   # 25.0
