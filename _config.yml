@@ -1,12 +1,13 @@
 # Jekyll configuration for intuitai.org.
 #
-# The domain hosts two things that share a hostname and, since July 2026, a
+# The domain hosts three things that share a hostname and, since July 2026, a
 # theme as well:
 #
 #   /      the IntuitAI landing page and its project pages
 #   /ep/   "Everyday Programming", a book site
+#   /eai/  "Everyday AI", a second book site
 #
-# Both now render through the jekyll-gitbook remote theme. This is a change:
+# All three now render through the jekyll-gitbook remote theme. This is a change:
 # the landing page and ml-powered-text-recovery.html used to be hand-written
 # Pico.css files with no front matter, which made Jekyll copy them through
 # byte-for-byte, and the book was the only themed part of the domain. They now
@@ -14,7 +15,7 @@
 # book's sidebar. Pico.css is no longer used anywhere on the site.
 #
 # Files WITHOUT front matter are still copied through untouched -- img/,
-# resource/, ep/assets/ and robots.txt rely on it.
+# resource/, ep/assets/, eai/assets/ and robots.txt rely on it.
 #
 # baseurl is empty, not "/ep". Setting it to "/ep" is the obvious-looking move
 # and it breaks the theme: a remote theme's assets are copied to _site/assets,
@@ -28,8 +29,9 @@ author:     Dr. Nobel Khandaker
 email:      nobel@outlook.com
 description: >
   IntuitAI is a non-profit research organization building open-source, practical
-  AI tools. It also publishes Everyday Programming, a first book on programming
-  for absolute beginners.
+  AI tools. It also publishes two books: Everyday Programming, a first book on
+  programming for absolute beginners, and Everyday AI, a practical guide to
+  using AI well.
 
 url:      "https://intuitai.org"
 baseurl:  ""
@@ -97,14 +99,37 @@ collections:
     output: true
     permalink: /ep/solutions/:path/
     sort_by: order
+  # "Everyday AI" -- the second book. Its own collection rather than more
+  # entries in `book`, because the sidebar renders one collection as one
+  # divider-separated group (see the note on ordered_collections below), and
+  # the two books should not be interleaved.
+  eaibook:
+    output: true
+    permalink: /eai/book/:path/
+    sort_by: order
 
+# Drives the sidebar, in this order. Worth knowing what the theme actually
+# does with it: toc-date.html walks these labels, prints every page's TITLE as
+# a flat list item, and separates one collection from the next with a
+# `<li class="divider">`. The collection's own name is never shown.
+#
+# Two consequences:
+#
+#   * eaibook comes after exercises, not between book and exercises, so that
+#     Everyday Programming's pages and its twelve exercise chapters stay
+#     adjacent instead of being split by the other book.
+#   * The Everyday AI pages carry the book's name in their titles ("Everyday
+#     AI: Errata", not "Errata"). With no group labels, a bare "Errata" would
+#     appear twice in one sidebar with nothing to tell the two apart. That
+#     verbosity is deliberate -- do not tidy it away.
 ordered_collections:
   - book
   - exercises
+  - eaibook
 
-# Link previews for anything under /ep should show the book's cover rather than
+# Link previews for a book's pages should show that book's cover rather than
 # the IntuitAI logo. Set per collection because Jekyll's `defaults` match on
-# scope, and the three book collections are the only things at that path.
+# scope, and a collection is exactly the set of pages belonging to one book.
 defaults:
   - scope: { path: "", type: "book" }
     values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
@@ -112,6 +137,8 @@ defaults:
     values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
   - scope: { path: "", type: "solutions" }
     values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
+  - scope: { path: "", type: "eaibook" }
+    values: { image: /eai/assets/img/cover.png, image_alt: "Cover of Everyday AI, Volume I: Basics of Artificial Intelligence" }
 
 exclude:
   - Gemfile

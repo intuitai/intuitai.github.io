@@ -150,3 +150,9 @@ _site/
 # Gemfile.lock IS committed -- CI's bundler-cache keys off it for reproducible builds.
 .bundle/
 vendor/
+
+# Python bytecode from tools/. generate_toc.py imports extract_exercises, so
+# merely regenerating a book's contents used to rewrite a *tracked* .pyc and
+# leave the tree dirty; that file is now untracked.
+__pycache__/
+*.pyc

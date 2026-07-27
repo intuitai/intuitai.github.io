@@ -143,12 +143,17 @@ some scrapers truncate at it.
 {%- endif %}
 
 {%- comment -%}
-The book's pages are one long-form work by one author; saying so lets search
+A book's pages are one long-form work by one author; saying so lets search
 engines attribute them rather than treating each page as orphaned prose.
+
+The section has to be branched now that the domain carries two books. Every
+collection except eaibook belongs to Everyday Programming -- book, exercises
+and solutions -- so "Programming" stays the default and only the AI book opts
+out. A third book would want a lookup rather than another elsif.
 {%- endcomment -%}
 {%- if page.collection %}
 <meta property="article:author" content="{{ site.author | escape }}">
-<meta property="article:section" content="Programming">
+<meta property="article:section" content="{% if page.collection == 'eaibook' %}Artificial Intelligence{% else %}Programming{% endif %}">
 {%- endif %}
 
 {%- include structured-data.html -%}

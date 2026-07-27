@@ -4,7 +4,7 @@
 # The sitemap URL is therefore written out rather than built from site.url.
 #
 # sitemap.xml itself is produced by the jekyll-sitemap plugin and covers the
-# landing page and every page under /ep.
+# landing page and every page under /ep and /eai.
 
 User-agent: *
 Allow: /

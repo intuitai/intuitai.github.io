@@ -3,8 +3,8 @@ name: Build and deploy to GitHub Pages
 # Built by Actions rather than by Pages' own Jekyll runner: the site uses
 # collection `sort_by` and the jekyll-remote-theme plugin, neither of which the
 # built-in build supports. The deploy publishes the whole domain -- the IntuitAI
-# landing page as well as the book at /ep -- so a red run here means intuitai.org
-# stops updating, not just the book.
+# landing page as well as the books at /ep and /eai -- so a red run here means
+# intuitai.org stops updating, not just a book.
 
 on:
   push:

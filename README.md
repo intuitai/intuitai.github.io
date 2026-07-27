@@ -9,7 +9,7 @@
 
 Source for [intuitai.org](https://intuitai.org) — the website of IntuitAI, a
 non-profit research organization building open-source, practical AI tools, and
-the home of the free book *Everyday Programming*.
+the home of two books, *Everyday Programming* and *Everyday AI*.
 
 ---
 
@@ -20,6 +20,7 @@ the home of the free book *Everyday Programming*.
 | [`/`](https://intuitai.org/) | Landing page — mission, projects, books |
 | [`/ml-powered-text-recovery.html`](https://intuitai.org/ml-powered-text-recovery.html) | Project write-up on ML-powered OCR text recovery |
 | [`/ep/`](https://intuitai.org/ep/) | *Everyday Programming*, a free book on Python for beginners |
+| [`/eai/`](https://intuitai.org/eai/) | *Everyday AI*, a forthcoming guide to using AI well |
 
 Every page renders through the
 [`jekyll-gitbook`](https://github.com/sighingnow/jekyll-gitbook) remote theme.
@@ -60,12 +61,16 @@ reports into the live property.
 ```
 index.html                     Landing page (front matter + gitbook layout)
 ml-powered-text-recovery.html  Project write-up
-_book/                         Book pages — hand-written prose
-_exercises/  _solutions/       GENERATED from the book manuscript
+_book/                         Everyday Programming pages — hand-written prose
+_exercises/  _solutions/       GENERATED from the Everyday Programming manuscript
+_eaibook/                      Everyday AI pages — hand-written prose
 _data/toc.yml downloads.yml    GENERATED; errata.yml is hand-maintained
+_data/eai/toc.yml              GENERATED; eai/errata.yml is hand-maintained
 _includes/                     Overrides of theme includes (see below)
-ep/assets/                     Book CSS, images, PDF, and generated .py files
-tools/                         Generators that read the LaTeX manuscript
+ep/assets/                     Site-wide CSS, plus Everyday Programming's
+                               images, PDF and generated .py files
+eai/assets/                    Everyday AI's cover, sample images, sample PDF
+tools/                         Generators that read the LaTeX manuscripts
 .github/workflows/pages.yml    Build, check, and deploy
 ```
 
@@ -77,24 +82,37 @@ name in `_includes/`:
 - **`head.html`** — the upstream version emits a single site-wide description
   and no canonical, Open Graph or Twitter tags. This one resolves them per page.
 - **`structured-data.html`** — JSON-LD, branched by page: the organization on
-  `/`, the book plus breadcrumbs under `/ep/`, a learning resource on exercise
-  pages.
+  `/`, a book plus breadcrumbs under `/ep/` and under `/eai/`, a learning
+  resource on exercise pages.
 - **`mathjax.html`** — loads nothing. Upstream treats `$` as a maths delimiter,
   which mangles the book's many prices ("$0.10 add up to $0.30").
 
 ### Generated content
 
-The book's exercises, solutions, contents and downloadable code are generated
-from a LaTeX manuscript that lives outside this repository:
+Each book's contents listing — and, for *Everyday Programming*, its exercises,
+solutions and downloadable code — is generated from a LaTeX manuscript that
+lives outside this repository:
 
 ```bash
+# Everyday Programming
 ./tools/extract_exercises.py --manuscript ../manuscripts/everyday-programming
 ./tools/generate_toc.py      --manuscript ../manuscripts/everyday-programming
+
+# Everyday AI
+./tools/generate_toc.py      --manuscript ../manuscripts/everyday-ai \
+    --stem everyday-ai --out eai/toc.yml --min-chapters 7
+./tools/build_eai_sample.py  --manuscript ../manuscripts/everyday-ai
 ```
 
-The generated output is committed, so the site builds without the manuscript.
-Do not hand-edit anything the generators write — fix the manuscript and re-run.
-`_book/` is *not* generated; those pages are prose and are edited directly.
+`build_eai_sample.py` is the odd one out: it does not read the manuscript so
+much as rebuild it, running XeLaTeX over a copy with the draft watermark, the
+placeholder preface and Chapters 3–7 removed. It therefore needs a working TeX
+toolchain, which the other two do not.
+
+The generated output is committed, so the site builds without either
+manuscript. Do not hand-edit anything the generators write — fix the manuscript
+and re-run. `_book/` and `_eaibook/` are *not* generated; those pages are prose
+and are edited directly.
 
 ---
 
@@ -133,6 +151,14 @@ parts, plus [445 *Find the Bug* exercises](https://intuitai.org/ep/book/exercise
 with full worked solutions, and a
 [free sample of Chapters 1–2](https://intuitai.org/ep/book/sample/).
 
+**[Everyday AI, Volume I: Basics of Artificial Intelligence](https://intuitai.org/eai/)**
+by Dr. Nobel Khandaker — a practical guide to using AI well for readers with no
+technical background: what a language model actually does, how to ask it for
+what you want, and how to check the answer before trusting it. Seven chapters,
+forthcoming, with a
+[free sample of Chapters 1–2](https://intuitai.org/eai/book/sample/) to
+download now.
+
 ---
 
 ## Contributing
@@ -151,6 +177,11 @@ manuscript and re-run the generators rather than editing the generated pages.
 Licensed under the Apache License 2.0 — see [LICENSE](LICENSE).
 
 The text and code of *Everyday Programming* are likewise Apache 2.0.
+
+*Everyday AI* is not. Its copyright page reserves all rights; the two sample
+chapters published here are free to read, and nothing about that book's text is
+Apache-licensed. This repository's licence covers the site's own code and
+prose, not either manuscript.
 
 Icons by [Becris via Flaticon](https://www.flaticon.com/free-icons/machine-learning);
 the attribution on the landing page is a condition of that licence, not

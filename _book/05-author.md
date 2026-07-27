@@ -97,6 +97,16 @@ professional engineering is, in honest accounting, mostly time spent reading
 code that is nearly right and working out where it is not. The book teaches that
 skill directly, rather than leaving readers to acquire it by accident.
 
+## The other book
+
+He is also the author of
+**[*Everyday AI*, Volume I: Basics of Artificial Intelligence]({{ site.baseurl }}/eai/)**,
+forthcoming — a practical guide to using AI well for readers with no technical
+background. The two books share a disposition and an audience: explain the part
+everybody else skips, assume no prior knowledge, and teach the habit of checking
+your own work. Chapters 1 and 2 are
+[free to download]({{ site.baseurl }}/eai/book/sample/).
+
 ## Elsewhere
 
 - [LinkedIn](https://www.linkedin.com/in/nobelkhandaker)

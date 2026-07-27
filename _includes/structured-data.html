@@ -1,21 +1,34 @@
 {%- comment -%}
 JSON-LD, emitted per page rather than site-wide.
 
-Three kinds of page get three different graphs, because describing the book on
-a page about LLM routing (or the organization's software on a page of Python
+Each area of the domain gets its own graph, because describing a book on a page
+about LLM routing (or the organization's software on a page of Python
 exercises) is noise that search engines discount:
 
-    /            the organization, its open-source projects, and the book
-    /ep/*        the book itself, plus a breadcrumb back to the landing page
+    /            the organization, its open-source projects, and both books
+    /ep/*        Everyday Programming, plus a breadcrumb back to the landing page
     /ep/exercis* the exercise set as a LearningResource
+    /eai/*       Everyday AI, plus a breadcrumb back to the landing page
 
-The organization node carries a stable @id and is referenced by @id elsewhere
-rather than repeated, which is what lets a crawler tie the graphs together
-across pages.
+The organization node carries a stable @id so that the nodes referring to it
+within a page all mean the same entity. Be careful how much is expected of
+that: consumers resolve @id WITHIN a document, not across documents, so the two
+bare {"@id": ".../#book"} members the landing page lists are inert as a crawler
+signal -- a node object with no @type and no properties is simply dropped. They
+are kept as a cheap, valid statement of what belongs to the site, not because
+they carry the book's details over from the book's own pages. Anything a page
+actually needs asserted, it asserts itself.
+
+The two prefixes do not overlap as substrings -- "/eai/" does not contain
+"/ep/" -- so the two tests below are genuinely exclusive rather than
+accidentally so.
 {%- endcomment -%}
 
 {%- assign is_ep = false -%}
 {%- if page.url contains "/ep/" or page.url == "/ep" -%}{%- assign is_ep = true -%}{%- endif -%}
+
+{%- assign is_eai = false -%}
+{%- if page.url contains "/eai/" or page.url == "/eai" -%}{%- assign is_eai = true -%}{%- endif -%}
 
 {%- if page.url == "/" -%}
 <script type="application/ld+json">
@@ -28,7 +41,7 @@ across pages.
       "name": "IntuitAI",
       "url": "{{ site.url }}/",
       "logo": "{{ site.url }}/img/neural.png",
-      "description": "A non-profit research organization building open-source, practical AI tools for real-world problems, and publishing free educational material on programming.",
+      "description": "A non-profit research organization building open-source, practical AI tools for real-world problems, and publishing educational material on programming and on artificial intelligence.",
       "sameAs": ["https://github.com/intuitai"],
       "knowsAbout": ["Agentic AI", "Large Language Models", "Multi-agent systems", "AI Safety", "Machine Learning", "Programming education"]
     },
@@ -76,7 +89,8 @@ across pages.
       "description": "LLM-powered semantic search application for the Quran.",
       "author": { "@id": "{{ site.url }}/#organization" }
     },
-    { "@id": "{{ site.url }}/ep/#book" }
+    { "@id": "{{ site.url }}/ep/#book" },
+    { "@id": "{{ site.url }}/eai/#book" }
   ]
 }
 </script>
@@ -99,7 +113,14 @@ across pages.
       "abstract": "A first course in Python for absolute beginners, built on tenth-grade mathematics. Twenty-one chapters in seven parts, with {{ site.data.downloads.exercise_count }} Find the Bug exercises and full worked solutions.",
       "author": {
         "@type": "Person",
-        "@id": "{{ site.url }}/ep/#author",
+        {%- comment -%}
+        Site-level @id, not /ep/#author: the same person writes both books, and
+        an @id under one book's path would model them as two different people.
+        The Everyday AI graph defines this node again, identically -- repeating
+        a node with a matching @id is how JSON-LD says "the same entity", and
+        it means each page's graph stands on its own.
+        {%- endcomment -%}
+        "@id": "{{ site.url }}/#author",
         "name": "Dr. Nobel Khandaker",
         "jobTitle": "Lead Software Engineer",
         "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
@@ -134,9 +155,108 @@ across pages.
       "inLanguage": "en",
       "isAccessibleForFree": true,
       "isPartOf": { "@id": "{{ site.url }}/ep/#book" },
-      "author": { "@id": "{{ site.url }}/ep/#author" }
+      "author": { "@id": "{{ site.url }}/#author" }
     }
     {%- endif -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+{%- comment -%}
+Everyday AI. Deliberately thinner than the Everyday Programming graph above,
+and every omission is a fact rather than an oversight:
+
+  * No `isbn`. The manuscript still carries LaTeX's example ISBN with a
+    "replace this with your own" comment beside it. Publishing that number
+    would be publishing a wrong one.
+  * No `datePublished`, and `workExample` rather than `isAccessibleForFree:
+    true` on the book itself. The book is not published; the two sample
+    chapters are what is free, and the graph says exactly that.
+  * No `license`. Everyday Programming is Apache 2.0 and says so; this book's
+    copyright page reserves all rights.
+
+Revisit all four when the book is published, not before.
+{%- endcomment -%}
+{%- if is_eai -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Book",
+      "@id": "{{ site.url }}/eai/#book",
+      "name": "Everyday AI",
+      "alternateName": "Everyday AI, Volume I: Basics of Artificial Intelligence",
+      "url": "{{ site.url }}/eai/",
+      "bookEdition": "First Edition",
+      "inLanguage": "en",
+      "image": "{{ site.url }}/eai/assets/img/cover.png",
+      "abstract": "A practical guide to artificial intelligence for readers with no technical background: what a large language model actually does, how to prompt Claude, ChatGPT and Gemini well, and how to verify an answer before trusting it. Seven chapters.",
+      "author": {
+        "@type": "Person",
+        "@id": "{{ site.url }}/#author",
+        "name": "Dr. Nobel Khandaker",
+        "jobTitle": "Lead Software Engineer",
+        "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
+      },
+      {%- comment -%}
+      The imprint, not the site's organization node. The visible page says
+      "forthcoming from Intramotev Press", and Google's guidance is that markup
+      must agree with what the reader sees -- pointing this at IntuitAI would
+      have put two different publishers on one page, one for readers and one for
+      crawlers.
+
+      Note /ep/ above still points its publisher at #organization while its own
+      page text also says Intramotev Press. That is the same defect, predating
+      this book, and is left alone here rather than quietly restructuring an
+      established page's markup.
+      {%- endcomment -%}
+      "publisher": {
+        "@type": "Organization",
+        "@id": "{{ site.url }}/#imprint",
+        "name": "Intramotev Press",
+        "url": "https://www.intramotev.com"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Readers new to artificial intelligence, students, teachers, professionals with no technical background"
+      },
+      "teaches": ["Prompting", "Verifying AI output", "Large language models", "AI literacy", "Responsible use of AI"],
+      {%- comment -%}
+      hasPart, not workExample. schema.org defines workExample as an example,
+      instance, realization or edition of a work -- "the paperback edition, first
+      edition, or e-book". A two-chapter extract is not a realization of the
+      book; it is a piece of it, and calling it an edition would tell a crawler
+      that Everyday AI is available free as a 19-page ebook. That is exactly the
+      kind of overclaim the omissions above are there to avoid.
+
+      The url is the PDF itself rather than the page about it, because
+      encodingFormat describes THIS node: application/pdf on a node pointing at
+      an HTML landing page would be a contradiction.
+      {%- endcomment -%}
+      "hasPart": {
+        "@type": "Book",
+        "@id": "{{ site.url }}/eai/book/sample/#sample",
+        "name": "Everyday AI — Chapters 1 and 2 (free sample)",
+        "url": "{{ site.url }}/eai/assets/pdf/everyday-ai-sample-chapters-1-2.pdf",
+        "bookFormat": "https://schema.org/EBook",
+        "encodingFormat": "application/pdf",
+        "numberOfPages": 19,
+        "inLanguage": "en",
+        "isAccessibleForFree": true
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "IntuitAI", "item": "{{ site.url }}/" },
+        { "@type": "ListItem", "position": 2, "name": "Everyday AI", "item": "{{ site.url }}/eai/" }
+        {%- if page.url != "/eai/" -%}
+        ,{ "@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }}, "item": "{{ page.url | absolute_url }}" }
+        {%- endif -%}
+      ]
+    }
   ]
 }
 </script>

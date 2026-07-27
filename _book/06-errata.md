@@ -24,7 +24,13 @@ whether the puzzle is theirs or the book's.
 Currently listing **{{ errata.size }}** correction{% if errata.size != 1 %}s{% endif %}.
 
 {% for item in errata %}
-### {% if item.page %}Page {{ item.page }}{% else %}General{% endif %}{% if item.location %} — {{ item.location }}{% endif %}
+{%- comment -%}
+`!= blank`, not a bare truthiness test -- see the note in _eaibook/03-errata.md.
+_data/errata.yml documents `page: ""` for a correction that is not
+page-specific, and an empty string is truthy in Liquid, so a bare test would
+emit a heading reading "Page" with nothing after it.
+{%- endcomment -%}
+### {% if item.page != blank %}Page {{ item.page }}{% else %}General{% endif %}{% if item.location %} — {{ item.location }}{% endif %}
 
 **Printed:** {{ item.printed | markdownify | remove: "<p>" | remove: "</p>" }}
 

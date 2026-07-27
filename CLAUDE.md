@@ -12,6 +12,7 @@ intuitai.org is a single Jekyll site. **Every page renders through the
 | `/` | The IntuitAI landing page (`index.html`) |
 | `/ml-powered-text-recovery.html` | Project write-up |
 | `/ep/` | *Everyday Programming*, a book site, from generated Markdown |
+| `/eai/` | *Everyday AI*, a second book site (`_eaibook/`) |
 
 This was not always true, and the older comments in `_config.yml` still describe
 the previous arrangement. Until July 2026 the landing page and the project page
@@ -27,7 +28,11 @@ Consequences worth knowing before editing either page:
   already emits `<h1>{{ page.title }}</h1>`; a second one gives the page two.
 - Content is styled by the theme plus `ep/assets/css/site.css`, which is loaded
   site-wide via `extra_css`. Reuse its `.ep-*` classes rather than adding
-  stylesheets.
+  stylesheets. The path and the `ep-` prefix are historical — that file dresses
+  the landing page and `/eai/` too, and it is the site's only stylesheet.
+  Moving it to `assets/` would put it in the same tree the remote theme copies
+  its own assets into, which is the sort of collision `_config.yml` warns
+  about at length; leave it where it is.
 - There is **no site JavaScript of our own**. `js/` held two Pico.css utilities
   (a theme switcher and a modal handler) and was deleted with Pico; the theme
   ships its own font and theme controls. Anything under `assets/gitbook/` comes
@@ -57,16 +62,29 @@ html-proofer is the only gate, and it covers the landing page too — so a broke
 image path in hand-written HTML fails the deploy rather than reaching
 production.
 
-To regenerate the book's pages from the LaTeX manuscript (both scripts default
-`--manuscript` to `../manuscripts/everyday-programming` and `--site` to `.`):
+The generators need Python 3.9 or later (`Path.is_relative_to`). Nothing in the
+workflow pins a version, because CI never runs them: their output is committed.
+
+To regenerate *Everyday Programming*'s pages from its LaTeX manuscript (both
+scripts default `--manuscript` to `../manuscripts/everyday-programming` and
+`--site` to `.`):
 
 ```console
 $ ./tools/extract_exercises.py --manuscript ../manuscripts/everyday-programming
 $ ./tools/generate_toc.py      --manuscript ../manuscripts/everyday-programming
 ```
 
-The manuscript lives outside this repository. Without it, the generators cannot
-run — but the generated output is committed, so the site builds fine without it.
+And *Everyday AI*'s, from its own manuscript:
+
+```console
+$ ./tools/generate_toc.py     --manuscript ../manuscripts/everyday-ai \
+      --stem everyday-ai --out eai/toc.yml --min-chapters 7
+$ ./tools/build_eai_sample.py --manuscript ../manuscripts/everyday-ai
+```
+
+Both manuscripts live outside this repository. Without them the generators
+cannot run — but the generated output is committed, so the site builds fine
+without either.
 
 ## Deployment
 
@@ -129,9 +147,100 @@ Chapter titles are keyed by **exercise number, not source filename**; the two
 disagree (`python_list.tex` holds the 6.x exercises, `python_quality.tex`
 declares two chapters and holds the 16.x set).
 
-`generate_toc.py` emits `_data/toc.yml` rather than a finished page, so
-`_book/02-table-of-contents.md` owns the prose and merely loops over the data.
-It reuses `extract_exercises.py`'s LaTeX→Markdown converter by importing it.
+`generate_toc.py` emits a data file rather than a finished page, so the
+table-of-contents page owns the prose and merely loops over the data. It reuses
+`extract_exercises.py`'s LaTeX→Markdown converter by importing it, and it
+serves **both** books: `--stem`, `--out` and `--min-chapters` are what the
+second one passes. Both books are typeset with `sicp-style.tex`, so both emit
+the same `\contentsline` grammar and one parser is enough. Changing the parser
+changes both books' contents pages — regenerate and diff both.
+
+Note that front matter never reaches the data: `parse_toc` drops any entry whose
+page number will not `int()`, and roman numerals will not. That is why *Everyday
+AI*'s contents listing shows no preface, and why the unnumbered back-matter
+*Index* — an arabic page number — does show. (*Everyday Programming* has no
+`Preface` line in its `.toc` at all, so nothing is being dropped there.)
+
+Dropping a chapter clears `current_chapter` as well, so that a dropped entry's
+sections are discarded with it rather than silently refiled under the chapter
+before it. Both books happen to avoid that case today; *Everyday AI*'s preface
+is still lorem ipsum and will not always.
+
+## The second book at /eai/
+
+*Everyday AI* is a much smaller site than `/ep/`: no exercises, no solutions,
+no downloadable code. Four hand-written pages in `_eaibook/` (home, contents,
+sample, errata), one generated data file, and five committed assets.
+
+**Write the pages from `content/*.tex`, not from `outline.md`.** The manuscript
+carries a planning document that reads like a description of the book and is
+not one — it promises a *When It Goes Wrong* sidebar on stale facts (only three
+sidebars exist, and none is that), says every chapter opens on a real person
+(two open on no one, and two carry the author's own footnote saying the person
+is a composite), and says the book names model versions (it names products and
+one price, and deliberately avoids version numbers). An adversarial review
+caught five false claims on these pages, all traceable to that file. There is
+also a superseded 16-chapter `everyday-ai.md` in the manuscript root; the
+current book has seven chapters.
+
+- `_data/eai/toc.yml` is **generated**; `_data/eai/errata.yml` is
+  hand-maintained, with its schema in its own header comment. The nesting under
+  `_data/eai/` is not decoration: the flat name `eai-toc.yml` would be reached
+  as `site.data.eai-toc`, which Liquid parses as a *subtraction*.
+- The pages' titles carry the book's name — "Everyday AI: Errata", not
+  "Errata". The theme's sidebar lists every collection's page titles in one
+  flat column separated only by dividers, with no group headings, so both books
+  would otherwise contribute an identically-labelled "Errata" and "Table of
+  Contents". This is deliberate; `_config.yml` says so next to
+  `ordered_collections`, which is also where the collection ordering is
+  explained.
+- **The book is not published.** Its copyright page reserves all rights (unlike
+  *Everyday Programming*, which is Apache 2.0), its ISBN is still LaTeX's
+  example number, and its preface is still lorem ipsum. The site says
+  "forthcoming", the JSON-LD omits `isbn`, `datePublished` and `license`, and
+  only the sample carries `isAccessibleForFree`. Do not let any of those drift
+  into claiming more than is true — and revisit all of them together when the
+  book actually ships.
+
+### build_eai_sample.py
+
+Unlike the other two generators, this one *builds* the manuscript rather than
+reading it: XeLaTeX over a copy of the tree with the DRAFT watermark, the
+placeholder preface and Chapters 3–7 excised, producing
+`eai/assets/pdf/everyday-ai-sample-chapters-1-2.pdf`. So it needs a TeX
+toolchain and the three OpenType families `sicp-style.tex` selects, installed
+system-wide (`make fontcheck` in the manuscript checks them).
+
+Each excision is an exact string asserted to appear exactly once, for the same
+reason `extract_exercises.py` asserts the manuscript's shape: a reorganised
+preamble should fail loudly rather than quietly ship a sample with the
+watermark still on it. Do not relax an assertion into a regex to get a build
+through.
+
+**The sample's printed page numbers DO match the finished book's**, and
+`_eaibook/02-sample.md` says so. `\mainmatter` resets to arabic 1 after the
+front matter, so dropping the preface changes where Chapter 1 sits in the file
+without changing its printed number: Chapter 1 is page 1 and Chapter 2 page 7 in
+both. (An earlier version of this file and of the builder's docstring claimed
+the opposite, and the site copy repeated it; verified entry by entry against
+`everyday-ai.toc`.)
+
+The ISBN excision is the one that is easiest to lose and worst to lose. The
+manuscript carries LaTeX's example number with a `% replace this with your own`
+comment beside it, and unlike the DRAFT watermark it does not *look* like
+placeholder text to a reader — it looks like the book's ISBN. It is also the
+only edit that lands in `frontmatter/copyrightpage.tex` rather than the master,
+which is why `EDITS` entries name their file.
+
+`check_contents` reads the .toc the build itself just wrote and requires exactly
+chapters `["1", "2"]`. That is the real guard; the page-count bounds either side
+of it only catch a chapter that typeset but came out mangled. A page count alone
+would not notice a sample missing Chapter 2.
+
+The five committed assets under `eai/assets/` are the sample PDF, `cover.png`,
+`cover-small.png` and two `sample-page-*.png` images. The last two are
+Ghostscript renders of pages 8 and 14 of that PDF at 110 dpi — re-render them if
+the manuscript's pagination shifts, or they will show the wrong pages.
 
 ## SEO
 
@@ -144,10 +253,14 @@ in the remote theme, the same trick `mathjax.html` uses:
   emits (stylesheet list included — **diff this against the theme when it
   updates**) and adds per-page description, canonical, Open Graph, Twitter card,
   robots, and the analytics tag.
-- **`_includes/structured-data.html`** — JSON-LD, branched by page so the book
-  is not described on a page about LLM routing: the organization graph on `/`,
-  a `Book` plus breadcrumbs under `/ep/`, and a `LearningResource` on exercise
-  pages.
+- **`_includes/structured-data.html`** — JSON-LD, branched by page so a book is
+  not described on a page about LLM routing: the organization graph on `/`, a
+  `Book` plus breadcrumbs under `/ep/` and again under `/eai/`, and a
+  `LearningResource` on exercise pages. The branches test `page.url contains
+  "/ep/"` and `contains "/eai/"`; those prefixes do not overlap as substrings,
+  so the two are genuinely exclusive. The author is one `Person` node with a
+  site-level `@id` shared by both books — an `@id` under one book's path would
+  model the same author as two people.
 
 Front matter a page can set, all optional:
 
@@ -163,7 +276,7 @@ a good excerpt, and the fallback chain picks it up.
 
 Analytics is `site.google_analytics` in `_config.yml` and is emitted **only when
 `JEKYLL_ENV=production`**, so a local `jekyll serve` never reports into the real
-property. Note it now runs on the book's pages too, which it did not before the
+property. Note it now runs on the books' pages too, which it did not before the
 landing page moved into the theme.
 
 `robots.txt` is deliberately front-matter-free so Jekyll copies it verbatim; its

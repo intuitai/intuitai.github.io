@@ -1,0 +1,26 @@
+# Errata for Everyday AI, First Edition.
+#
+# Hand-maintained -- unlike _data/eai/toc.yml, which sits beside it and IS
+# generated. Add one entry per confirmed correction, newest first. The errata
+# page renders this list and shows an "everything clear" panel while it is
+# empty.
+#
+# Fields:
+#   page      printed page number, as an integer, or "" if not page-specific
+#   location  where on the page: a section number, figure, or line
+#   printed   what the book currently says      (Markdown; `code` is fine)
+#   corrected what it should say                (Markdown)
+#   note      optional explanation of why       (Markdown, optional)
+#   reported  who found it, if they want credit (optional)
+#   fixed_in  printing or edition carrying the fix, e.g. "Second printing" (optional)
+#
+# Example:
+#
+# - page: 12
+#   location: "Section 2.5"
+#   printed: "an agent always asks before it acts"
+#   corrected: "an agent may or may not ask before it acts, depending on how it is configured"
+#   note: "Overstated. Confirmation prompts are a setting, not a guarantee."
+#   reported: "A. Reader"
+
+[]
