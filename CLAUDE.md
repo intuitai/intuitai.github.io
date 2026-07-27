@@ -28,9 +28,10 @@ Consequences worth knowing before editing either page:
 - Content is styled by the theme plus `ep/assets/css/site.css`, which is loaded
   site-wide via `extra_css`. Reuse its `.ep-*` classes rather than adding
   stylesheets.
-- `js/minimal-theme-switcher.js` and `js/modal.js` are **dead code**. They were
-  Pico.css utilities; nothing references them now, and the theme supplies its
-  own font/theme controls.
+- There is **no site JavaScript of our own**. `js/` held two Pico.css utilities
+  (a theme switcher and a modal handler) and was deleted with Pico; the theme
+  ships its own font and theme controls. Anything under `assets/gitbook/` comes
+  from the remote theme — do not edit it, shadow the include instead.
 - The Flaticon credit at the bottom of `index.html` is a **licence condition**
   on `img/neural.png`, not decoration. The theme's `footer.html` emits scripts
   and nothing visible, so the credit lives in page content. Do not drop it while
@@ -173,8 +174,13 @@ reverb, tangle, quranllm, random-number-mcp-server.
 
 ## Note on README.md
 
-`README.md` predates the Jekyll migration and describes a repository layout
-that no longer exists (`styles.css`, `img/intuitailogo.jpg`,
-`generate_images*.py`, projects under `github.com/nobelk`, "zero build
-process"). Prefer this file and the comments in `_config.yml`, `Gemfile` and
-`pages.yml` — which are kept next to what they describe — over the README.
+`README.md` was rewritten in July 2026 and is current: it covers the same
+architecture, commands and deployment path as this file, aimed at a contributor
+rather than an agent. Keep the two in step when either changes.
+
+It had drifted badly before that, describing `styles.css`, `img/intuitailogo.jpg`
+and `generate_images*.py` (none of which exist), projects under
+`github.com/nobelk`, a "zero build process", and an MIT licence when `LICENSE`
+is Apache 2.0. When something here disagrees with a source file, trust the
+comments in `_config.yml`, `Gemfile` and `pages.yml` — they sit next to what
+they describe and rot more slowly.

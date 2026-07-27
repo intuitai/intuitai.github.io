@@ -1,241 +1,165 @@
 # IntuitAI
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fintuitai.org)](https://intuitai.org)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![Pico.css](https://img.shields.io/badge/Pico.css-2.1.1-blue)](https://picocss.com)
-[![GitHub Pages](https://img.shields.io/badge/Deployed%20on-GitHub%20Pages-blue)](https://pages.github.com/)
+[![Jekyll](https://img.shields.io/badge/Jekyll-4.3-red?logo=jekyll&logoColor=white)](https://jekyllrb.com)
+[![Deployed with GitHub Actions](https://img.shields.io/badge/Deployed%20with-GitHub%20Actions-blue?logo=githubactions&logoColor=white)](.github/workflows/pages.yml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
 
 > **AI solutions for real world applications.**
 
-Official website for IntuitAI - a non-profit research organization dedicated to democratizing artificial intelligence through accessible, practical AI solutions.
-
-🌐 **Live Site:** [https://intuitai.org](https://intuitai.org)
-
----
-
-## Table of Contents
-
-- [About](#about)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Repository Structure](#repository-structure)
-- [Getting Started](#getting-started)
-- [Projects](#projects)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+Source for [intuitai.org](https://intuitai.org) — the website of IntuitAI, a
+non-profit research organization building open-source, practical AI tools, and
+the home of the free book *Everyday Programming*.
 
 ---
 
-## About
+## What is on the domain
 
-IntuitAI is a non-profit research organization committed to making advanced artificial intelligence accessible to everyone. We bridge the gap between cutting-edge AI research and practical implementation, enabling organizations across industries to harness the power of AI.
+| Path | What it is |
+|---|---|
+| [`/`](https://intuitai.org/) | Landing page — mission, projects, books |
+| [`/ml-powered-text-recovery.html`](https://intuitai.org/ml-powered-text-recovery.html) | Project write-up on ML-powered OCR text recovery |
+| [`/ep/`](https://intuitai.org/ep/) | *Everyday Programming*, a free book on Python for beginners |
 
-### Our Mission
-
-IntuitAI is led by a team of AI researchers, engineers, and industry experts dedicated to making artificial intelligence accessible and practical for everyone. Our diverse expertise spans machine learning, software engineering, and business strategy.
-
----
-
-## Features
-
-### Website Highlights
-
-- **Minimalist Design**: Clean, simple layout using Pico.css framework
-- **Fully Responsive**: Mobile-first design optimized for all devices
-- **Fast Loading**: Minimal dependencies, CDN-hosted CSS, small JavaScript files
-- **Theme Support**: Light/dark theme switcher with localStorage persistence
-- **Zero Build Process**: Pure HTML with CDN resources
-- **Accessibility**: Semantic HTML with Pico.css accessibility defaults
-
-### Key Sections
-
-1. **Mission** - Brief introduction to IntuitAI's team and goals
-2. **Projects** - Showcase of open-source contributions
+Every page renders through the
+[`jekyll-gitbook`](https://github.com/sighingnow/jekyll-gitbook) remote theme.
+This is recent: until July 2026 the landing page was hand-written HTML on
+Pico.css with no front matter, and only the book was themed. Pico.css is no
+longer used.
 
 ---
 
-## Technology Stack
+## Local development
 
-### Frontend
+Requires Ruby 3.x and Bundler.
 
-- **HTML5** - Semantic markup
-- **Pico.css v2.1.1** - Minimal CSS framework
-  - Loaded from jsdelivr CDN
-  - Provides responsive design
-  - Built-in light/dark theme support
-  - No custom CSS needed
-
-### JavaScript
-
-- **minimal-theme-switcher.js** - Pico.css official theme switcher
-- **modal.js** - Pico.css official modal handler
-- Both vanilla JavaScript, no dependencies
-
-### Deployment
-
-- **GitHub Pages** - Static site hosting
-- **Custom Domain** - intuitai.org via CNAME
-
----
-
-## Repository Structure
-
-```
-intuitai.github.io/
-├── index.html                  # Main website HTML
-├── styles.css                  # Legacy custom CSS (not currently used)
-├── img/
-│   └── intuitailogo.jpg        # Company logo
-├── js/
-│   ├── minimal-theme-switcher.js  # Theme switcher utility
-│   └── modal.js                   # Modal handler utility
-├── intuitailogo.jpg           # Company logo (duplicate)
-├── CNAME                      # Custom domain configuration
-├── README.md                  # This file
-├── CLAUDE.md                  # AI assistant project instructions
-├── LICENSE                    # MIT License
-├── .github/                   # GitHub configuration (workflows removed)
-├── resource/
-│   ├── unlocking-real-world-solutions-with-ai.pdf   # Main whitepaper
-│   └── unlocking-real-world-solutions-with-ai.docx  # Word version
-├── generate_images.py         # Image generation script (legacy)
-└── generate_images_v2.py      # Updated image generation script (legacy)
+```bash
+bundle install
+bundle exec jekyll serve      # http://localhost:4000/
 ```
 
+To reproduce what CI does before pushing:
+
+```bash
+bundle exec jekyll build
+bundle exec htmlproofer ./_site --disable-external --allow-hash-href \
+    --no-ignore-empty-alt --ignore-files "/assets\/search\.html/"
+```
+
+html-proofer is the only gate — there is no test suite and no linter. It checks
+the landing page as well as the book, so a broken image path anywhere fails the
+build rather than reaching production.
+
+Analytics is emitted only when `JEKYLL_ENV=production`, so serving locally never
+reports into the live property.
+
 ---
 
-## Getting Started
+## Repository layout
 
-### Prerequisites
+```
+index.html                     Landing page (front matter + gitbook layout)
+ml-powered-text-recovery.html  Project write-up
+_book/                         Book pages — hand-written prose
+_exercises/  _solutions/       GENERATED from the book manuscript
+_data/toc.yml downloads.yml    GENERATED; errata.yml is hand-maintained
+_includes/                     Overrides of theme includes (see below)
+ep/assets/                     Book CSS, images, PDF, and generated .py files
+tools/                         Generators that read the LaTeX manuscript
+.github/workflows/pages.yml    Build, check, and deploy
+```
 
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- (Optional) Local web server for testing
+### Theme overrides
 
-### Local Development
+The site shadows three of the theme's includes by defining files of the same
+name in `_includes/`:
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/intuitai/intuitai.github.io.git
-   cd intuitai.github.io
-   ```
+- **`head.html`** — the upstream version emits a single site-wide description
+  and no canonical, Open Graph or Twitter tags. This one resolves them per page.
+- **`structured-data.html`** — JSON-LD, branched by page: the organization on
+  `/`, the book plus breadcrumbs under `/ep/`, a learning resource on exercise
+  pages.
+- **`mathjax.html`** — loads nothing. Upstream treats `$` as a maths delimiter,
+  which mangles the book's many prices ("$0.10 add up to $0.30").
 
-2. **Open locally**
-   - Simply open `index.html` in your web browser
-   - Or use a local server:
-   ```bash
-   # Python 3
-   python -m http.server 8000
+### Generated content
 
-   # Then visit http://localhost:8000
-   ```
+The book's exercises, solutions, contents and downloadable code are generated
+from a LaTeX manuscript that lives outside this repository:
 
-3. **Make changes**
-   - Edit `index.html` for content
-   - Pico.css provides all styling automatically
-   - Test changes locally
+```bash
+./tools/extract_exercises.py --manuscript ../manuscripts/everyday-programming
+./tools/generate_toc.py      --manuscript ../manuscripts/everyday-programming
+```
 
-4. **Deploy**
-   - Push to `main` branch
-   - GitHub Pages automatically deploys changes
-   - Visit https://intuitai.org to see live updates
+The generated output is committed, so the site builds without the manuscript.
+Do not hand-edit anything the generators write — fix the manuscript and re-run.
+`_book/` is *not* generated; those pages are prose and are edited directly.
+
+---
+
+## Deployment
+
+Pushing to `main` triggers
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml), which builds the
+site, runs html-proofer over it, and publishes to GitHub Pages.
+
+The build runs on Actions rather than Pages' built-in Jekyll, which supports
+neither collection `sort_by` nor `jekyll-remote-theme`. A failed run means
+intuitai.org stops updating — not just the book.
 
 ---
 
 ## Projects
 
-IntuitAI maintains several open-source projects:
+| Project | Language | What it does |
+|---|---|---|
+| [Model Gateway](https://github.com/intuitai/model-gateway) | Go | Intelligent routing and management of LLM requests across providers, with failover, cost optimization and caching |
+| [Reverb](https://github.com/intuitai/reverb) | Go | Semantic response cache with knowledge-aware invalidation; two-tier exact and similarity matching |
+| [Tangle](https://github.com/intuitai/tangle) | Python | Deadlock and livelock detection for multi-agent AI workflows, with LangGraph and OpenTelemetry support |
+| [Random Number MCP Server](https://github.com/intuitai/random-number-mcp-server) | Python | MCP server generating random numbers from national weather data as an entropy source |
+| [QuranLLM](https://github.com/intuitai/quranllm) | Python | LLM-powered semantic search of the Quran |
 
-1. **[Model Gateway](https://github.com/nobelk/model-gateway)** (Go)
-   - High-performance LLM request routing and management
-   - Multi-provider support with automatic failover
-   - Cost optimization and request caching
-
-2. **[Random Number MCP Server](https://github.com/nobelk/random-number-server)** (Python)
-   - MCP server for random number generation
-   - Uses weather data as entropy source
-   - Built with FastMCP framework
-
-3. **[QuranLLM](https://github.com/nobelk/quranllm)** (AI)
-   - LLM-powered Quran search application
-   - Semantic search capabilities
-   - Natural language processing
-
-Visit our [GitHub organization](https://github.com/intuitai) for more projects.
+More at the [GitHub organization](https://github.com/intuitai).
 
 ---
 
-## Development
+## Books
 
-### Design Philosophy
-
-The current website follows a minimalist approach:
-- **Content first**: Focus on information over elaborate design
-- **Framework defaults**: Use Pico.css styling without customization
-- **Minimal dependencies**: Only CDN-hosted CSS and two small JS files
-- **Fast and simple**: No build process, no package management
-
-### Legacy Files
-
-Some files from previous versions remain in the repository:
-- `styles.css` - Custom CSS from earlier version (not currently used)
-- `generate_images.py` and `generate_images_v2.py` - Image generation scripts for the previous design
-
-### Pico.css Integration
-
-The website uses Pico.css v2.1.1 for styling:
-- Loaded from jsdelivr CDN
-- Provides semantic HTML styling
-- Responsive design built-in
-- Light/dark theme support via JavaScript
+**[Everyday Programming, Volume I: Basics of Computer Programs](https://intuitai.org/ep/)**
+by Dr. Nobel Khandaker — a first course in Python for absolute beginners, built
+on nothing more than tenth-grade mathematics. Twenty-one chapters in seven
+parts, plus [445 *Find the Bug* exercises](https://intuitai.org/ep/book/exercises/)
+with full worked solutions, and a
+[free sample of Chapters 1–2](https://intuitai.org/ep/book/sample/).
 
 ---
 
 ## Contributing
 
-We welcome contributions to improve the IntuitAI website!
+Issues and pull requests are welcome. Before opening a PR, run the build and
+html-proofer commands above — CI runs the same checks and will reject a broken
+link or missing asset.
 
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Test locally
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
-
-### Contribution Guidelines
-
-- Follow the existing minimalist approach
-- Maintain responsive design principles
-- Test on multiple browsers and devices
-- Keep dependencies minimal
-- Update documentation as needed
+If your change touches the book's exercises, solutions or contents, edit the
+manuscript and re-run the generators rather than editing the generated pages.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Licensed under the Apache License 2.0 — see [LICENSE](LICENSE).
 
-Copyright © 2025 IntuitAI. All rights reserved.
+The text and code of *Everyday Programming* are likewise Apache 2.0.
+
+Icons by [Becris via Flaticon](https://www.flaticon.com/free-icons/machine-learning);
+the attribution on the landing page is a condition of that licence, not
+decoration.
 
 ---
 
 ## Contact
 
-- **Website**: [https://intuitai.org](https://intuitai.org)
-- **Email**: [nobel@intuitai.org](mailto:nobel@intuitai.org)
-- **GitHub**: [@intuitai](https://github.com/intuitai) | [@nobelk](https://github.com/nobelk)
-
----
-
-<div align="center">
-
-**Made with ❤️ by IntuitAI**
-
-[Website](https://intuitai.org) • [Projects](https://github.com/intuitai) • [Contact](mailto:nobel@intuitai.org)
-
-</div>
+- **Website**: [intuitai.org](https://intuitai.org)
+- **Email**: [nobel@outlook.com](mailto:nobel@outlook.com)
+- **GitHub**: [@intuitai](https://github.com/intuitai)
