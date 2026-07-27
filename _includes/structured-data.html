@@ -10,14 +10,20 @@ exercises) is noise that search engines discount:
     /ep/exercis* the exercise set as a LearningResource
     /eai/*       Everyday AI, plus a breadcrumb back to the landing page
 
-The organization node carries a stable @id so that the nodes referring to it
-within a page all mean the same entity. Be careful how much is expected of
-that: consumers resolve @id WITHIN a document, not across documents, so the two
-bare {"@id": ".../#book"} members the landing page lists are inert as a crawler
-signal -- a node object with no @type and no properties is simply dropped. They
-are kept as a cheap, valid statement of what belongs to the site, not because
-they carry the book's details over from the book's own pages. Anything a page
-actually needs asserted, it asserts itself.
+Stable @ids let the nodes within one page refer to each other. Be careful how
+much is expected of that: consumers resolve @id WITHIN a document, not across
+documents, so the two bare {"@id": ".../#book"} members the landing page lists
+are inert as a crawler signal -- a node object with no @type and no properties
+is simply dropped. They are kept as a cheap, valid statement of what belongs to
+the site, not because they carry the books' details over from the books' own
+pages. Anything a page needs asserted, it asserts itself.
+
+Which is why a book's `publisher` is written out in full on the book's own
+pages rather than pointed at #organization, and why it names Intramotev Press:
+the imprint on the books' copyright pages and in their visible page text.
+IntuitAI publishes the WEBSITE -- that is the WebSite node's publisher, on `/`,
+where #organization is defined. Two publishers, two things published, neither
+one guessing at the other across a document boundary.
 
 The two prefixes do not overlap as substrings -- "/eai/" does not contain
 "/ep/" -- so the two tests below are genuinely exclusive rather than
@@ -125,7 +131,24 @@ accidentally so.
         "jobTitle": "Lead Software Engineer",
         "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
       },
-      "publisher": { "@id": "{{ site.url }}/#organization" },
+      {%- comment -%}
+      The imprint, not #organization. Every page of this book that names a
+      publisher in its visible text names Intramotev Press -- the home page,
+      the errata page, and the "practical details" table in About the Book --
+      so pointing the markup at IntuitAI put two different publishers on one
+      page, one for readers and one for crawlers. IntuitAI remains the
+      publisher of the WEBSITE, which is what the WebSite node above says.
+
+      The same node, with the same @id, is emitted in the Everyday AI graph
+      below. Repeating a node under one @id is how JSON-LD says "the same
+      entity", and it keeps each page's graph self-contained.
+      {%- endcomment -%}
+      "publisher": {
+        "@type": "Organization",
+        "@id": "{{ site.url }}/#imprint",
+        "name": "Intramotev Press",
+        "url": "https://www.intramotev.com"
+      },
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
       "isAccessibleForFree": true,
       "audience": {
@@ -201,16 +224,12 @@ Revisit all four when the book is published, not before.
         "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
       },
       {%- comment -%}
-      The imprint, not the site's organization node. The visible page says
-      "forthcoming from Intramotev Press", and Google's guidance is that markup
-      must agree with what the reader sees -- pointing this at IntuitAI would
-      have put two different publishers on one page, one for readers and one for
-      crawlers.
-
-      Note /ep/ above still points its publisher at #organization while its own
-      page text also says Intramotev Press. That is the same defect, predating
-      this book, and is left alone here rather than quietly restructuring an
-      established page's markup.
+      The imprint, not the site's organization node -- the same node the
+      Everyday Programming graph above emits, under the same @id. The visible
+      page says "forthcoming from Intramotev Press", and Google's guidance is
+      that markup must agree with what the reader sees, so pointing this at
+      IntuitAI would put two different publishers on one page, one for readers
+      and one for crawlers.
       {%- endcomment -%}
       "publisher": {
         "@type": "Organization",

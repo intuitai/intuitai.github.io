@@ -262,6 +262,21 @@ in the remote theme, the same trick `mathjax.html` uses:
   site-level `@id` shared by both books — an `@id` under one book's path would
   model the same author as two people.
 
+  **Two publishers, deliberately.** A *book* is published by `#imprint`,
+  Intramotev Press — the name on both books' copyright pages and in their
+  visible page text. The *website* is published by `#organization`, IntuitAI.
+  Pointing a book at `#organization` is the easy mistake and it used to be
+  there: it puts two different publishers on one page, one for the reader and
+  one for the crawler, which is what Google's "markup must match visible
+  content" guidance is about.
+
+  Every `@id` a page references is now defined on that same page, except the two
+  bare `{"@id": ".../#book"}` members the landing page lists — kept as a cheap
+  statement of what belongs to the site, and inert by design, since consumers
+  resolve `@id` within a document rather than across one. Worth re-checking with
+  a script if you touch this file; a reference that resolves nowhere is easy to
+  introduce and invisible in the rendered page.
+
 Front matter a page can set, all optional:
 
 | Key | Effect |
