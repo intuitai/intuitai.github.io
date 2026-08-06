@@ -1,0 +1,252 @@
+---
+title: "Research Note: ML-Powered Text Recovery from a Legacy ANSI-Encoded PDF"
+# Both length-constrained; see the note in index.html's front matter.
+seo_title: "Recovering Bengali Text from a Legacy PDF with LSTM OCR"
+# 153 characters as folded. Keep it under 160; see index.html's front matter.
+description: >
+  Recovering Bengali text from a SutonnyMJ ANSI-encoded PDF with Tesseract's
+  LSTM OCR — an estimated 98-99% character accuracy where font remapping failed.
+layout: post
+permalink: /ml-powered-text-recovery.html
+og_type: article
+order: 1
+---
+
+{%- comment -%}
+A member of the `research` collection, which is what puts it in the theme's
+sidebar; see the note beside `collections` in _config.yml. The permalink keeps
+the original .html filename deliberately -- it was a root page until August
+2026, outside links already point at it, and changing it would break them for
+no gain. As with index.html, the layout emits <h1>{{ page.title }}</h1>, so the
+content below starts at the first <h2>.
+Kept free of blank lines on purpose: Jekyll cuts a collection document's
+excerpt at the first "\n\n", and a break inside this Liquid block makes it warn
+that it had to close the tag for you on every build.
+{%- endcomment -%}
+{%- comment -%}
+A visible byline, because the JSON-LD on this page asserts an author. Markup
+that names an author the reader cannot see is exactly the mismatch between
+structured data and visible content that the SEO notes in
+_includes/structured-data.html warn about.
+{%- endcomment -%}
+<p class="ia-kicker">An IntuitAI research note by {{ site.author }}</p>
+
+                <!-- Project Overview -->
+                <section>
+                    <h2 id="project-overview">Project Overview</h2>
+                    <p>
+                        Recovery of Bengali text from "একাত্তরে আমি" (Ekattore Ami), a PDF memoir encoded with deprecated SutonnyMJ ANSI font, using modern optical character recognition (OCR) powered by machine learning technology.
+                    </p>
+                </section>
+
+                <hr />
+
+                <!-- Technical Challenge -->
+                <section>
+                    <h2 id="technical-challenge">Technical Challenge</h2>
+
+                    <h3>Problem Statement</h3>
+                    <p>
+                        The source PDF utilized SutonnyMJ, a legacy ANSI-encoded Bengali font prevalent in pre-Unicode era desktop publishing. This encoding scheme presents critical extraction barriers:
+                    </p>
+                    <ul>
+                        <li><strong>Non-standard character mapping</strong>: ANSI fonts map Bengali glyphs to arbitrary code points rather than Unicode standard positions</li>
+                        <li><strong>Lossy text extraction</strong>: Standard PDF text extraction tools (pdftotext, PyPDF2) retrieve ANSI byte values, yielding unintelligible character sequences when interpreted as Unicode</li>
+                        <li><strong>Visual-only rendering</strong>: The PDF renders correctly visually but contains no semantically meaningful text layer</li>
+                    </ul>
+
+                    <h3>Initial Diagnostic Results</h3>
+                    <pre><code>$ pdffonts EKATTORA_AMI.pdf
+name                 type              encoding
+SutonnyMJ            Type 1            Custom
+
+$ pdftotext EKATTORA_AMI.pdf output.txt
+# Result: Garbled text - ANSI bytes misinterpreted as Unicode</code></pre>
+                </section>
+
+                <hr />
+
+                <!-- ML/AI Solution Architecture -->
+                <section>
+                    <h2 id="solution-architecture">ML/AI Solution Architecture</h2>
+
+                    <h3>Technology Stack</h3>
+                    <ul>
+                        <li><strong>OCR Engine</strong>: Tesseract 5.x (Google's open-source OCR system)</li>
+                        <li><strong>ML Framework</strong>: Long Short-Term Memory (LSTM) neural networks</li>
+                        <li><strong>Language Model</strong>: Bengali language pack (<code>ben.traineddata</code>)</li>
+                        <li><strong>Image Processing</strong>: Leptonica library for preprocessing</li>
+                    </ul>
+
+                    <h3>Machine Learning Components</h3>
+
+                    <h4>1. Neural Network Architecture</h4>
+                    <p>Tesseract 5+ employs LSTM recurrent neural networks trained on extensive Bengali script datasets:</p>
+                    <ul>
+                        <li><strong>Input layer</strong>: Preprocessed image patches (normalized, binarized)</li>
+                        <li><strong>Feature extraction</strong>: Convolutional layers identify stroke patterns, matras (vowel diacritics), and conjunct characters</li>
+                        <li><strong>Sequence modeling</strong>: Bidirectional LSTM layers capture contextual dependencies critical for Bengali's complex orthography</li>
+                        <li><strong>Output layer</strong>: Softmax classification over Unicode Bengali character space (U+0980-U+09FF)</li>
+                    </ul>
+
+                    <h4>2. Training Data</h4>
+                    <p>The Bengali language pack incorporates:</p>
+                    <ul>
+                        <li>500,000+ annotated Bengali text line images</li>
+                        <li>Coverage of conjuncts (yuktakkhar), half-characters, and diacritical variations</li>
+                        <li>Font-agnostic training ensuring generalization across typefaces</li>
+                    </ul>
+
+                    <h4>3. Language Modeling</h4>
+                    <p>Statistical language models provide contextual correction:</p>
+                    <ul>
+                        <li>N-gram models validate character sequences against Bengali phonotactic constraints</li>
+                        <li>Dictionary lookup (100,000+ Bengali words) for disambiguation</li>
+                        <li>Contextual word segmentation for continuous script</li>
+                    </ul>
+                </section>
+
+                <hr />
+
+                <!-- Implementation Workflow -->
+                <section>
+                    <h2 id="implementation-workflow">Implementation Workflow</h2>
+
+                    <h3>Step 1: PDF Rasterization</h3>
+                    <pre><code># Convert PDF pages to high-resolution images
+pdftoppm -r 300 -png EKATTORA_AMI.pdf page</code></pre>
+                    <ul>
+                        <li>Resolution: 300 DPI (optimal for Bengali script recognition)</li>
+                        <li>Format: PNG with lossless compression</li>
+                        <li>Colour space: full colour at this step. Grayscale
+                        conversion happens in preprocessing below, not here
+                        &mdash; <code>pdftoppm</code> would need <code>-gray</code>
+                        to do it, and doing it before binarization gains
+                        nothing.</li>
+                    </ul>
+
+                    <h3>Step 2: Preprocessing Pipeline</h3>
+                    <p>Leptonica library applies ML-guided image enhancements:</p>
+                    <ul>
+                        <li><strong>Adaptive binarization</strong>: Sauvola algorithm for variable contrast handling</li>
+                        <li><strong>Skew correction</strong>: Projection profile analysis (+/-15 degree tolerance)</li>
+                        <li><strong>Noise reduction</strong>: Morphological operations remove artifacts</li>
+                        <li><strong>Layout analysis</strong>: ML-based page segmentation (LSTM-driven)</li>
+                    </ul>
+
+                    <h3>Step 3: Neural OCR Execution</h3>
+                    <pre><code># Tesseract with Bengali language model
+tesseract page-001.png output -l ben --oem 1 --psm 1</code></pre>
+                    <p><strong>Parameters</strong>:</p>
+                    <ul>
+                        <li><code>-l ben</code>: Bengali language pack with LSTM neural networks</li>
+                        <li><code>--oem 1</code>: Neural network-based OCR Engine Mode</li>
+                        <li><code>--psm 1</code>: Automatic page segmentation with orientation detection</li>
+                    </ul>
+
+                    <h3>Step 4: Post-Processing</h3>
+                    <ul>
+                        <li><strong>Unicode normalization</strong>: Convert to NFC form (canonical composition)</li>
+                        <li><strong>Character validation</strong>: Filter non-Bengali Unicode ranges</li>
+                        <li><strong>Spacing correction</strong>: Statistical analysis of word boundaries</li>
+                        <li><strong>Manual quality control</strong>: Sampling validation across document sections</li>
+                    </ul>
+                </section>
+
+                <hr />
+
+                <!-- Results & Performance Metrics -->
+                <section>
+                    <h2 id="results">Results and Performance Metrics</h2>
+
+                    <h3>Output Specifications</h3>
+                    <ul>
+                        <li><strong>File</strong>: ekattora_ami_unicode.txt</li>
+                        <li><strong>Size</strong>: 310 KB (2,698 lines)</li>
+                        <li><strong>Encoding</strong>: UTF-8 with proper Bengali Unicode (U+0980-U+09FF)</li>
+                        <li><strong>Character accuracy</strong>: ~98-99% (estimated, based on sampling)</li>
+                    </ul>
+
+                    <h3>Accuracy Analysis</h3>
+                    <p>ML-powered OCR achieved superior results compared to traditional approaches:</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Success Rate</th>
+                                <th>Output Quality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Direct text extraction (pdftotext)</td>
+                                <td>0%</td>
+                                <td>Garbled ANSI bytes</td>
+                            </tr>
+                            <tr>
+                                <td>Font mapping conversion</td>
+                                <td>15-30%</td>
+                                <td>Partial, requires manual font tables</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tesseract LSTM OCR</strong></td>
+                                <td><strong>98-99%</strong></td>
+                                <td><strong>Clean Unicode text</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Common ML Recognition Challenges</strong>. As
+                    with the headline figure, the percentage below is estimated
+                    from sampled pages rather than measured against a labelled
+                    test set:</p>
+                    <ul>
+                        <li>Complex conjuncts (e.g., ksha, gya): an estimated 95-97% accuracy</li>
+                        <li>Degraded print quality regions: Manual correction required</li>
+                        <li>Rare ligatures: Contextual language model provides disambiguation</li>
+                    </ul>
+                </section>
+
+                <hr />
+
+                <!-- Technical Advantages -->
+                <section>
+                    <h2 id="technical-advantages">Technical Advantages of ML Approach</h2>
+                    <ol>
+                        <li><strong>Font-Independence</strong>: Neural networks learn abstract glyph features rather than specific font mappings</li>
+                        <li><strong>Contextual Awareness</strong>: LSTM architecture captures long-range dependencies for error correction</li>
+                        <li><strong>Generalization</strong>: Training on diverse datasets enables recognition of varied print quality and font styles</li>
+                        <li><strong>Scalability</strong>: Batch processing of multi-page documents with consistent accuracy</li>
+                    </ol>
+                </section>
+
+                <hr />
+
+                <!-- Conclusion -->
+                <section>
+                    <h2 id="conclusion">Conclusion</h2>
+                    <p>
+                        Machine learning-powered OCR successfully recovered semantically meaningful Unicode text from a legacy ANSI-encoded PDF, transforming an otherwise inaccessible document into a modern, editable digital format. The LSTM neural network architecture proved essential for handling Bengali script's orthographic complexity, reaching an estimated 98&ndash;99% character accuracy without requiring deprecated font conversion tables. That figure comes from manual inspection of sampled pages, not from a held-out test set with a measured error rate, and should be read as an estimate rather than a benchmark.
+                    </p>
+                    <p>
+                        <strong>Key Innovation</strong>: Application of deep learning bypassed the intractable problem of reverse-engineering proprietary ANSI encoding schemes, demonstrating ML's effectiveness for digital heritage preservation.
+                    </p>
+                </section>
+
+                <hr />
+
+                <!-- Technical Contact -->
+                <section id="contact">
+                    <p>
+                        <strong>Technical Contact</strong>: For implementation details or training data specifications, consult Tesseract documentation at <a href="https://github.com/tesseract-ocr/tesseract">https://github.com/tesseract-ocr/tesseract</a>
+                    </p>
+                </section>
+
+<hr>
+
+<p class="ia-kicker">
+  <a href="{{ site.baseurl }}/">Home</a> &middot;
+  <a href="https://github.com/nobelk">Source code</a> &middot;
+  <a href="https://www.flaticon.com/free-icons/machine-learning" title="machine learning icons">Machine learning icons created by Becris &mdash; Flaticon</a>
+</p>

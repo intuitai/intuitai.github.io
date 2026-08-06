@@ -1,145 +1,406 @@
 ---
 title: IntuitAI
-seo_title: "IntuitAI | Open-Source Agentic AI Research & Real-World AI Solutions"
+# seo_title and description are length-constrained, and the constraint is the
+# whole reason they exist: a <title> is cut around 60 characters in a results
+# page and a meta description around 155-160. The first draft of this page ran
+# to 89 and 358, so the description rendered ending mid-word in
+# "implementa...". Count before you lengthen either. (Comments here must be
+# YAML `#` comments -- Jekyll parses front matter as YAML before Liquid ever
+# runs, so a {% comment %} block here is a YAML syntax error, not a comment.)
+seo_title: "IntuitAI — Agentic AI Venture Studio"
 layout: post
 permalink: /
 og_type: website
 image_alt: "IntuitAI logo"
 description: >
-  IntuitAI is a non-profit research organization building open-source, practical
-  AI tools for real-world problems: intelligent LLM routing, semantic caching,
-  and deadlock detection for multi-agent workflows. We also publish two books —
-  Everyday Programming, a free first book on Python for absolute beginners, and
-  Everyday AI, a practical guide to using AI well.
+  A venture studio incubating agentic and multi-agent AI startups. We build the
+  reliability layer autonomous systems lack, in the open, and spin it out.
 ---
 
 {%- comment -%}
-The landing page is a themed Jekyll page, not the hand-written Pico.css file it
-used to be. Two consequences worth knowing before editing:
+The landing page. Two theme constraints worth knowing before editing:
 
-1. It now has front matter, so Jekyll no longer copies it through untouched.
-   The <head>, the sidebar and the surrounding chrome all come from the
-   jekyll-gitbook layout; only the content below is this file's own.
-2. The theme's body.html already emits <h1>{{ page.title }}</h1>, so this
-   content must NOT open with its own h1 -- doing so would give the page two.
+1. The gitbook layout's body.html already emits <h1>{{ page.title }}</h1>, so
+   this content must NOT open with its own h1 -- doing so gives the page two.
+2. The sidebar's in-page contents is built from h2 elements only (see `toc` in
+   _config.yml), so every section below is an h2 with a stable id. Demoting one
+   to h3 removes it from the navigation.
 
-Styling uses the .ep-* classes from ep/assets/css/site.css, which is loaded
-site-wide through `extra_css`, so the landing page and the book share one
-stylesheet rather than each carrying its own.
+Styling uses the .ia-* classes from styles/site.css, loaded site-wide through
+`extra_css`. That file was ep/assets/css/site.css with an `ep-` prefix until
+August 2026, when the two books were removed from the domain and the prefix
+stopped meaning anything.
+
+On the project list below: every entry is a real, public repository, and the
+maturity tag on each one is load-bearing. Four of them (oculon, cogmux,
+agentic-workflow, quranllm) are a README and a thesis rather than a working
+system, and are tagged "Design stage" for that reason. Do not promote one
+without checking the repository first -- an investor who clicks through to an
+empty repo after reading a paragraph of capabilities has learned something
+about the studio, not about the project.
 {%- endcomment -%}
 
-<div class="ep-hero">
-  <div class="ep-hero__logo">
+<div class="ia-hero">
+  <div class="ia-hero__logo">
     <img src="{{ site.baseurl }}/img/neural.png" alt="IntuitAI logo" width="120" height="120">
   </div>
-  <div class="ep-hero__body">
-    <p class="ep-kicker">Non-profit AI research</p>
-    <p class="ep-tagline"><strong>Open-Source Agentic AI Research &amp; Real-World Applications</strong></p>
-    <p>We build open-source tools for problems people actually have &mdash; routing and
-    caching LLM traffic, keeping multi-agent workflows from deadlocking, recovering
-    text nobody can read any more &mdash; and we publish what we learn, free.</p>
-    <div class="ep-actions">
-      <a class="ep-btn ep-btn--primary" href="#books">Read our books</a>
-      <a class="ep-btn ep-btn--ghost" href="https://github.com/intuitai">Browse the code</a>
-    </div>
-  </div>
-</div>
-
-<h2 id="mission">Mission</h2>
-
-<p>
-  Our mission is to democratize artificial intelligence by developing
-  open-source, practical solutions that tackle real-world challenges.
-  We believe AI should be accessible to everyone, and we advance this
-  goal through collaborative research, innovative tools, and
-  community-driven development.
-</p>
-
-<h2 id="projects">Our AI Research &amp; Open-Source Projects</h2>
-
-<p>
-  Discover our initiatives in agentic AI, LLM infrastructure, and practical
-  machine learning. We build open-source tools that solve real-world problems
-  through collaborative research and community-driven development.
-</p>
-
-<ul>
-  <li><a href="https://github.com/intuitai/model-gateway">Model Gateway</a> &mdash; A high-performance gateway for intelligent routing and management of Large Language Model requests across multiple providers. Features automatic failover, cost optimization, and request caching.</li>
-
-  <li><a href="https://github.com/intuitai/reverb">Reverb</a> &mdash; A semantic response cache with knowledge-aware invalidation for LLM applications. Provides two-tier caching (exact match and semantic similarity) to reduce redundant LLM calls, with automatic invalidation when the underlying knowledge base changes. Built in Go with pluggable backends and standalone HTTP/gRPC servers.</li>
-
-  <li><a href="https://github.com/intuitai/tangle">Tangle</a> &mdash; Deadlock and livelock detection for multi-agent AI workflows. Monitors agent interactions in real time, detects when agents are stuck or looping without progress, and triggers configurable resolution actions. Works as an embedded Python library or standalone FastAPI sidecar with native LangGraph and OpenTelemetry support.</li>
-
-  <li><a href="https://github.com/intuitai/random-number-mcp-server">Random Number MCP Server</a> &mdash; An MCP server that generates random numbers using national weather data as entropy sources. Built with the FastMCP framework and includes comprehensive test coverage.</li>
-
-  <li><a href="https://github.com/intuitai/quranllm">QuranLLM</a> &mdash; An LLM-powered search application for the Quran that leverages artificial intelligence to enable intelligent querying and semantic search of Islamic scripture.</li>
-
-  <li>Recovering text from obsolete PDF &mdash; Recovering Bengali text from a legacy PDF memoir encoded with the proprietary SutonnyMJ ANSI font by using Tesseract 5.x's LSTM neural-network OCR on rasterized page images, achieving 98&ndash;99% accuracy. The machine learning approach bypassed the intractable problem of reverse-engineering ANSI-to-Unicode font mappings by treating visual glyph recognition as an image classification task, successfully converting the document to clean UTF-8 Unicode text in the <a href="https://archive.org/details/ekattore-ami">pdf book</a>. <a href="{{ site.baseurl }}/ml-powered-text-recovery.html">Technical report</a></li>
-</ul>
-
-<h2 id="books">Books</h2>
-
-<p>We publish educational material alongside our software &mdash; two books, both
-by Dr. Nobel Khandaker, both readable in part or in full for free.</p>
-
-<div class="ep-hero">
-  <div class="ep-hero__cover">
-    <a href="{{ site.baseurl }}/ep/"><img src="{{ site.baseurl }}/ep/assets/img/cover-small.png" alt="Cover of Everyday Programming, Volume I: Basics of Computer Programs"></a>
-  </div>
-  <div class="ep-hero__body">
-    <p class="ep-tagline"><a href="{{ site.baseurl }}/ep/"><strong>Everyday Programming</strong></a>
-    <span class="ep-tag ep-tag--free">Free</span></p>
-    <p>Volume I: Basics of Computer Programs, by Dr. Nobel Khandaker. A first
-    course in Python for absolute beginners, built on nothing more than
-    tenth-grade mathematics. Twenty-one chapters in seven parts, plus
-    <a href="{{ site.baseurl }}/ep/book/exercises/">{{ site.data.downloads.exercise_count }} <em>Find the Bug</em> exercises</a>
-    with full worked solutions, and a
-    <a href="{{ site.baseurl }}/ep/book/sample/">free sample of Chapters 1&ndash;2</a>.
-    Text and code licensed under Apache 2.0.</p>
-    <div class="ep-actions">
-      <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/ep/">Start reading</a>
-      <a class="ep-btn ep-btn--ghost" href="{{ site.baseurl }}/ep/book/table-of-contents/">See the contents</a>
-    </div>
-  </div>
-</div>
-
-<ul class="ep-facts">
-  <li><b>21</b><span>chapters, in seven parts</span></li>
-  <li><b>{{ site.data.downloads.exercise_count }}</b><span>Find the Bug exercises</span></li>
-  <li><b>{{ site.data.downloads.program_count }}</b><span>runnable Python programs</span></li>
-  <li><b>Free</b><span>to read, in full, online</span></li>
-</ul>
-
-<div class="ep-hero">
-  <div class="ep-hero__cover">
-    <a href="{{ site.baseurl }}/eai/"><img src="{{ site.baseurl }}/eai/assets/img/cover-small.png" alt="Cover of Everyday AI, Volume I: Basics of Artificial Intelligence"></a>
-  </div>
-  <div class="ep-hero__body">
-    <p class="ep-tagline"><a href="{{ site.baseurl }}/eai/"><strong>Everyday AI</strong></a>
-    <span class="ep-tag">Forthcoming</span></p>
-    <p>Volume I: Basics of Artificial Intelligence. A practical guide to using AI
-    well for people with no technical background &mdash; what a language model
-    actually is, how to ask it for what you want, and how to check the answer
-    before you trust it. Seven chapters, and a
-    <a href="{{ site.baseurl }}/eai/book/sample/">free sample of Chapters 1&ndash;2</a>
-    to download now.</p>
-    <div class="ep-actions">
-      <a class="ep-btn ep-btn--primary" href="{{ site.baseurl }}/eai/">Read about the book</a>
-      <a class="ep-btn ep-btn--ghost" href="{{ site.baseurl }}/eai/book/table-of-contents/">See the contents</a>
+  <div class="ia-hero__body">
+    <p class="ia-kicker">Agentic AI venture studio</p>
+    <p class="ia-tagline"><strong>We build the reliability layer that multi-agent AI is missing &mdash; and turn it into companies.</strong></p>
+    <p>Agentic systems fail for boring reasons. Two agents wait on each other
+    for ever. A loop runs a hundred iterations without making progress. One
+    agent trusts a peer that has been wrong all week, and nobody can say
+    afterwards which one caused the bad answer. Those are coordination
+    problems, not intelligence problems &mdash; which makes them tractable,
+    testable, and worth building a company around.</p>
+    <p>IntuitAI researches those failure modes, publishes reference
+    implementations in the open, and incubates the ones that find real users
+    into focused startups.</p>
+    <div class="ia-actions">
+      <a class="ia-btn ia-btn--primary" href="#portfolio">See the portfolio</a>
+      <a class="ia-btn ia-btn--ghost" href="#contact">Talk to us</a>
     </div>
   </div>
 </div>
 
 {%- comment -%}
+Every number here is countable from the project list further down this page.
+Keep it that way: "4 active research threads" sat here in the first draft and
+matched nothing on the page, which is the kind of figure a reader checks
+first. If you change a project's tag, change the count.
+{%- endcomment -%}
+<ul class="ia-facts">
+  <li><b>13</b><span>open-source repositories</span></li>
+  <li><b>9</b><span>with working code</span></li>
+  <li><b>Go + Python</b><span>primary languages</span></li>
+  <li><b>Apache 2.0</b><span>licence on all 13</span></li>
+</ul>
+
+<h2 id="thesis">Investment thesis</h2>
+
+<p>
+  The industry spent three years making individual models better and has spent
+  the last one discovering that a system of agents is not the sum of its
+  models. The bottleneck has moved: from what a model can do in a single turn,
+  to what a fleet of them does over hours, across tools, under partial
+  failure.
+</p>
+
+<p>
+  That shift creates an infrastructure gap with the shape investors recognise
+  &mdash; the same shape distributed systems had in 2012, before tracing,
+  circuit breaking and service meshes became products. Multi-agent deployments
+  today have no equivalent of a deadlock detector, no calculus for how much one
+  agent should trust another, no attribution trail from a wrong answer back to
+  the agent that caused it, and no cache that understands that yesterday's
+  answer is stale because the underlying document changed.
+</p>
+
+<p>
+  We are building those primitives one at a time, in public, as working
+  software rather than position papers. Each is a plausible company on its own;
+  together they are a coherent stack, and a studio holding several of them is
+  better positioned than one betting on any single primitive being the winner.
+</p>
+
+<h2 id="model">How we incubate</h2>
+
+<p>
+  The studio runs one pipeline, and a project only advances when it clears the
+  gate in front of it. Nothing graduates on enthusiasm.
+</p>
+
+<ol class="ia-steps">
+  <li>
+    <h3>Characterise the failure</h3>
+    <p>Start from a defect people actually hit, reproduced under test, not from
+    a market map. Tangle exists because agent graphs deadlock; MultiTrust
+    exists because a scalar reliability score cannot express "I have not seen
+    enough of this agent to judge it."</p>
+  </li>
+  <li>
+    <h3>Build a reference implementation in the open</h3>
+    <p>Apache 2.0, CI, and coverage from the first commit. Publishing the
+    reference implementation is how the studio gets its evidence: adoption of
+    something free is a cheaper and more honest demand signal than a survey.</p>
+  </li>
+  <li>
+    <h3>Test the demand, not the demo</h3>
+    <p>Integrations with the frameworks teams already run &mdash; LangGraph,
+    OpenTelemetry, MCP, the OpenAI API surface &mdash; so that trying a project
+    costs an afternoon rather than a migration. Usage, issues and integration
+    requests are the gate.</p>
+  </li>
+  <li>
+    <h3>Spin out under stealth</h3>
+    <p>A project that clears the gate becomes a separate venture with its own
+    team and its own commercial surface, while the reference implementation
+    stays open. Ventures currently in build are unannounced.</p>
+  </li>
+</ol>
+
+<h2 id="rigor">How we work</h2>
+
+<p>
+  The studio's advantage is not speed of shipping; it is that its claims
+  survive contact with a reviewer. Four habits do most of that work, and they
+  are visible in the repositories rather than asserted here.
+</p>
+
+<ul>
+  <li><strong>Determinism is a test, not an aspiration.</strong> llmsim gates
+  every one of its four parallelism tiers on same-seed determinism: the same
+  master seed must produce identical results on any backend, any worker count,
+  any Python build. A parallel simulator that cannot promise that is not
+  usable as evidence for anything.</li>
+
+  <li><strong>The maths comes before the API.</strong> MultiTrust models
+  inter-agent trust as a Subjective Logic opinion &mdash; belief, disbelief and
+  uncertainty as three separate quantities &mdash; because a single 0-to-1
+  score silently conflates "this agent is unreliable" with "I have no evidence
+  either way." The formalism is the differentiator; the surface area stays
+  small.</li>
+
+  <li><strong>Failures are asserted loudly.</strong> Tangle ships with a 98%
+  test-coverage badge and detectors for wait-for cycles, resource cycles and
+  livelocks, because a monitor that misses the condition it exists to catch is
+  worse than no monitor.</li>
+
+  <li><strong>We publish the limitations with the result.</strong> Our
+  reference implementation of the 2025 Duan et al. shortest-path algorithm says
+  in its own README that it does <em>not</em> reproduce the paper's
+  O(m&nbsp;log<sup>2/3</sup>&nbsp;n) bound, and lists the three substitutions
+  that cost it. Work that overstates itself is worth less than work that
+  doesn't, and it is easier to fund the second kind.</li>
+</ul>
+
+<h2 id="portfolio">Incubator projects</h2>
+
+<p>
+  All thirteen are public and Apache 2.0. Maturity is labelled, and the labels
+  are meant to be checkable: <span class="ia-tag ia-tag--shipping">Shipping</span>
+  means working code under CI, <span class="ia-tag">Active</span> means a
+  working core under development, and
+  <span class="ia-tag ia-tag--early">Design stage</span> means a repository
+  holding a problem statement and not yet a system. Nine of the thirteen have
+  working code; four do not, and say so.
+</p>
+
+<h3>Agent reliability and trust</h3>
+
+<ul class="ia-cards">
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/tangle">Tangle</a>
+    <span class="ia-tag ia-tag--shipping">Shipping</span></p>
+    <span class="ia-card__meta">Python &middot; Apache 2.0</span>
+    <p>Deadlock and livelock detection for multi-agent workflows. Watches agent
+    interactions in real time, distinguishes an agent that is stuck from one
+    looping without progress, and fires configurable resolution actions. Runs
+    embedded as a Python library or as a standalone FastAPI sidecar, with
+    LangGraph decorators and language-agnostic OpenTelemetry ingest.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/multitrust">MultiTrust</a>
+    <span class="ia-tag ia-tag--shipping">Shipping</span></p>
+    <span class="ia-card__meta">Python &middot; Apache 2.0</span>
+    <p>A trust framework SDK for multi-agent systems, grounded in Subjective
+    Logic. Trust between agents is an opinion &mdash; belief, disbelief,
+    uncertainty &mdash; rather than a score, so a system can act on the
+    difference between distrust and ignorance. Zero hard runtime dependencies;
+    LangGraph, OpenAI, Anthropic, MCP, Redis and OpenTelemetry live behind
+    extras.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/oculon">Oculon</a>
+    <span class="ia-tag ia-tag--early">Design stage</span></p>
+    <span class="ia-card__meta">Research thread &middot; Apache 2.0 &middot; no implementation yet</span>
+    <p>The thread: observability and attribution for agent fleets &mdash;
+    tracing a wrong or expensive outcome back to the specific agent, tool call
+    and context that produced it. Intended as the complement to Tangle, which
+    catches a workflow that has stopped rather than one that finished badly.
+    The repository currently holds the problem statement, not a system.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/cogmux">Cogmux</a>
+    <span class="ia-tag ia-tag--early">Design stage</span></p>
+    <span class="ia-card__meta">Research thread &middot; Apache 2.0 &middot; no implementation yet</span>
+    <p>The thread: a cognitive multiplexer routing work across slow, fast and
+    reactive agents, on the premise that most agent latency and cost is
+    deliberative reasoning aimed at problems a reflex would have solved. A
+    premise we intend to test, not a result we have.</p>
+  </li>
+</ul>
+
+<h3>LLM infrastructure</h3>
+
+<ul class="ia-cards">
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/reverb">Reverb</a>
+    <span class="ia-tag ia-tag--shipping">Shipping</span></p>
+    <span class="ia-card__meta">Go &middot; Apache 2.0</span>
+    <p>A two-tier semantic response cache with knowledge-aware invalidation.
+    Tier one is an exact SHA-256 match; tier two is embedding cosine
+    similarity. Its distinguishing feature is that it tracks which source
+    documents fed each cached answer and invalidates on change-data-capture
+    from those sources, so the cache goes stale when the knowledge does. Ships
+    as a Go library, an HTTP and gRPC service, and a drop-in reverse proxy for
+    any OpenAI-compatible upstream, with opt-in PII redaction before hashing.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/random-number-server">Random Number MCP Server</a>
+    <span class="ia-tag">Active</span></p>
+    <span class="ia-card__meta">Python &middot; Apache 2.0</span>
+    <p>An MCP server that seeds random-number generation from national weather
+    data. Small by design, and the studio's working reference for shipping,
+    containerising and testing a Model Context Protocol server end to end.</p>
+  </li>
+</ul>
+
+<h3>Simulation and workflow research</h3>
+
+<ul class="ia-cards">
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/llmsim">llmsim</a>
+    <span class="ia-tag">Active</span></p>
+    <span class="ia-card__meta">Python &middot; Apache 2.0 &middot; approaching 1.0</span>
+    <p>A parallel discrete-event simulation library for Python 3.14+. Keeps the
+    generator-as-process model that made SimPy usable and rebuilds the rest for
+    free-threaded Python: parallel Monte Carlo replications, conservative
+    single-run PDES with model-provided lookahead, in-run compute offload, and
+    a master-seed tree that makes every result reproducible across backends.
+    The studio uses it to model agent fleets before building them.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/agentic-workflow">Agentic Workflow</a>
+    <span class="ia-tag ia-tag--early">Design stage</span></p>
+    <span class="ia-card__meta">Apache 2.0 &middot; reference notes, not a library</span>
+    <p>Working notes on agent architecture &mdash; where a tool-calling agent
+    genuinely beats a chatbot, and what state management, validation and error
+    handling a reliable one actually needs. The written form of the studio's
+    house position on agent design; there is nothing here to install.</p>
+  </li>
+</ul>
+
+<h3>Applied systems and engineering foundations</h3>
+
+<ul class="ia-cards">
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/RAGsearch">RAGsearch</a>
+    <span class="ia-tag">Active</span></p>
+    <span class="ia-card__meta">Python + Flutter &middot; Apache 2.0</span>
+    <p>A private retrieval-augmented search assistant: PDFs chunked, embedded
+    and indexed into Qdrant, queried semantically, answered by a local model
+    through Ollama. Runs entirely on your own machine &mdash; no document
+    leaves it &mdash; which is the deployment shape the studio wanted to
+    understand before proposing it to anyone.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/quranllm">QuranLLM</a>
+    <span class="ia-tag ia-tag--early">Design stage</span></p>
+    <span class="ia-card__meta">Applied retrieval &middot; Apache 2.0 &middot; no implementation yet</span>
+    <p>Planned: LLM-powered semantic search over the Quran. Chosen as a
+    deliberate stress test rather than a product &mdash; a domain where a
+    confident wrong answer is unacceptable is the right place to work on
+    retrieval grounding and refusal behaviour.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/resilience4py">resilience4py</a>
+    <span class="ia-tag ia-tag--shipping">Shipping</span></p>
+    <span class="ia-card__meta">Python &middot; Apache 2.0</span>
+    <p>A Python port of resilience4j: circuit breaker, rate limiter, retry and
+    bulkhead as composable decorators, async-native and modular. The fault
+    tolerance patterns that made microservices survivable, in the language most
+    agent code is written in.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/claude-tools">claude-tools</a>
+    <span class="ia-tag">Active</span></p>
+    <span class="ia-card__meta">Python &middot; Apache 2.0</span>
+    <p>The studio's internal coding-agent skills, published: automated code
+    review, design review, security scanning and documentation generation. How
+    a small team runs several projects at this depth.</p>
+  </li>
+  <li>
+    <p class="ia-card__head"><a href="https://github.com/nobelk/single-source-shortest-path">BMSSP shortest paths</a>
+    <span class="ia-tag">Active</span></p>
+    <span class="ia-card__meta">Python &middot; Apache 2.0</span>
+    <p>A reference implementation of the recursive partitioning structure from
+    Duan et al. (2025), the first deterministic algorithm to break the sorting
+    barrier for directed real-weighted shortest paths. Written for
+    understanding and as a correctness oracle; its README states plainly which
+    substitutions keep it from reaching the paper's asymptotic bound.</p>
+  </li>
+</ul>
+
+<h2 id="stealth">Ventures in stealth</h2>
+
+<div class="ia-note">
+  <p>Projects that clear the demand gate are spun out as separate ventures.
+  Those currently in build are unannounced &mdash; no names, no numbers, and
+  nothing on this page should be read as a claim about their traction. The
+  reference implementations they grew out of stay open source and stay listed
+  above.</p>
+  <p>Founders, operators and investors who want detail under NDA should
+  <a href="#contact">get in touch</a>.</p>
+</div>
+
+<h2 id="research">Research notes</h2>
+
+<p>
+  We publish what we learn, including the parts that did not work.
+</p>
+
+<ul>
+  <li><a href="{{ site.baseurl }}/ml-powered-text-recovery.html">ML-powered text
+  recovery from a legacy ANSI-encoded PDF</a> &mdash; recovering Bengali text
+  from a memoir typeset in the proprietary SutonnyMJ ANSI font, by treating
+  glyph recognition as an image classification problem with Tesseract 5.x's
+  LSTM OCR, at an estimated 98&ndash;99% character accuracy &mdash; estimated
+  from sampled pages, not measured against a held-out set, and the note says
+  so. The point of the write-up is the
+  decision, not the tool: reverse-engineering the ANSI-to-Unicode mapping was
+  the obvious route and was intractable, and sidestepping it produced the clean
+  UTF-8 text now published in the
+  <a href="https://archive.org/details/ekattore-ami">Internet Archive
+  edition</a>.</li>
+</ul>
+
+<h2 id="contact">Work with us</h2>
+
+<p>
+  <strong>Investors.</strong> We are happy to walk through the pipeline, the
+  gate criteria and what is behind the stealth line. Email
+  <a href="mailto:{{ site.email }}">{{ site.email }}</a>.
+</p>
+
+<p>
+  <strong>Founders and operators.</strong> If you are working on agent
+  reliability, inter-agent trust, or inference efficiency and want a studio
+  rather than a term sheet, the same address reaches us.
+</p>
+
+<p>
+  <strong>Engineers.</strong> Every project above takes issues and pull
+  requests. Start at
+  <a href="https://github.com/nobelk">github.com/nobelk</a>, where the
+  repositories live, or at the
+  <a href="https://github.com/intuitai">IntuitAI organization</a>.
+</p>
+
+<p>
+  IntuitAI is led by <a href="https://www.linkedin.com/in/nobelkhandaker">Dr.
+  Nobel Khandaker</a>, whose doctoral research was in multi-agent systems.
+</p>
+
+{%- comment -%}
 The Flaticon credit is a licence condition on the logo, not decoration: the
-free tier requires visible attribution wherever the icon is used. It lived in
-the old Pico.css footer, and the gitbook theme's footer.html emits scripts and
-nothing visible, so it has to be carried here instead. Do not remove it while
-img/neural.png is still in use.
+free tier requires visible attribution wherever the icon is used. The gitbook
+theme's footer.html emits scripts and nothing visible, so it has to be carried
+in page content. Do not remove it while img/neural.png is still in use.
 {%- endcomment -%}
 <hr>
 
-<p class="ep-kicker">
+<p class="ia-kicker">
   <a href="https://github.com/intuitai">Source code</a> &middot;
   <a href="https://www.flaticon.com/free-icons/machine-learning" title="machine learning icons">Machine learning icons created by Becris &mdash; Flaticon</a>
 </p>

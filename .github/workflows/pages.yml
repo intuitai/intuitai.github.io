@@ -1,10 +1,12 @@
 name: Build and deploy to GitHub Pages
 
-# Built by Actions rather than by Pages' own Jekyll runner: the site uses
-# collection `sort_by` and the jekyll-remote-theme plugin, neither of which the
-# built-in build supports. The deploy publishes the whole domain -- the IntuitAI
-# landing page as well as the books at /ep and /eai -- so a red run here means
-# intuitai.org stops updating, not just a book.
+# Built by Actions rather than by Pages' own Jekyll runner, for two reasons
+# that are both about the built-in build pinning the `github-pages` gem
+# (Jekyll 3.10 at the time of writing): collection `sort_by` is a Jekyll 4
+# feature and would be silently ignored, and there is nowhere in the built-in build to run html-proofer as a
+# gate. jekyll-remote-theme is NOT one of the reasons -- Pages does support it,
+# and this comment claimed otherwise for a year. A red run here means
+# intuitai.org stops updating.
 
 on:
   push:
@@ -44,9 +46,10 @@ jobs:
           JEKYLL_ENV: production
         run: bundle exec jekyll build --trace
 
-      # Checks the landing page and its project pages too, not just the book --
-      # they are hand-written HTML that Jekyll copies through untouched, so a
-      # broken image path in them would otherwise reach production unnoticed.
+      # The only gate the repository has. Note what it does NOT do: --disable-external
+      # means outbound links are never fetched, so a dead github.com link passes
+      # here. Three of them sat on the landing page for months. Open off-site
+      # links yourself.
       #
       # assets/search.html is skipped: it is generated entirely by the theme and
       # its layout renders the header title as <a href=".">, which resolves to a

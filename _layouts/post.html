@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+{%- comment -%}
+Shadows the remote theme's _layouts/post.html. Copied verbatim from
+sighingnow/jekyll-gitbook and changed in exactly two places, both marked
+"INTUITAI" below -- diff this against upstream when the theme updates, the same
+obligation _includes/head.html carries.
+
+The change: upstream's prev-page fallback assumes no page is ever the site
+root. When `page.previous` is empty it emits `rel="prev"` and a visible
+"Previous page" arrow pointing at `{{site.baseurl}}/` -- which, on the landing
+page, is the page you are already on. A self-referential prev link and an arrow
+that navigates nowhere are a poor look on the one page investors land on, so
+both are suppressed at the root.
+{%- endcomment -%}
+<html lang="en" >
+    <head>
+
+        {%- include head.html -%}
+
+        {% comment %}INTUITAI: no rel=prev on the site root -- it pointed at itself.{% endcomment %}
+        {% if page.previous %}
+            <link rel="prev" href="{{site.baseurl}}{{page.previous.url}}" />
+        {% elsif page.url != "/" %}
+            <link rel="prev" href="{{site.baseurl}}/" />
+        {% endif %}
+
+        {% if page.next %}
+            <link rel="next" href="{{site.baseurl}}{{page.next.url}}" />
+        {% endif %}
+    </head>
+    <body>
+        <div class="book">
+
+            {%- include toc-date.html -%}
+
+            <div class="book-body">
+                <div class="book-header" role="navigation">
+                    <!-- Title -->
+                    <h1>
+                        <i class="fa fa-circle-o-notch fa-spin"></i>
+                        {% if page.title %}
+                            <a href="." >{{ page.title | escape }}</a>
+                        {% else %}
+                            <a href="." >{{ site.title | escape }}</a>
+                        {% endif %}
+                    </h1>
+                </div>
+
+                <div class="body-inner">
+                    {%- include body.html -%}
+
+                    {% comment %}INTUITAI: no prev arrow on the site root -- it navigated to itself.{% endcomment %}
+                    {% if page.previous %}
+                        <a href="{{site.baseurl}}{{page.previous.url}}" class="navigation navigation-prev navigation-unique" aria-label="Previous page: {{page.previous.title}}">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    {% elsif page.url != "/" %}
+                        <a href="{{site.baseurl}}/" class="navigation navigation-prev navigation-unique" aria-label="Previous page: {{site.title}}">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    {% endif %}
+
+                    {% if page.next %}
+                        <a href="{{site.baseurl}}{{page.next.url}}" class="navigation navigation-next navigation-unique" aria-label="Next page: {{page.next.title}}">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <script>
+            var gitbook = gitbook || [];
+            gitbook.push(function() {
+                gitbook.page.hasChanged({%- include metadata-post.json.tpl -%});
+            });
+            </script>
+        </div>
+
+        {%- include footer.html -%}
+
+    </body>
+</html>

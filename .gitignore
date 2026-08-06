@@ -151,8 +151,9 @@ _site/
 .bundle/
 vendor/
 
-# Python bytecode from tools/. generate_toc.py imports extract_exercises, so
-# merely regenerating a book's contents used to rewrite a *tracked* .pyc and
-# leave the tree dirty; that file is now untracked.
+# Python bytecode. The repository has no Python in it any more -- the LaTeX
+# generators under tools/ went with the two books in August 2026 -- but these
+# rules cost nothing and stop a stray .pyc from a scratch script being
+# committed the way one once was.
 __pycache__/
 *.pyc

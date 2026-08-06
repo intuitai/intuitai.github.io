@@ -1,45 +1,52 @@
 # Jekyll configuration for intuitai.org.
 #
-# The domain hosts three things that share a hostname and, since July 2026, a
-# theme as well:
+# The domain is one small site, rendered end to end through the jekyll-gitbook
+# remote theme:
 #
-#   /      the IntuitAI landing page and its project pages
-#   /ep/   "Everyday Programming", a book site
-#   /eai/  "Everyday AI", a second book site
+#   /                                the IntuitAI landing page
+#   /ml-powered-text-recovery.html   a research write-up
 #
-# All three now render through the jekyll-gitbook remote theme. This is a change:
-# the landing page and ml-powered-text-recovery.html used to be hand-written
-# Pico.css files with no front matter, which made Jekyll copy them through
-# byte-for-byte, and the book was the only themed part of the domain. They now
-# carry front matter and `layout: post`, so they get the theme's chrome and the
-# book's sidebar. Pico.css is no longer used anywhere on the site.
+# It used to host two books as well, at /ep/ and /eai/, each with its own
+# collections, generated pages and JSON-LD branch. Those were removed in August
+# 2026 when the organization was repositioned as a venture studio; the books
+# moved out of this repository entirely. If you are reading a comment elsewhere
+# that mentions /ep/ or /eai/, it is stale -- say so or delete it.
 #
-# Files WITHOUT front matter are still copied through untouched -- img/,
-# resource/, ep/assets/, eai/assets/ and robots.txt rely on it.
+# Files WITHOUT front matter are still copied through byte-for-byte -- img/,
+# resource/, styles/ and robots.txt rely on it.
 #
-# baseurl is empty, not "/ep". Setting it to "/ep" is the obvious-looking move
-# and it breaks the theme: a remote theme's assets are copied to _site/assets,
-# and every stylesheet link the theme emits is prefixed with baseurl, so the CSS
-# would be requested from /ep/assets/gitbook/ and 404. The book's location lives
-# in the permalinks instead -- see tools/extract_exercises.py --prefix.
+# baseurl is empty and must stay that way. intuitai.org is an apex custom
+# domain served from the root, and a remote theme's assets are copied into
+# _site/assets with every stylesheet link the theme emits prefixed by baseurl,
+# so a non-empty value would send the CSS requests somewhere that 404s.
 
 title:      IntuitAI
-longtitle:  "Everyday Programming: Basics of Computer Programs"
+longtitle:  "IntuitAI — Agentic AI Venture Studio"
 author:     Dr. Nobel Khandaker
 email:      nobel@outlook.com
+# Kept under 160 characters on purpose. This is the fallback for every page's
+# meta/OG/Twitter description, and _includes/head.html truncates at 300 -- but
+# search engines cut a description around 155-160, so anything longer is
+# written for nobody. A 358-character version of this line rendered on the
+# homepage ending mid-word in "implementa...".
 description: >
-  IntuitAI is a non-profit research organization building open-source, practical
-  AI tools. It also publishes two books: Everyday Programming, a first book on
-  programming for absolute beginners, and Everyday AI, a practical guide to
-  using AI well.
+  A research-driven venture studio incubating agentic and multi-agent AI
+  startups, building the reliability layer autonomous systems are missing.
 
 url:      "https://intuitai.org"
 baseurl:  ""
 
 # Default share image and favicon, both consumed by the _includes/head.html
-# override. A page overrides the image with `image:` in its front matter -- the
-# book's pages point at the cover instead (see `defaults` below).
+# override. A page overrides the image with `image:` in its front matter.
+#
+# The dimensions are declared because the logo is SQUARE (512x512). Twitter's
+# summary_large_image card is built for a 2:1 image and letterboxes or crops a
+# square one, so head.html defaults to the plain `summary` card and a page with
+# a genuinely wide image opts in with `twitter_card: summary_large_image`.
 image:        /img/neural.png
+image_width:  512
+image_height: 512
+image_type:   image/png
 favicon_path: img/neural.png
 
 # Emitted by _includes/head.html, and only when JEKYLL_ENV=production, so a
@@ -49,14 +56,9 @@ google_analytics: G-KB7KB9JGJB
 remote_theme: sighingnow/jekyll-gitbook
 
 # The theme labels the first sidebar entry with site.title and links it to the
-# site root, which here is the IntuitAI landing page rather than the book. That
-# is why site.title is "IntuitAI" and not the book's name: the entry then reads
-# as what it actually is, a way back out to the parent site. The book's own home
-# page is the first entry in the `book` collection below.
+# site root, which here is the landing page.
 
-# In-page contents, rendered into the sidebar under the active page. Held to
-# level 2 on purpose: exercise pages carry an h3 per exercise, and Chapter 20
-# alone has 130 of them -- listing those would bury the navigation.
+# In-page contents, rendered into the sidebar under the active page.
 toc:
   enabled: true
   h_min: 2
@@ -77,81 +79,63 @@ syntax_highlighter_style: colorful
 
 # Relative to the site root and without a leading slash -- the theme prefixes
 # baseurl itself for any value that is not an absolute URL.
+#
+# Deliberately NOT under assets/: jekyll-remote-theme copies the theme's own
+# assets/ tree into _site/assets/, and mixing site files into that tree is
+# exactly the collision this file warns about above. The path was
+# ep/assets/css/site.css until the books were removed.
 extra_css:
-  - ep/assets/css/site.css
+  - styles/site.css
 
 collections:
-  # The book's own pages: the pitch, the contents, the sample, the errata.
-  book:
+  # Research write-ups. A collection rather than loose root pages so the theme's
+  # sidebar has something to list: toc-date.html walks `ordered_collections` and
+  # prints each page's title, and with no collection at all the sidebar renders
+  # as a single orphaned link back to the site root.
+  #
+  # Each page sets its own `permalink` in front matter, which overrides the one
+  # below. /ml-powered-text-recovery.html keeps its original URL that way --
+  # outside links already point at it and there is nothing to gain by moving it.
+  research:
     output: true
-    permalink: /ep/book/:path/
-    sort_by: order
-  # One page per chapter that carries Find the Bug exercises.
-  exercises:
-    output: true
-    permalink: /ep/exercises/:path/
-    sort_by: order
-  # Worked solutions, one page per chapter. Deliberately absent from
-  # ordered_collections below: the pages are built and linked from each
-  # exercise, but listing all twelve again in the sidebar would double the
-  # navigation and invite readers past the exercises they came for.
-  solutions:
-    output: true
-    permalink: /ep/solutions/:path/
-    sort_by: order
-  # "Everyday AI" -- the second book. Its own collection rather than more
-  # entries in `book`, because the sidebar renders one collection as one
-  # divider-separated group (see the note on ordered_collections below), and
-  # the two books should not be interleaved.
-  eaibook:
-    output: true
-    permalink: /eai/book/:path/
+    permalink: /research/:path/
     sort_by: order
 
-# Drives the sidebar, in this order. Worth knowing what the theme actually
-# does with it: toc-date.html walks these labels, prints every page's TITLE as
-# a flat list item, and separates one collection from the next with a
-# `<li class="divider">`. The collection's own name is never shown.
-#
-# Two consequences:
-#
-#   * eaibook comes after exercises, not between book and exercises, so that
-#     Everyday Programming's pages and its twelve exercise chapters stay
-#     adjacent instead of being split by the other book.
-#   * The Everyday AI pages carry the book's name in their titles ("Everyday
-#     AI: Errata", not "Errata"). With no group labels, a bare "Errata" would
-#     appear twice in one sidebar with nothing to tell the two apart. That
-#     verbosity is deliberate -- do not tidy it away.
+# Drives the sidebar, in this order. The theme prints every page's TITLE as a
+# flat list item and separates one collection from the next with a
+# `<li class="divider">`; the collection's own name is never shown, so a page
+# title has to stand on its own in that column.
 ordered_collections:
-  - book
-  - exercises
-  - eaibook
+  - research
 
-# Link previews for a book's pages should show that book's cover rather than
-# the IntuitAI logo. Set per collection because Jekyll's `defaults` match on
-# scope, and a collection is exactly the set of pages belonging to one book.
+# The theme generates assets/search.html, and it is the one page on the domain
+# nobody should ever arrive at from a search engine: it is a search box with a
+# JSON index, it inherits the site title and the site description verbatim, and
+# left alone it went into the sitemap advertising itself as `index, follow`
+# with a self-canonical -- a duplicate of the homepage's metadata on a page
+# with no content.
+#
+# `sitemap: false` is read by jekyll-sitemap; `noindex` is our own flag, read
+# by the _includes/head.html override. Scoping `defaults` at the theme's page
+# works because a remote theme's pages are ordinary site pages by the time
+# defaults are applied.
 defaults:
-  - scope: { path: "", type: "book" }
-    values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
-  - scope: { path: "", type: "exercises" }
-    values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
-  - scope: { path: "", type: "solutions" }
-    values: { image: /ep/assets/img/cover.png, image_alt: "Cover of Everyday Programming, Volume I: Basics of Computer Programs" }
-  - scope: { path: "", type: "eaibook" }
-    values: { image: /eai/assets/img/cover.png, image_alt: "Cover of Everyday AI, Volume I: Basics of Artificial Intelligence" }
+  - scope: { path: "assets/search.html" }
+    values:
+      sitemap: false
+      noindex: true
 
 exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
-  - tools
   - README.md
   - CLAUDE.md
   - LICENSE
   - .github
   - .claude
-  # The Markdown draft the project page was written from. It has no front
-  # matter, so it used to be copied through and served verbatim at
+  # The Markdown draft the research page was written from. It has no front
+  # matter, so it would otherwise be copied through and served verbatim at
   # /ml-powered-text-recovery.md -- a near-duplicate of the rendered page,
   # unreferenced and absent from the sitemap, but reachable and indexable.
   # Kept in the repository, no longer published.

@@ -1,40 +1,45 @@
 {%- comment -%}
 JSON-LD, emitted per page rather than site-wide.
 
-Each area of the domain gets its own graph, because describing a book on a page
-about LLM routing (or the organization's software on a page of Python
-exercises) is noise that search engines discount:
+    /            the studio, its founder, and the flagship open-source projects
+    /research/*  the write-up as an Article, plus a breadcrumb back to /
 
-    /            the organization, its open-source projects, and both books
-    /ep/*        Everyday Programming, plus a breadcrumb back to the landing page
-    /ep/exercis* the exercise set as a LearningResource
-    /eai/*       Everyday AI, plus a breadcrumb back to the landing page
+This file carried two Book graphs and an imprint node until August 2026, when
+the books were removed from the domain and IntuitAI was repositioned as a
+venture studio. Both branches are gone; so is the `#imprint` node, which
+existed only because a book's publisher (Intramotev Press) differed from the
+website's. Nothing on the domain is published by anyone but IntuitAI now, so
+there is one publisher again.
 
-Stable @ids let the nodes within one page refer to each other. Be careful how
-much is expected of that: consumers resolve @id WITHIN a document, not across
-documents, so the two bare {"@id": ".../#book"} members the landing page lists
-are inert as a crawler signal -- a node object with no @type and no properties
-is simply dropped. They are kept as a cheap, valid statement of what belongs to
-the site, not because they carry the books' details over from the books' own
-pages. Anything a page needs asserted, it asserts itself.
+Two rules the previous version established, still worth keeping:
 
-Which is why a book's `publisher` is written out in full on the book's own
-pages rather than pointed at #organization, and why it names Intramotev Press:
-the imprint on the books' copyright pages and in their visible page text.
-IntuitAI publishes the WEBSITE -- that is the WebSite node's publisher, on `/`,
-where #organization is defined. Two publishers, two things published, neither
-one guessing at the other across a document boundary.
+  * Every @id a page references must be DEFINED on that same page. Consumers
+    resolve @id within a document, not across documents, so a bare
+    {"@id": "..."} member pointing at a node defined elsewhere is inert -- a
+    node object with no @type and no properties is simply dropped.
+  * Markup must agree with what the reader sees. The organization is described
+    here the way the landing page describes it in prose: a venture studio, not
+    a non-profit, which is what both said until this rewrite.
 
-The two prefixes do not overlap as substrings -- "/eai/" does not contain
-"/ep/" -- so the two tests below are genuinely exclusive rather than
-accidentally so.
+The project nodes below are a deliberate subset. The landing page lists
+thirteen repositories; four of them are a README and a thesis, and marking a
+design-stage repository up as SoftwareSourceCode with a capability description
+would say more to a crawler than the repository would support. Only projects
+with working code under CI appear here. If you promote one on the page, promote
+it here too -- and not before.
+
+The URLs are github.com/nobelk/*, which is where the code actually lives. They
+were github.com/intuitai/* and three of those 404ed; html-proofer never caught
+it because CI runs with --disable-external. If the repositories are ever moved
+under the organization, change them here, on the landing page, and in README.md
+together.
+
+Each project's `author` is the FOUNDER and its `producer` is the organization,
+which is the same distinction the repository URLs make: the code is written and
+owned by a person, and incubated by the studio. Naming IntuitAI as `author`
+claimed corporate authorship of repositories that sit under a personal account
+-- markup asserting something the linked page immediately contradicts.
 {%- endcomment -%}
-
-{%- assign is_ep = false -%}
-{%- if page.url contains "/ep/" or page.url == "/ep" -%}{%- assign is_ep = true -%}{%- endif -%}
-
-{%- assign is_eai = false -%}
-{%- if page.url contains "/eai/" or page.url == "/eai" -%}{%- assign is_eai = true -%}{%- endif -%}
 
 {%- if page.url == "/" -%}
 <script type="application/ld+json">
@@ -42,14 +47,66 @@ accidentally so.
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["ResearchOrganization", "NGO"],
+      "@type": "Organization",
       "@id": "{{ site.url }}/#organization",
       "name": "IntuitAI",
       "url": "{{ site.url }}/",
       "logo": "{{ site.url }}/img/neural.png",
-      "description": "A non-profit research organization building open-source, practical AI tools for real-world problems, and publishing educational material on programming and on artificial intelligence.",
-      "sameAs": ["https://github.com/intuitai"],
-      "knowsAbout": ["Agentic AI", "Large Language Models", "Multi-agent systems", "AI Safety", "Machine Learning", "Programming education"]
+      "image": "{{ site.url }}/img/neural.png",
+      "email": "{{ site.email }}",
+      "slogan": "The reliability layer for multi-agent AI.",
+      "description": "A research-driven venture studio incubating startups in agentic and multi-agent AI. IntuitAI researches how agent systems fail — deadlock, livelock, misplaced inter-agent trust, unattributable errors, stale cached knowledge — publishes reference implementations in the open, and spins the ones that find adoption out as ventures.",
+      "sameAs": [
+        "https://github.com/intuitai",
+        "https://github.com/nobelk"
+      ],
+      "knowsAbout": [
+        "Agentic AI",
+        "Multi-agent systems",
+        "Large language models",
+        "Agent reliability engineering",
+        "Deadlock and livelock detection",
+        "Computational trust",
+        "AI observability",
+        "Semantic caching",
+        "Discrete-event simulation"
+      ],
+      "founder": { "@id": "{{ site.url }}/#founder" },
+      {%- comment -%}
+      The landing page ends in a "Work with us" section addressed to investors,
+      founders and engineers, all pointed at one address. Saying so in the
+      markup is the difference between an email address on a page and a
+      declared route to the organization.
+      {%- endcomment -%}
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "investor relations",
+          "email": "{{ site.email }}",
+          "url": "{{ site.url }}/#contact",
+          "availableLanguage": "English"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "business development",
+          "email": "{{ site.email }}",
+          "url": "{{ site.url }}/#contact",
+          "availableLanguage": "English"
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "{{ site.url }}/#founder",
+      "name": "Dr. Nobel Khandaker",
+      "jobTitle": "Founder",
+      "url": "{{ site.url }}/",
+      "worksFor": { "@id": "{{ site.url }}/#organization" },
+      "knowsAbout": ["Multi-agent systems", "Agentic AI", "Distributed systems", "Software engineering"],
+      "sameAs": [
+        "https://www.linkedin.com/in/nobelkhandaker",
+        "https://github.com/nobelk"
+      ]
     },
     {
       "@type": "WebSite",
@@ -59,221 +116,130 @@ accidentally so.
       "inLanguage": "en",
       "publisher": { "@id": "{{ site.url }}/#organization" }
     },
+    {%- comment -%}
+    The page itself. Without this node the graph describes an organization and
+    a website but never says that THIS document is the organization's home
+    page -- `about` and `mainEntity` are what carry that, and a crawler
+    otherwise has to infer it from the URL.
+    {%- endcomment -%}
     {
-      "@type": "SoftwareApplication",
-      "name": "Model Gateway",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "All",
-      "url": "https://github.com/intuitai/model-gateway",
-      "description": "High-performance gateway for intelligent routing and management of LLM requests across multiple providers.",
-      "author": { "@id": "{{ site.url }}/#organization" }
+      "@type": "WebPage",
+      "@id": "{{ site.url }}/#webpage",
+      "url": "{{ site.url }}/",
+      "name": {{ page.seo_title | default: page.title | jsonify }},
+      "description": {{ site.description | strip_html | normalize_whitespace | strip | jsonify }},
+      "inLanguage": "en",
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#organization" },
+      "mainEntity": { "@id": "{{ site.url }}/#organization" },
+      "primaryImageOfPage": "{{ site.url }}/img/neural.png"
     },
     {
-      "@type": "SoftwareApplication",
+      "@type": "SoftwareSourceCode",
+      "@id": "{{ site.url }}/#tangle",
       "name": "Tangle",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "All",
-      "url": "https://github.com/intuitai/tangle",
-      "description": "Deadlock and livelock detection for multi-agent AI workflows with real-time monitoring.",
-      "author": { "@id": "{{ site.url }}/#organization" }
-    },
-    {
-      "@type": "SoftwareApplication",
-      "name": "Reverb",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "All",
-      "url": "https://github.com/intuitai/reverb",
-      "description": "Semantic response cache with knowledge-aware invalidation for LLM applications.",
-      "author": { "@id": "{{ site.url }}/#organization" }
-    },
-    {
-      "@type": "SoftwareApplication",
-      "name": "QuranLLM",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "All",
-      "url": "https://github.com/intuitai/quranllm",
-      "description": "LLM-powered semantic search application for the Quran.",
-      "author": { "@id": "{{ site.url }}/#organization" }
-    },
-    { "@id": "{{ site.url }}/ep/#book" },
-    { "@id": "{{ site.url }}/eai/#book" }
-  ]
-}
-</script>
-{%- endif -%}
-
-{%- if is_ep -%}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Book",
-      "@id": "{{ site.url }}/ep/#book",
-      "name": "Everyday Programming",
-      "alternateName": "Everyday Programming, Volume I: Basics of Computer Programs",
-      "url": "{{ site.url }}/ep/",
-      "bookEdition": "First Edition",
-      "inLanguage": "en",
-      "image": "{{ site.url }}/ep/assets/img/cover.png",
-      "abstract": "A first course in Python for absolute beginners, built on tenth-grade mathematics. Twenty-one chapters in seven parts, with {{ site.data.downloads.exercise_count }} Find the Bug exercises and full worked solutions.",
-      "author": {
-        "@type": "Person",
-        {%- comment -%}
-        Site-level @id, not /ep/#author: the same person writes both books, and
-        an @id under one book's path would model them as two different people.
-        The Everyday AI graph defines this node again, identically -- repeating
-        a node with a matching @id is how JSON-LD says "the same entity", and
-        it means each page's graph stands on its own.
-        {%- endcomment -%}
-        "@id": "{{ site.url }}/#author",
-        "name": "Dr. Nobel Khandaker",
-        "jobTitle": "Lead Software Engineer",
-        "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
-      },
-      {%- comment -%}
-      The imprint, not #organization. Every page of this book that names a
-      publisher in its visible text names Intramotev Press -- the home page,
-      the errata page, and the "practical details" table in About the Book --
-      so pointing the markup at IntuitAI put two different publishers on one
-      page, one for readers and one for crawlers. IntuitAI remains the
-      publisher of the WEBSITE, which is what the WebSite node above says.
-
-      The same node, with the same @id, is emitted in the Everyday AI graph
-      below. Repeating a node under one @id is how JSON-LD says "the same
-      entity", and it keeps each page's graph self-contained.
-      {%- endcomment -%}
-      "publisher": {
-        "@type": "Organization",
-        "@id": "{{ site.url }}/#imprint",
-        "name": "Intramotev Press",
-        "url": "https://www.intramotev.com"
-      },
+      "codeRepository": "https://github.com/nobelk/tangle",
+      "programmingLanguage": "Python",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "isAccessibleForFree": true,
-      "audience": {
-        "@type": "Audience",
-        "audienceType": "Beginners learning to program, self-taught learners, career changers, students and teachers"
-      },
-      "teaches": ["Python programming", "Problem solving", "Debugging", "Software testing", "Data structures"]
+      "description": "Deadlock and livelock detection for multi-agent AI workflows. Monitors agent interactions in real time, distinguishes stuck agents from agents looping without progress, and triggers configurable resolution actions. Runs as an embedded Python library or a FastAPI sidecar, with LangGraph decorators and OpenTelemetry ingest.",
+      "author": { "@id": "{{ site.url }}/#founder" },
+      "producer": { "@id": "{{ site.url }}/#organization" }
     },
     {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "IntuitAI", "item": "{{ site.url }}/" },
-        { "@type": "ListItem", "position": 2, "name": "Everyday Programming", "item": "{{ site.url }}/ep/" }
-        {%- if page.url != "/ep/" -%}
-        ,{ "@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }}, "item": "{{ page.url | absolute_url }}" }
-        {%- endif -%}
-      ]
+      "@type": "SoftwareSourceCode",
+      "@id": "{{ site.url }}/#multitrust",
+      "name": "MultiTrust",
+      "codeRepository": "https://github.com/nobelk/multitrust",
+      "programmingLanguage": "Python",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "description": "A trust framework SDK for multi-agent AI systems grounded in Subjective Logic, modelling trust between agents as a belief/disbelief/uncertainty opinion rather than a scalar score, so a system can distinguish distrust from insufficient evidence.",
+      "author": { "@id": "{{ site.url }}/#founder" },
+      "producer": { "@id": "{{ site.url }}/#organization" }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "{{ site.url }}/#reverb",
+      "name": "Reverb",
+      "codeRepository": "https://github.com/nobelk/reverb",
+      "programmingLanguage": "Go",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "description": "A two-tier semantic response cache for LLM applications with knowledge-aware invalidation: exact SHA-256 matching, embedding cosine similarity, and change-data-capture on the source documents that fed each cached answer. Ships as a Go library, an HTTP and gRPC service, and an OpenAI-compatible reverse proxy.",
+      "author": { "@id": "{{ site.url }}/#founder" },
+      "producer": { "@id": "{{ site.url }}/#organization" }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "{{ site.url }}/#llmsim",
+      "name": "llmsim",
+      "codeRepository": "https://github.com/nobelk/llmsim",
+      "programmingLanguage": "Python",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "description": "A parallel discrete-event simulation library for Python 3.14+, offering parallel Monte Carlo replications, conservative single-run PDES with model-provided lookahead, in-run compute offload, and a master-seed tree that makes every result reproducible across backends and worker counts.",
+      "author": { "@id": "{{ site.url }}/#founder" },
+      "producer": { "@id": "{{ site.url }}/#organization" }
     }
-    {%- if page.collection == "exercises" -%}
-    ,{
-      "@type": "LearningResource",
-      "name": {{ page.title | jsonify }},
-      "url": "{{ page.url | absolute_url }}",
-      "learningResourceType": "Exercise set",
-      "educationalLevel": "Beginner",
-      "teaches": "Debugging Python programs",
-      "inLanguage": "en",
-      "isAccessibleForFree": true,
-      "isPartOf": { "@id": "{{ site.url }}/ep/#book" },
-      "author": { "@id": "{{ site.url }}/#author" }
-    }
-    {%- endif -%}
   ]
 }
 </script>
 {%- endif -%}
 
 {%- comment -%}
-Everyday AI. Deliberately thinner than the Everyday Programming graph above,
-and every omission is a fact rather than an oversight:
+Research write-ups. Article rather than ScholarlyArticle: these are engineering
+notes with a reproducible method, not peer-reviewed publications, and claiming
+the stronger type would be the same kind of overreach the studio's own pages
+argue against.
 
-  * No `isbn`. The manuscript still carries LaTeX's example ISBN with a
-    "replace this with your own" comment beside it. Publishing that number
-    would be publishing a wrong one.
-  * No `datePublished`, and `workExample` rather than `isAccessibleForFree:
-    true` on the book itself. The book is not published; the two sample
-    chapters are what is free, and the graph says exactly that.
-  * No `license`. Everyday Programming is Apache 2.0 and says so; this book's
-    copyright page reserves all rights.
-
-Revisit all four when the book is published, not before.
+datePublished is omitted rather than guessed, and the key is `date_published`
+rather than `date` for a reason worth knowing: **Jekyll gives every collection
+document a `date` whether or not its front matter has one**, falling back to
+the file's modification time. Guarding on `page.date` therefore never fails --
+it silently published the build timestamp as the article's publication date on
+every deploy. Only an explicit `date_published` counts here.
 {%- endcomment -%}
-{%- if is_eai -%}
+{%- if page.collection == "research" -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Book",
-      "@id": "{{ site.url }}/eai/#book",
-      "name": "Everyday AI",
-      "alternateName": "Everyday AI, Volume I: Basics of Artificial Intelligence",
-      "url": "{{ site.url }}/eai/",
-      "bookEdition": "First Edition",
+      "@type": "Article",
+      "@id": "{{ page.url | absolute_url }}#article",
+      "headline": {{ page.title | jsonify }},
+      "description": {{ page.description | default: site.description | strip_html | normalize_whitespace | strip | jsonify }},
+      "url": "{{ page.url | absolute_url }}",
       "inLanguage": "en",
-      "image": "{{ site.url }}/eai/assets/img/cover.png",
-      "abstract": "A practical guide to artificial intelligence for readers with no technical background: what a large language model actually does, how to prompt Claude, ChatGPT and Gemini well, and how to verify an answer before trusting it. Seven chapters.",
+      "isAccessibleForFree": true,
+      {%- if page.date_published %}
+      "datePublished": "{{ page.date_published | date_to_xmlschema }}",
+      {%- endif %}
       "author": {
         "@type": "Person",
-        "@id": "{{ site.url }}/#author",
-        "name": "Dr. Nobel Khandaker",
-        "jobTitle": "Lead Software Engineer",
-        "sameAs": ["https://www.linkedin.com/in/nobelkhandaker", "https://github.com/nobelk"]
+        "@id": "{{ site.url }}/#founder",
+        "name": "{{ site.author }}",
+        "sameAs": [
+          "https://www.linkedin.com/in/nobelkhandaker",
+          "https://github.com/nobelk"
+        ]
       },
-      {%- comment -%}
-      The imprint, not the site's organization node -- the same node the
-      Everyday Programming graph above emits, under the same @id. The visible
-      page says "forthcoming from Intramotev Press", and Google's guidance is
-      that markup must agree with what the reader sees, so pointing this at
-      IntuitAI would put two different publishers on one page, one for readers
-      and one for crawlers.
-      {%- endcomment -%}
       "publisher": {
         "@type": "Organization",
-        "@id": "{{ site.url }}/#imprint",
-        "name": "Intramotev Press",
-        "url": "https://www.intramotev.com"
-      },
-      "audience": {
-        "@type": "Audience",
-        "audienceType": "Readers new to artificial intelligence, students, teachers, professionals with no technical background"
-      },
-      "teaches": ["Prompting", "Verifying AI output", "Large language models", "AI literacy", "Responsible use of AI"],
-      {%- comment -%}
-      hasPart, not workExample. schema.org defines workExample as an example,
-      instance, realization or edition of a work -- "the paperback edition, first
-      edition, or e-book". A two-chapter extract is not a realization of the
-      book; it is a piece of it, and calling it an edition would tell a crawler
-      that Everyday AI is available free as a 19-page ebook. That is exactly the
-      kind of overclaim the omissions above are there to avoid.
-
-      The url is the PDF itself rather than the page about it, because
-      encodingFormat describes THIS node: application/pdf on a node pointing at
-      an HTML landing page would be a contradiction.
-      {%- endcomment -%}
-      "hasPart": {
-        "@type": "Book",
-        "@id": "{{ site.url }}/eai/book/sample/#sample",
-        "name": "Everyday AI — Chapters 1 and 2 (free sample)",
-        "url": "{{ site.url }}/eai/assets/pdf/everyday-ai-sample-chapters-1-2.pdf",
-        "bookFormat": "https://schema.org/EBook",
-        "encodingFormat": "application/pdf",
-        "numberOfPages": 19,
-        "inLanguage": "en",
-        "isAccessibleForFree": true
+        "@id": "{{ site.url }}/#organization",
+        "name": "IntuitAI",
+        "url": "{{ site.url }}/",
+        "logo": "{{ site.url }}/img/neural.png"
       }
     },
+    {%- comment -%}
+    Two levels, not three. There is no research index page to sit in the
+    middle: the write-ups are listed in a section of the landing page. A
+    "Research" rung pointing back at {{ site.url }}/ would repeat position 1
+    under a different label, which is a worse trail than a short one.
+    {%- endcomment -%}
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "IntuitAI", "item": "{{ site.url }}/" },
-        { "@type": "ListItem", "position": 2, "name": "Everyday AI", "item": "{{ site.url }}/eai/" }
-        {%- if page.url != "/eai/" -%}
-        ,{ "@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }}, "item": "{{ page.url | absolute_url }}" }
-        {%- endif -%}
+        { "@type": "ListItem", "position": 2, "name": {{ page.title | jsonify }}, "item": "{{ page.url | absolute_url }}" }
       ]
     }
   ]

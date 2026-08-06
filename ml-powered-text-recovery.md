@@ -66,7 +66,9 @@ pdftoppm -r 300 -png EKATTORA_AMI.pdf page
 ```
 - Resolution: 300 DPI (optimal for Bengali script recognition)
 - Format: PNG with lossless compression
-- Color space: Grayscale conversion for preprocessing efficiency
+- Colour space: full colour at this step. Grayscale conversion happens in
+  preprocessing below, not here — `pdftoppm` would need `-gray` to do it, and
+  doing it before binarization gains nothing.
 
 ### **Step 2: Preprocessing Pipeline**
 Leptonica library applies ML-guided image enhancements:
@@ -112,7 +114,7 @@ ML-powered OCR achieved superior results compared to traditional approaches:
 | **Tesseract LSTM OCR** | **98-99%** | **Clean Unicode text** |
 
 **Common ML Recognition Challenges**:
-- Complex conjuncts (e.g., ক্ষ, জ্ঞ): 95-97% accuracy
+- Complex conjuncts (e.g., ক্ষ, জ্ঞ): an estimated 95-97% accuracy — estimated from sampled pages, as with the headline figure, not measured against a labelled test set
 - Degraded print quality regions: Manual correction required
 - Rare ligatures: Contextual language model provides disambiguation
 
@@ -129,7 +131,7 @@ ML-powered OCR achieved superior results compared to traditional approaches:
 
 ## **Conclusion**
 
-Machine learning-powered OCR successfully recovered semantically meaningful Unicode text from a legacy ANSI-encoded PDF, transforming an otherwise inaccessible document into a modern, editable digital format. The LSTM neural network architecture proved essential for handling Bengali script's orthographic complexity, achieving near-human-level recognition accuracy without requiring deprecated font conversion tables.
+Machine learning-powered OCR successfully recovered semantically meaningful Unicode text from a legacy ANSI-encoded PDF, transforming an otherwise inaccessible document into a modern, editable digital format. The LSTM neural network architecture proved essential for handling Bengali script's orthographic complexity, reaching an estimated 98–99% character accuracy without requiring deprecated font conversion tables. That figure comes from manual inspection of sampled pages, not from a held-out test set with a measured error rate, and should be read as an estimate rather than a benchmark.
 
 **Key Innovation**: Application of deep learning bypassed the intractable problem of reverse-engineering proprietary ANSI encoding schemes, demonstrating ML's effectiveness for digital heritage preservation.
 

@@ -116,9 +116,27 @@ some scrapers truncate at it.
 
 <!-- ===================== SEO: additions over the upstream theme ===================== -->
 
+{%- comment -%}
+`noindex` is a page-level opt-out, set through `defaults` in _config.yml for
+the theme's generated assets/search.html. That page is a search box with no
+content of its own, and it was previously advertising itself as indexable
+while carrying the homepage's title and description verbatim.
+{%- endcomment -%}
+{%- if page.noindex %}
+<meta name="robots" content="noindex, follow">
+{%- else %}
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="googlebot" content="index, follow">
+{%- endif %}
 <link rel="canonical" href="{{ seo_url }}">
+
+{%- comment -%}
+Share image metadata. The alt text falls back to the site title rather than
+being emitted only when a page sets `image_alt`: an image with no alt in a
+share card is the same accessibility failure it is in the page body, and the
+default image is the logo on every page that does not override it.
+{%- endcomment -%}
+{%- assign seo_image_alt = page.image_alt | default: site.title -%}
 
 <!-- Open Graph -->
 <meta property="og:type" content="{% if page.og_type %}{{ page.og_type }}{% elsif page.collection %}article{% else %}website{% endif %}">
@@ -129,39 +147,67 @@ some scrapers truncate at it.
 <meta property="og:locale" content="en_US">
 {%- if seo_image %}
 <meta property="og:image" content="{{ seo_image | absolute_url }}">
-{%- if page.image_alt %}
-<meta property="og:image:alt" content="{{ page.image_alt | escape }}">
+<meta property="og:image:alt" content="{{ seo_image_alt | escape }}">
+{%- comment -%}
+Dimensions and MIME type describe whichever image was actually chosen, so they
+have to be taken from the SAME source as the image itself -- all three from the
+page, or all three from the site. Mixing them (falling back to the site's size
+for a page's own image) would declare the wrong dimensions, which is worse than
+declaring none. A page that overrides `image` and omits `image_width` simply
+gets no dimensions; guessing would be the bug this branch exists to avoid.
+{%- endcomment -%}
+{%- if page.image -%}
+  {%- assign seo_image_w = page.image_width -%}
+  {%- assign seo_image_h = page.image_height -%}
+  {%- assign seo_image_type = page.image_type -%}
+{%- else -%}
+  {%- assign seo_image_w = site.image_width -%}
+  {%- assign seo_image_h = site.image_height -%}
+  {%- assign seo_image_type = site.image_type -%}
+{%- endif -%}
+{%- if seo_image_w and seo_image_h %}
+<meta property="og:image:width" content="{{ seo_image_w }}">
+<meta property="og:image:height" content="{{ seo_image_h }}">
+{%- endif -%}
+{%- if seo_image_type %}
+<meta property="og:image:type" content="{{ seo_image_type }}">
 {%- endif -%}
 {%- endif %}
 
+{%- comment -%}
+`summary`, not `summary_large_image`. The default share image is the 512x512
+logo, and the large card is designed for a 2:1 image -- it letterboxes or crops
+a square one. A page with a genuinely wide image sets `twitter_card:
+summary_large_image` in its front matter.
+{%- endcomment -%}
 <!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="{{ page.twitter_card | default: 'summary' }}">
 <meta name="twitter:title" content="{{ seo_title | escape }}">
 <meta name="twitter:description" content="{{ seo_description | escape }}">
 {%- if seo_image %}
 <meta name="twitter:image" content="{{ seo_image | absolute_url }}">
+<meta name="twitter:image:alt" content="{{ seo_image_alt | escape }}">
 {%- endif %}
 
 {%- comment -%}
-A book's pages are one long-form work by one author; saying so lets search
-engines attribute them rather than treating each page as orphaned prose.
-
-The section has to be branched now that the domain carries two books. Every
-collection except eaibook belongs to Everyday Programming -- book, exercises
-and solutions -- so "Programming" stays the default and only the AI book opts
-out. A third book would want a lookup rather than another elsif.
+Collection pages are long-form work by a named author; saying so lets search
+engines attribute them rather than treating each page as orphaned prose. This
+used to branch on which of two books a page belonged to. The books are gone;
+`research` is the only collection now, and `page.collection` doubles as a
+readable section label, so a page that joins a future collection gets a
+sensible value without anyone remembering to extend a lookup here.
 {%- endcomment -%}
 {%- if page.collection %}
 <meta property="article:author" content="{{ site.author | escape }}">
-<meta property="article:section" content="{% if page.collection == 'eaibook' %}Artificial Intelligence{% else %}Programming{% endif %}">
+<meta property="article:section" content="{{ page.collection | capitalize | escape }}">
 {%- endif %}
 
 {%- include structured-data.html -%}
 
 {%- comment -%}
-Analytics lives here rather than in index.html because the landing page is now
-rendered through this layout like every other page. Consequence worth knowing:
-the tag is now on the book's pages too, which it was not before.
+Analytics lives here rather than in index.html because the landing page is
+rendered through this layout like every other page, so one tag covers the
+whole domain.
 {%- endcomment -%}
 {%- if jekyll.environment == "production" and site.google_analytics %}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>

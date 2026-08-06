@@ -1,0 +1,286 @@
+/* IntuitAI -- additions on top of the jekyll-gitbook remote theme.
+ *
+ * Scoped to classes this site introduces (all `ia-` prefixed), so nothing here
+ * can drift when the remote theme updates. Path and prefix were both renamed
+ * in August 2026; if you find an `ep-` class anywhere, it is a leftover.
+ *
+ * It is deliberately NOT under assets/. jekyll-remote-theme copies the theme's
+ * own assets/ tree into _site/assets/, and putting site files in the same tree
+ * is the collision _config.yml warns about at length.
+ *
+ * Sizes are in em, never rem. GitBook's stylesheet sets html{font-size:62.5%}
+ * so that its own values can be written as round numbers -- which makes 1rem
+ * ten pixels, not sixteen. Anything specified in rem here would come out at
+ * about five-eighths of its intended size, so every length is relative to the
+ * inherited font size instead.
+ */
+
+:root {
+    --ia-violet: #5b21b6;
+    --ia-violet-soft: #ede9fe;
+    --ia-ink: #1f2328;
+    --ia-muted: #57606a;
+    --ia-rule: #d8dee4;
+    --ia-tint: #f6f8fa;
+}
+
+/* ---------------------------------------------------------------- hero --- */
+
+.ia-hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    align-items: flex-start;
+    margin: 0 0 2.5em;
+}
+
+.ia-hero__logo {
+    flex: 0 0 120px;
+    max-width: 120px;
+}
+
+.ia-hero__logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ia-hero__body {
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.ia-hero__body > :first-child {
+    margin-top: 0;
+}
+
+.ia-tagline {
+    font-size: 1.2em;
+    line-height: 1.5;
+    color: var(--ia-ink);
+}
+
+.ia-kicker {
+    display: inline-block;
+    font-size: 0.75em;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ia-violet);
+    background: var(--ia-violet-soft);
+    border-radius: 999px;
+    padding: 0.25em 0.85em;
+    margin-bottom: 0.9em;
+}
+
+/* ------------------------------------------------------------- buttons --- */
+
+.ia-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+    margin: 1.4em 0 0;
+}
+
+.ia-btn,
+a.ia-btn {
+    display: inline-block;
+    padding: 0.55em 1.15em;
+    border-radius: 5px;
+    border: 1px solid var(--ia-violet);
+    font-size: 0.94em;
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+a.ia-btn--primary {
+    background: var(--ia-violet);
+    color: #fff;
+}
+
+a.ia-btn--primary:hover {
+    background: #4c1d95;
+    color: #fff;
+    text-decoration: none;
+}
+
+a.ia-btn--ghost {
+    background: transparent;
+    color: var(--ia-violet);
+}
+
+a.ia-btn--ghost:hover {
+    background: var(--ia-violet-soft);
+    text-decoration: none;
+}
+
+/* --------------------------------------------------------------- facts --- */
+
+.ia-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1em;
+    margin: 2em 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ia-facts li {
+    background: var(--ia-tint);
+    border: 1px solid var(--ia-rule);
+    border-radius: 6px;
+    padding: 0.9em 1em;
+    list-style: none;
+}
+
+.ia-facts b {
+    display: block;
+    font-size: 1.5em;
+    line-height: 1.15;
+    color: var(--ia-violet);
+}
+
+.ia-facts span {
+    display: block;
+    font-size: 0.85em;
+    color: var(--ia-muted);
+    margin-top: 0.15em;
+}
+
+/* ---------------------------------------------------------------- tags --- */
+
+/* Maturity labels on project cards. The three variants exist so that a
+ * design-stage repository cannot be mistaken for a shipping one -- several of
+ * the repositories listed on the landing page are a README and a thesis, and
+ * saying so is the difference between a portfolio and a claim. */
+.ia-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 0.12em 0.5em;
+    margin-left: 0.5em;
+    vertical-align: 0.12em;
+    background: var(--ia-violet-soft);
+    color: var(--ia-violet);
+    white-space: nowrap;
+}
+
+.ia-tag--shipping {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.ia-tag--early {
+    background: #fef3c7;
+    color: #854d0e;
+}
+
+/* --------------------------------------------------------------- cards --- */
+
+.ia-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.1em;
+    margin: 1.6em 0 2.4em;
+    padding: 0;
+    list-style: none;
+}
+
+.ia-cards > li {
+    list-style: none;
+    background: var(--ia-tint);
+    border: 1px solid var(--ia-rule);
+    border-left: 3px solid var(--ia-violet);
+    border-radius: 0 6px 6px 0;
+    padding: 1em 1.1em;
+}
+
+.ia-card__head {
+    margin: 0 0 0.15em;
+    font-size: 1.02em;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.ia-card__meta {
+    display: block;
+    font-size: 0.78em;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ia-muted);
+    margin: 0 0 0.6em;
+}
+
+.ia-cards p:last-child {
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------- steps --- */
+
+/* The incubation pipeline. Numbered by CSS rather than by <ol> markers so the
+ * numeral can be styled as a stage badge without a nested wrapper element. */
+.ia-steps {
+    counter-reset: ia-step;
+    margin: 1.6em 0 2.4em;
+    padding: 0;
+    list-style: none;
+}
+
+.ia-steps > li {
+    counter-increment: ia-step;
+    position: relative;
+    list-style: none;
+    padding: 0 0 0 3.2em;
+    margin: 0 0 1.3em;
+    min-height: 2.2em;
+}
+
+.ia-steps > li::before {
+    content: counter(ia-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.2em;
+    height: 2.2em;
+    line-height: 2.2em;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--ia-violet-soft);
+    color: var(--ia-violet);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.ia-steps h3 {
+    margin: 0 0 0.2em;
+    font-size: 1.02em;
+    font-weight: 600;
+}
+
+.ia-steps p {
+    margin: 0;
+    color: var(--ia-muted);
+}
+
+/* --------------------------------------------------------------- notes --- */
+
+.ia-note {
+    border-left: 3px solid var(--ia-violet);
+    background: var(--ia-tint);
+    border-radius: 0 5px 5px 0;
+    padding: 0.85em 1.1em;
+    margin: 1.5em 0;
+}
+
+.ia-note > :first-child { margin-top: 0; }
+.ia-note > :last-child { margin-bottom: 0; }
+
+@media (max-width: 600px) {
+    .ia-hero { gap: 1.4em; }
+    .ia-steps > li { padding-left: 2.8em; }
+}

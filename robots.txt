@@ -3,8 +3,9 @@
 # arrived with an unrendered Liquid tag in it would be worse than none at all.
 # The sitemap URL is therefore written out rather than built from site.url.
 #
-# sitemap.xml itself is produced by the jekyll-sitemap plugin and covers the
-# landing page and every page under /ep and /eai.
+# sitemap.xml itself is produced by the jekyll-sitemap plugin. The theme's
+# generated assets/search.html is kept out of it by a `defaults` entry in
+# _config.yml; see the comment there for why.
 
 User-agent: *
 Allow: /

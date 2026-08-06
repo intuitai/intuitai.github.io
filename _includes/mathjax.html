@@ -1,27 +1,22 @@
 {%- comment -%}
 Overrides the theme's _includes/mathjax.html to load nothing at all.
 
-Two reasons, in order of importance.
+The upstream include configures MathJax with
+`inlineMath: [['$','$'], ['\\(','\\)']]` and body.html pulls it into every
+page, so any two dollar signs on a page get the words between them silently
+typeset as an equation. That was breaking real content when this domain hosted
+two books full of prices ("three payments of $0.10 add up to $0.30"); the books
+are gone, but the trap is not, and a landing page that ever quotes two figures
+would hit it again.
 
-1. It was actively breaking pages. The upstream include configures MathJax with
-   `inlineMath: [['$','$'], ['\\(','\\)']]`, and body.html pulls it into every
-   page. That is right for a maths textbook and wrong for this one, whose
-   exercises are full of prices -- "three payments of $0.10 add up to $0.30",
-   "a bike costs $240 and you start with $60". MathJax matches the first `$` to
-   the second and silently typesets the words between them as an equation.
-   There is no per-page switch upstream, and the configuration has to be in
-   place before the async MathJax script runs, so shadowing this file is the
-   only deterministic fix.
+There is no maths on the site to typeset, and no per-page switch upstream --
+the configuration has to be in place before the async MathJax script runs, so
+shadowing this file is the only deterministic fix. Fetching a MathJax bundle
+from a CDN on every page view to render nothing is a cost with no return, and
+one fewer third-party script is one fewer thing that can break or be tampered
+with.
 
-2. There is no maths on the site to typeset. The book's inline maths is a degree
-   sign, a times sign, one pi and a couple of squares -- fourteen spans in the
-   whole corpus -- and tools/extract_exercises.py converts every one of them to
-   Unicode (°, ×, π, ², …) when it generates the exercise pages. Fetching a
-   MathJax bundle from a CDN on every page view to render none of it is a cost
-   with no return, and one fewer third-party script is one fewer thing that can
-   break or be tampered with.
-
-To put maths back: delete this file, and the theme's own include takes over
-again. If you do, re-check the currency prose in the exercise pages first, or
-set `inlineMath` to `[['\\(','\\)']]` here instead of removing the override.
+To put maths back: delete this file and the theme's own include takes over
+again. If you do, set `inlineMath` to `[['\\(','\\)']]` here instead of
+removing the override, or check every page for currency first.
 {%- endcomment -%}
